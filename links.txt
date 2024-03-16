@@ -1,7 +1,0 @@
-log rank conjecture
-
-https://www.karlin.mff.cuni.cz/~krajicek/ --- proof complexity
-
-https://eccc.weizmann.ac.il/report/2024/010/
-
-https://eccc.weizmann.ac.il/report/2023/187/

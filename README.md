@@ -1,2 +1,2 @@
-# bachelor-degree-thesis
-Notes on my bachelor's degree thesis
+# WORK IN PROGRESS...
+> ReadMe from the codebase repo will be added once completed.
