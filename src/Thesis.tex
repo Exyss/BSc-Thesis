@@ -1,7 +1,7 @@
 % ============================================== %
 % Author: Simone Bianco
 %
-% Thesis Title: IDK something about proofs and circuits and protocols and NP != P?
+% Thesis Title: IDK something about proofs and circuits and protocols and P $\neq$ NP?
 % 
 % Bachelor of Science in Computer Science, Sapienza University of Rome.
 %
@@ -19,6 +19,7 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{xspace}
 \usepackage{geometry} 
 \usepackage{caption}  
 \usepackage[edges]{forest}
@@ -33,7 +34,18 @@
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{threeparttable}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{cleveref}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=anyt,
+  minnames=3,
+  minalphanames=3
+]{biblatex}
 
 % Commands and Settings
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
@@ -74,7 +86,7 @@
 
 % Metadata
 \hypersetup{pdftitle={Thesis},pdfauthor={Simone Bianco}, urlcolor=black, linkcolor=black, colorlinks=true}
-\title{IDK something about proofs, circuits, protocols and NP != P?}
+\title{IDK something about proofs, search problems, circuits, protocols and P $\neq$ NP?}
 \author{Simone Bianco}
 \IDnumber{1986936}
 \course{Bachelor's Degree in Computer Science}
@@ -85,7 +97,26 @@
 \copyyear{2024}
 \thesistype{Bachelor's Thesis}
 
+% ================== CUSTOM ENVIRONMENTS ==================
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{claim}{Claim}
+\newtheorem{proposition}{Proposition}
+
+% ================== CUSTOM MACROS ==================
+
+\renewcommand{\lnot}{\overline}
+\newcommand{\CNF}{\mathsf{CNF}\xspace}
+\newcommand{\TFNP}{\mathsf{TFNP}\xspace}
+\newcommand{\Search}{\mathsf{Search}\xspace}
+\newcommand{\abs}[1]{\left|#1\right|}
+
 % ================== DOCUMENT ==================
+
+\addbibresource{./references.bib}
+
 \begin{document}
 
 \lstset{language=Python}
@@ -113,14 +144,15 @@
 \input{./chapter/1}
 
 % ================== ACKNOWLEDGMENTS ==================
-% \input{./chapter/ack}
+\input{./chapter/ack}
 
 \backmatter
 \phantomsection
 
 % ================== BIBLIOGRAPHY ==================
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{sapthesis}
-\bibliography{./references.bib}
+% \bibliographystyle{sapthesis}
+% \bibliography{./references.bib}
+\printbibliography
 
 \end{document}
