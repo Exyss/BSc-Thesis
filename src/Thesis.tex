@@ -1,7 +1,7 @@
 % ============================================== %
 % Author: Simone Bianco
 %
-% Thesis Title: IDK something about proofs and circuits and protocols and P $\neq$ NP?
+% Thesis Title: IDK something about proofs and circuits and protocols and P =/= NP?
 % 
 % Bachelor of Science in Computer Science, Sapienza University of Rome.
 %
@@ -108,10 +108,13 @@
 % ================== CUSTOM MACROS ==================
 
 \renewcommand{\lnot}{\overline}
+\newcommand{\abs}[1]{\left|#1\right|}
+
 \newcommand{\CNF}{\mathsf{CNF}\xspace}
 \newcommand{\TFNP}{\mathsf{TFNP}\xspace}
 \newcommand{\Search}{\mathsf{Search}\xspace}
-\newcommand{\abs}[1]{\left|#1\right|}
+
+\newcommand{\N}{\mathbb{N}}
 
 % ================== DOCUMENT ==================
 
@@ -140,8 +143,14 @@
 
 \mainmatter
 
-% ================== CHAPTER 1 ==================
+% ================== CHAPTERS ==================
 \input{./chapter/1}
+\input{./chapter/2}
+\input{./chapter/3}
+\input{./chapter/4}
+
+% ================== Notes ==================
+\input{./chapter/notes}
 
 % ================== ACKNOWLEDGMENTS ==================
 \input{./chapter/ack}

@@ -1,0 +1,301 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global}
+    \entry{tfnp_characterization}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=93b0eda8c63f47e7fbd18fe9ab3022b3}{%
+           family={Buss},
+           familyi={B\bibinitperiod},
+           given={Sam},
+           giveni={S\bibinitperiod}}}%
+        {{hash=ecb16b9462f5fdf56d2914f02132081f}{%
+           family={Fleming},
+           familyi={F\bibinitperiod},
+           given={Noah},
+           giveni={N\bibinitperiod}}}%
+        {{hash=fecb48e0778d57043f598aa75fabb52e}{%
+           family={Impagliazzo},
+           familyi={I\bibinitperiod},
+           given={Russell},
+           giveni={R\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=1a91d7f205b70671cfbdd60ea19708bc}{%
+           family={Tauman\bibnamedelima Kalai},
+           familyi={T\bibinitperiod\bibinitdelim K\bibinitperiod},
+           given={Yael},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Dagstuhl, Germany}%
+      }
+      \list{publisher}{1}{%
+        {Schloss Dagstuhl -- Leibniz-Zentrum für Informatik}%
+      }
+      \strng{namehash}{0a8f4406cc004b36441b3e5494943e09}
+      \strng{fullhash}{0a8f4406cc004b36441b3e5494943e09}
+      \strng{bibnamehash}{0a8f4406cc004b36441b3e5494943e09}
+      \strng{authorbibnamehash}{0a8f4406cc004b36441b3e5494943e09}
+      \strng{authornamehash}{0a8f4406cc004b36441b3e5494943e09}
+      \strng{authorfullhash}{0a8f4406cc004b36441b3e5494943e09}
+      \strng{editorbibnamehash}{1a91d7f205b70671cfbdd60ea19708bc}
+      \strng{editornamehash}{1a91d7f205b70671cfbdd60ea19708bc}
+      \strng{editorfullhash}{1a91d7f205b70671cfbdd60ea19708bc}
+      \field{labelalpha}{BFI23}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{Keywords: Proof Complexity, Circuit Complexity, TFNP}
+      \field{booktitle}{14th Innovations in Theoretical Computer Science Conference (ITCS 2023)}
+      \field{isbn}{978-3-95977-263-1}
+      \field{issn}{1868-8969}
+      \field{series}{Leibniz International Proceedings in Informatics (LIPIcs)}
+      \field{title}{{TFNP Characterizations of Proof Systems and Monotone Circuits}}
+      \field{volume}{251}
+      \field{year}{2023}
+      \field{pages}{30:1\bibrangedash 30:40}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.4230/LIPIcs.ITCS.2023.30
+      \endverb
+      \verb{urlraw}
+      \verb https://drops-dev.dagstuhl.de/entities/document/10.4230/LIPIcs.ITCS.2023.30
+      \endverb
+      \verb{url}
+      \verb https://drops-dev.dagstuhl.de/entities/document/10.4230/LIPIcs.ITCS.2023.30
+      \endverb
+    \endentry
+    \entry{treelike_res_size}{article}{}
+      \name{author}{3}{}{%
+        {{hash=a87a624a08324ccca7e16f7c79b7d787}{%
+           family={Beyersdorff},
+           familyi={B\bibinitperiod},
+           given={Olaf},
+           giveni={O\bibinitperiod}}}%
+        {{hash=2457daafdbb333c816e351803176fc21}{%
+           family={Galesi},
+           familyi={G\bibinitperiod},
+           given={Nicola},
+           giveni={N\bibinitperiod}}}%
+        {{hash=276745f6c03e3249e7241609b8934111}{%
+           family={Lauria},
+           familyi={L\bibinitperiod},
+           given={Massimo},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{e99523e198338d151541aefcb45e8990}
+      \strng{fullhash}{e99523e198338d151541aefcb45e8990}
+      \strng{bibnamehash}{e99523e198338d151541aefcb45e8990}
+      \strng{authorbibnamehash}{e99523e198338d151541aefcb45e8990}
+      \strng{authornamehash}{e99523e198338d151541aefcb45e8990}
+      \strng{authorfullhash}{e99523e198338d151541aefcb45e8990}
+      \field{labelalpha}{BGL13}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0020-0190}
+      \field{journaltitle}{Information Processing Letters}
+      \field{number}{18}
+      \field{title}{A characterization of tree-like Resolution size}
+      \field{volume}{113}
+      \field{year}{2013}
+      \field{pages}{666\bibrangedash 671}
+      \range{pages}{6}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.ipl.2013.06.002
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0020019013001592
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0020019013001592
+      \endverb
+      \keyw{Computational complexity,Proof complexity,Prover-Delayer games,Resolution}
+    \endentry
+    \entry{separations_proof_complexity}{inproceedings}{}
+      \name{author}{7}{}{%
+        {{hash=57c87647544c9a8b4092d5b4539dff1e}{%
+           family={Göös},
+           familyi={G\bibinitperiod},
+           given={Mika},
+           giveni={M\bibinitperiod}}}%
+        {{hash=159d49f3eb95f046892fa586d0ae293e}{%
+           family={Hollender},
+           familyi={H\bibinitperiod},
+           given={Alexandros},
+           giveni={A\bibinitperiod}}}%
+        {{hash=874cbf7d98ff5f0b518aa0708ad4727e}{%
+           family={Jain},
+           familyi={J\bibinitperiod},
+           given={Siddhartha},
+           giveni={S\bibinitperiod}}}%
+        {{hash=dece41961568e6b6731992a78907ca93}{%
+           family={Maystre},
+           familyi={M\bibinitperiod},
+           given={Gilbert},
+           giveni={G\bibinitperiod}}}%
+        {{hash=ee3abe36264495818758a284eaaca38f}{%
+           family={Pires},
+           familyi={P\bibinitperiod},
+           given={William},
+           giveni={W\bibinitperiod}}}%
+        {{hash=1ad68bb7343187561ae581c20892ee42}{%
+           family={Robere},
+           familyi={R\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=7b29cc5f01d86d6776ea05347f0fea80}{%
+           family={Tao},
+           familyi={T\bibinitperiod},
+           given={Ran},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{12947f4eb0385d9be284d3f1b8a8062d}
+      \strng{fullhash}{c1b771348e26175db3dd6c5a53198b92}
+      \strng{bibnamehash}{12947f4eb0385d9be284d3f1b8a8062d}
+      \strng{authorbibnamehash}{12947f4eb0385d9be284d3f1b8a8062d}
+      \strng{authornamehash}{12947f4eb0385d9be284d3f1b8a8062d}
+      \strng{authorfullhash}{c1b771348e26175db3dd6c5a53198b92}
+      \field{labelalpha}{GHJ+22}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2022 IEEE 63rd Annual Symposium on Foundations of Computer Science (FOCS)}
+      \field{title}{Separations in Proof Complexity and TFNP}
+      \field{year}{2022}
+      \field{pages}{1150\bibrangedash 1161}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/FOCS54457.2022.00111
+      \endverb
+      \keyw{Computer science;Closed box;Search problems;Complexity theory}
+    \endentry
+    \entry{search_problems_dt_model}{article}{}
+      \name{author}{4}{}{%
+        {{hash=0d1784a2f9a807b1da8d15d5b1029c08}{%
+           family={Lovász},
+           familyi={L\bibinitperiod},
+           given={László},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c6af39e79e88306281e6e0b0ccea956c}{%
+           family={Naor},
+           familyi={N\bibinitperiod},
+           given={Moni},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ca3dcf3febe178efd49f8c0649431f8c}{%
+           family={Newman},
+           familyi={N\bibinitperiod},
+           given={Ilan},
+           giveni={I\bibinitperiod}}}%
+        {{hash=94bdc407739d530448ac88956c6c98a5}{%
+           family={Wigderson},
+           familyi={W\bibinitperiod},
+           given={Avi},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {USA}%
+      }
+      \list{publisher}{2}{%
+        {Society for Industrial}%
+        {Applied Mathematics}%
+      }
+      \strng{namehash}{5a5f7201f65f32b0f53f4154991949d9}
+      \strng{fullhash}{35aaee2e5d20c1052fe6c2da2d9432eb}
+      \strng{bibnamehash}{5a5f7201f65f32b0f53f4154991949d9}
+      \strng{authorbibnamehash}{5a5f7201f65f32b0f53f4154991949d9}
+      \strng{authornamehash}{5a5f7201f65f32b0f53f4154991949d9}
+      \strng{authorfullhash}{35aaee2e5d20c1052fe6c2da2d9432eb}
+      \field{labelalpha}{LNN+95}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The relative power of determinism, randomness, and nondeterminism for search problems in the Boolean decision tree model is studied. It is shown that the gaps between the nondeterministic, the randomized, and the deterministic complexities can be arbitrarily large for search problems. An interesting connection of this model to the complexity of resolution proofs is also mentioned.}
+      \field{issn}{0895-4801}
+      \field{journaltitle}{SIAM J. Discret. Math.}
+      \field{month}{2}
+      \field{number}{1}
+      \field{title}{Search Problems in the Decision Tree Model}
+      \field{volume}{8}
+      \field{year}{1995}
+      \field{pages}{119\bibrangedash 132}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1137/S0895480192233867
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1137/S0895480192233867
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1137/S0895480192233867
+      \endverb
+      \keyw{Boolean functions,decision trees}
+    \endentry
+    \entry{proofs_circuits_communication}{article}{}
+      \name{author}{3}{}{%
+        {{hash=ac8da3d1755446b7ba3714b2d953e031}{%
+           family={Rezende},
+           familyi={R\bibinitperiod},
+           given={Susanna\bibnamedelima F.},
+           giveni={S\bibinitperiod\bibinitdelim F\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+        {{hash=57c87647544c9a8b4092d5b4539dff1e}{%
+           family={Göös},
+           familyi={G\bibinitperiod},
+           given={Mika},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1ad68bb7343187561ae581c20892ee42}{%
+           family={Robere},
+           familyi={R\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{ffff0399766e165270f51fe1a4a226d0}
+      \strng{fullhash}{ffff0399766e165270f51fe1a4a226d0}
+      \strng{bibnamehash}{ffff0399766e165270f51fe1a4a226d0}
+      \strng{authorbibnamehash}{ffff0399766e165270f51fe1a4a226d0}
+      \strng{authornamehash}{ffff0399766e165270f51fe1a4a226d0}
+      \strng{authorfullhash}{ffff0399766e165270f51fe1a4a226d0}
+      \field{labelalpha}{RGR22}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ArXiv}
+      \field{title}{Proofs, Circuits, and Communication}
+      \field{volume}{abs/2202.08909}
+      \field{year}{2022}
+      \verb{urlraw}
+      \verb https://api.semanticscholar.org/CorpusID:246996726
+      \endverb
+      \verb{url}
+      \verb https://api.semanticscholar.org/CorpusID:246996726
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
