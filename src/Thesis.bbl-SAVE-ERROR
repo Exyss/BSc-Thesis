@@ -19,6 +19,63 @@
 
 \refsection{0}
   \datalist[entry]{anyt/global//global/global}
+    \entry{rel_comp_np_search}{article}{}
+      \name{author}{5}{}{%
+        {{hash=9c1fd3d87634c254ca85f4570b1bfb61}{%
+           family={Beame},
+           familyi={B\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=6d0042ba6060405425561c0184e8ece1}{%
+           family={Cook},
+           familyi={C\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+        {{hash=348274340579994ae310818f097fdd61}{%
+           family={Edmonds},
+           familyi={E\bibinitperiod},
+           given={Jeff},
+           giveni={J\bibinitperiod}}}%
+        {{hash=fecb48e0778d57043f598aa75fabb52e}{%
+           family={Impagliazzo},
+           familyi={I\bibinitperiod},
+           given={Russell},
+           giveni={R\bibinitperiod}}}%
+        {{hash=1813007d96ae80284b22fd39a7996df9}{%
+           family={Pitassi},
+           familyi={P\bibinitperiod},
+           given={Toniann},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{2b247a6dbdab20a755c9a4c350e12abf}
+      \strng{fullhash}{d040d180121756f255bc2d4e5d4f0769}
+      \strng{bibnamehash}{2b247a6dbdab20a755c9a4c350e12abf}
+      \strng{authorbibnamehash}{2b247a6dbdab20a755c9a4c350e12abf}
+      \strng{authornamehash}{2b247a6dbdab20a755c9a4c350e12abf}
+      \strng{authorfullhash}{d040d180121756f255bc2d4e5d4f0769}
+      \field{labelalpha}{BCE+98}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0022-0000}
+      \field{journaltitle}{Journal of Computer and System Sciences}
+      \field{number}{1}
+      \field{title}{The Relative Complexity of NP Search Problems}
+      \field{volume}{57}
+      \field{year}{1998}
+      \field{pages}{3\bibrangedash 19}
+      \range{pages}{17}
+      \verb{doi}
+      \verb https://doi.org/10.1006/jcss.1998.1575
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0022000098915756
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0022000098915756
+      \endverb
+    \endentry
     \entry{tfnp_characterization}{inproceedings}{}
       \name{author}{3}{}{%
         {{hash=93b0eda8c63f47e7fbd18fe9ab3022b3}{%
@@ -84,6 +141,47 @@
       \verb https://drops-dev.dagstuhl.de/entities/document/10.4230/LIPIcs.ITCS.2023.30
       \endverb
     \endentry
+    \entry{decision_vs_search}{article}{}
+      \name{author}{2}{}{%
+        {{hash=06e2bb2f83d8b669b46db64431509301}{%
+           family={Bellare},
+           familyi={B\bibinitperiod},
+           given={Mihir},
+           giveni={M\bibinitperiod}}}%
+        {{hash=39e4a0690915f1d991133196a545b37b}{%
+           family={Goldwasser},
+           familyi={G\bibinitperiod},
+           given={Shafi},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{b221d9ddbe2cdaf24a1b9789b507e2b2}
+      \strng{fullhash}{b221d9ddbe2cdaf24a1b9789b507e2b2}
+      \strng{bibnamehash}{b221d9ddbe2cdaf24a1b9789b507e2b2}
+      \strng{authorbibnamehash}{b221d9ddbe2cdaf24a1b9789b507e2b2}
+      \strng{authornamehash}{b221d9ddbe2cdaf24a1b9789b507e2b2}
+      \strng{authorfullhash}{b221d9ddbe2cdaf24a1b9789b507e2b2}
+      \field{labelalpha}{BG94}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Computing}
+      \field{number}{1}
+      \field{title}{The Complexity of Decision Versus Search}
+      \field{volume}{23}
+      \field{year}{1994}
+      \field{pages}{97\bibrangedash 119}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1137/S0097539792228289
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1137/S0097539792228289
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1137/S0097539792228289
+      \endverb
+    \endentry
     \entry{treelike_res_size}{article}{}
       \name{author}{3}{}{%
         {{hash=a87a624a08324ccca7e16f7c79b7d787}{%
@@ -131,6 +229,50 @@
       \verb https://www.sciencedirect.com/science/article/pii/S0020019013001592
       \endverb
       \keyw{Computational complexity,Proof complexity,Prover-Delayer games,Resolution}
+    \endentry
+    \entry{fp_vs_p}{inbook}{}
+      \name{author}{2}{}{%
+        {{hash=fcb129e27cb1af98a46a2eea34dbc582}{%
+           family={Du},
+           familyi={D\bibinitperiod},
+           given={Ding-Zhu},
+           giveni={D\bibinithyphendelim Z\bibinitperiod}}}%
+        {{hash=a4516dd6d624a0a701cb6b90a94cb3ce}{%
+           family={Ko},
+           familyi={K\bibinitperiod},
+           given={Ker-I},
+           giveni={K\bibinithyphendelim I\bibinitperiod}}}%
+      }
+      \strng{namehash}{d678a8a2fa01f8dc24692abc05de569a}
+      \strng{fullhash}{d678a8a2fa01f8dc24692abc05de569a}
+      \strng{bibnamehash}{d678a8a2fa01f8dc24692abc05de569a}
+      \strng{authorbibnamehash}{d678a8a2fa01f8dc24692abc05de569a}
+      \strng{authornamehash}{d678a8a2fa01f8dc24692abc05de569a}
+      \strng{authorfullhash}{d678a8a2fa01f8dc24692abc05de569a}
+      \field{labelalpha}{DK14}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Theory of Computational Complexity}
+      \field{chapter}{1}
+      \field{isbn}{9781118595091}
+      \field{title}{Models of Computation and Complexity Classes}
+      \field{year}{2014}
+      \field{pages}{1\bibrangedash 44}
+      \range{pages}{44}
+      \verb{doi}
+      \verb https://doi.org/10.1002/9781118595091.ch1
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118595091.ch1
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/9781118595091.ch1
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/9781118595091.ch1
+      \endverb
     \endentry
     \entry{separations_proof_complexity}{inproceedings}{}
       \name{author}{7}{}{%
@@ -296,6 +438,9 @@
       \endverb
     \endentry
   \enddatalist
+  \missing{1-3_2-3}
+  \missing{Nullstellensatz}
+  \missing{res_parity}
 \endrefsection
 \endinput
 

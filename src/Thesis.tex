@@ -99,23 +99,39 @@
 
 % ================== CUSTOM ENVIRONMENTS ==================
 
-\newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
-\newtheorem{definition}{Definition}
-\newtheorem{claim}{Claim}
+\newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{claimlemma}{Claim}[lemma]
+\newtheorem{claimtheorem}{Claim}[theorem]
+\newtheorem{definition}{Definition}
 
 % ================== CUSTOM MACROS ==================
 
 \renewcommand{\lnot}{\overline}
 \newcommand{\abs}[1]{\left|#1\right|}
 \newcommand{\say}[1]{\flqq#1\frqq}
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
+\newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
+\newcommand{\abk}[1]{\left\langle#1\right\rangle}
 
 \newcommand{\CNF}{\mathsf{CNF}\xspace}
 \newcommand{\TFNP}{\mathsf{TFNP}\xspace}
 \newcommand{\Search}{\mathsf{Search}\xspace}
 
 \newcommand{\N}{\mathbb{N}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\ResP}{\mathsf{Res(\oplus)}}
+\newcommand{\NS}{\mathsf{NS}}
+\newcommand{\FNS}{\F_2\text{-}\mathsf{NS}}
+\newcommand{\enc}{\mathrm{enc}}
 
 % ================== DOCUMENT ==================
 
