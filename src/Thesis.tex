@@ -26,7 +26,7 @@
 \usepackage{subcaption}
 \usepackage{float}    
 \usepackage{lipsum}  
-\usepackage{xargs}                     
+\usepackage{xargs}              
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{makecell}
@@ -37,6 +37,8 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{cleveref}
+\usepackage[Algoritmo]{algorithm}      
+\usepackage{algpseudocode}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
 \usepackage[
@@ -84,15 +86,19 @@
 }
 \lstset{style=mystyle}
 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
 % Metadata
 \hypersetup{pdftitle={Thesis},pdfauthor={Simone Bianco}, urlcolor=black, linkcolor=black, colorlinks=true}
-\title{IDK something about proofs, search problems, circuits, protocols and P $\neq$ NP?}
+\title{Thesis Title}
 \author{Simone Bianco}
 \IDnumber{1986936}
 \course{Bachelor's Degree in Computer Science}
 \courseorganizer{Faculty of Information Engineering, Computer Science and Statistics}
 \AcademicYear{2023/2024}
-\advisor{Prof. Nicola Galesi\\Prof. Massimo Lauria}
+\advisor{Prof. Nicola Galesi}
+\coadvisor{Prof. Massimo Lauria}
 \authoremail{bianco.simone@outlook.it}
 \copyyear{2024}
 \thesistype{Bachelor's Thesis}
@@ -113,7 +119,7 @@
 
 \renewcommand{\lnot}{\overline}
 \newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\say}[1]{\flqq#1\frqq}
+\newcommand{\say}[1]{\flqq\textit{#1}\frqq}
 \newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
 \newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
 \newcommand{\abk}[1]{\left\langle#1\right\rangle}
@@ -147,7 +153,7 @@
 
 % ================== DEDICATION ==================
 \dedication{
-    Please help me.
+    TODO.
 }
 % ================== ABSTRACT ==================
 

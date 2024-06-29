@@ -1,5 +1,4 @@
 # WORK IN PROGRESS...
-> ReadMe from the codebase repo will be added once completed.
 
 Current structure draft:
 
@@ -29,3 +28,29 @@ Current structure draft:
     - Feasible Interpolation
     - Query-to-communication Lifting
     - An in-depth analysis: FP^cc = MonotoneFormulas
+
+----
+
+- Introduction
+- Preliminaries
+    - Turing machines
+    - Reducibility
+    - Proof complexity
+
+- Search problems
+    - Definition and Examples
+    - FP vs. TFNP vs. FNP
+    - Decision trees
+    - Black-Box TFNP and White-Box TFNP
+    - Proof System Characterization
+    - An in-depth example: FP^dt = TreeRes
+
+- Parity in the TFNP model
+    - Parity decision trees
+    - The FP^pdt class
+    - Linear resolution and Res+
+    - PDT = TreeRes+
+    - Nullstallensatz
+    - Treelike ResLin2 <= Nullstallensatz
+
+- Conclusions
