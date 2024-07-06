@@ -10,7 +10,7 @@
 % ============================================== %
 
 % Document Class
-\documentclass[binding=0.6cm]{sapthesis}
+\documentclass[binding=0.6cm, noexaminfo]{sapthesis}
 
 % Packages
 \usepackage{microtype}
@@ -18,7 +18,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{listings}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{xspace}
 \usepackage{geometry} 
 \usepackage{caption}  
@@ -164,6 +164,9 @@
 \tableofcontents
 \let\cleardoublepage\clearpage
 
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=red}
+
+
 \mainmatter
 
 % ================== CHAPTERS ==================
@@ -171,6 +174,7 @@
 \input{./chapter/2}
 \input{./chapter/3}
 \input{./chapter/4}
+\input{./chapter/5}
 
 % ================== Notes ==================
 \input{./chapter/notes}

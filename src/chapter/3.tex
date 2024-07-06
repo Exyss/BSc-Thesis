@@ -1,4 +1,3 @@
-\hypersetup{colorlinks=true, linkcolor=blue, citecolor=red}
 
 \chapter{Search problems} \label{chap:search_problems}
 
@@ -20,14 +19,13 @@ An important thing to precise is that questions like \say{is $y$ a valid output 
 
 Formally, functional problems are described through the concept of \textbf{relation}: given of inputs $X$ and a set of possible outputs $Y$ of a functional problem, the latter can be described as a relation $R \subseteq X \times Y$. For example, the question \say{what is the prime factorization of $n$?} is modeled by the functional problem $\mathrm{FACTORING} = \{(n, (p_1, \ldots, p_k)) \in \N \times \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
 
-We notice that, even thought decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined in a different way. For example, the $\mathrm{PRIMES}$ problem can be modeled as the functional problem $\{(n, a) \in \N \times \{0,1\} \mid 1 \text{ if } n \text{ is prime, } 0 \text{ otherwise}\}$, but they aren't effectively the same problem even thought they answer the same question.
+We observe that, even thought decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined in a different way. For example, the $\mathrm{PRIMES}$ problem can be modeled as the functional problem $\{(n, a) \in \N \times \{0,1\} \mid 1 \text{ if } n \text{ is prime, } 0 \text{ otherwise}\}$, but they aren't effectively the same problem even thought they answer the same question.
 
 Another important thing to notice is that even though the name implies a correlation to mathematical functions due to the concept of input-output being involved, the given definition also includes \textit{partial} and \textit{multi-valued} functions, that being functions for which not all inputs have a corresponding output and functions for which one input can have more outputs. For these reasons, the term \textit{functional problem} is considered to be slightly abused. In recent years, this issue was solved by the introduction of the more general term \textbf{search problems}, describing the idea of finding a valid output for the given input, better suiting the previous formal definition.
 
-To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^k$ for some $k \in \N$, describing all inputs as a sequence of bits. Since each problem could have inputs of different bit-lengths, we define search problems through the use of a \textit{sequence of relations} rather than a single relation. This also allows search problems to have different types of outputs based on the length of the inputs. 
+To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^k$ for some $k \in \N$, describing all inputs as a sequence of bits. Since each problem could have inputs of different bit-lengths, we define search problems through the use of a \textit{sequence of relations} rather than a single relation. This also allows search problems to have different types of outputs based on the length of the inputs \cite{search_problems_dt_model, rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}. 
 
-\begin{definition}[\cite{search_problems_dt_model, rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}]
-
+\begin{definition}
     A search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
 \end{definition}
 
@@ -42,12 +40,12 @@ In complexity theory, decision problems are grouped in two major categories: pro
 Similarly, in the context of search problems we define \textsf{FP}, \textit{functional} \textsf{P}, as the class of search problems solvable by an algorithm in polynomial time and \textsf{FNP}, \textit{functional} \textsf{NP}, as the class of search problems whose solutions are verifiable by an algorithm in polynomial time. 
 
 \begin{definition}
-    We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time algorithm $A_n$ such that $A_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time verifier $V_n$ such that $V_n(x,y) = \mathrm{True}$ if and only if $(x,y) \in R_n$. 
+    We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time algorithm $A_n$ such that $A_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{\mathrm{poly(n)}}$ for which $V_n(x,y,w) = \mathrm{True}$ if and only if $(x,y) \in R_n$. 
 \end{definition}
 
-An important remark to be made is that, since they are defined on two different types of problems, it doesn't hold that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, each decision problem can indeed be seen as a search problem with only two possible outputs: \textit{true} or \textit{false}. In fact, an important result shows that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$, meaning that even though search problems are generally harder than decision problems, if the latter are efficiently solvable then the other also is.
+An important remark to be made is that, since they are defined on two different types of problems, it doesn't hold that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, each decision problem can indeed be seen as a search problem with only two possible outputs: \textit{true} or \textit{false}. In fact, an important result shows that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$, meaning that even though search problems are generally harder than decision problems, if the latter are efficiently solvable then the other also is \cite{decision_vs_search, fp_vs_p}.
 
-\begin{theorem}[\cite{decision_vs_search, fp_vs_p}]
+\begin{theorem}
     $\textsf{P} = \textsf{NP}$ if and only if $\textsf{FP} = \textsf{FNP}$
 \end{theorem}
 
@@ -59,6 +57,8 @@ An important remark to be made is that, since they are defined on two different 
     For each $n \in \N$, let $L_n = \{(x,y) \mid \exists z \in \{0,1\}^{k}, k \leq n \text{ s.t. } (x,zw) \in R_n\}$, i.e. the set of pairs $(x,z)$ such that $z$ is the prefix of an outcome $zw$ for the problem $R_n$ with input $x$. It's easy to see that $L_n \in \textsf{NP}$ since each pair $(x,z)$ is certified by the string $zw$ itself and the correctness of this certificate can be polynomially verified since $R \in \textsf{FNP}$.
     
     Since $L_n \in \textsf{NP} = \textsf{P}$, we know that there is a polynomial time algorithm $\mathrm{Partial}_n$ that decides $L_n$. Thus, for each $n \in \N$, we can construct the following polynomial time algorithm $\mathrm{Solve}_n$ which directly concludes that $R \in \textsf{FP}$ and thus that $\textsf{FNP} \subseteq \textsf{FP}$.
+
+    \newpage
 
     \begin{algorithmic}
         \Function{$\mathrm{Solve}_n$}{$x$}
@@ -85,9 +85,9 @@ As discussed in the previous section, not all search problems are total, meaning
 
 For simplicity, we assume that \textit{each search problem in \textsf{FP} is also total}: since problems in \textsf{FP} are solvable in polynomial time, when a solution doesn't exist we can output a pre-chosen \say{doesn't exist} solution, making the problem total. This assumption easily implies that \textsf{FP} $\subseteq$ \textsf{TFNP} $\subseteq$ \textsf{FNP}, giving us a proper hierarchy. For obvious reasons, this assumption wouldn't work for \textsf{FNP} problems since the only way to polynomially verify that a solution doesn't exist would be to solve the problem itself and find that there is no solution, but this would mean that \textsf{FP} = \textsf{FNP} is trivially true.
 
-Another less common way to view total search problems is through the lens of \textit{polinomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. For search problems, we define the class \textsf{FcoNP} in the same way. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can both be certified and disqualified in polynomial time.
+Another less common way to view total search problems is through the lens of \textit{polinomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. For search problems, we define the class \textsf{FcoNP} in the same way. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can both be certified and disqualified in polynomial time \cite{tfnp_f_np_conp}.
 
-\begin{theorem}[\cite{tfnp_f_np_conp}]
+\begin{theorem}
     \label{tfnp_f_np_conp}
     $\mathsf{TFNP} = \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$
 \end{theorem}
@@ -105,20 +105,20 @@ One of the most studied properties of problems, either decisional or functional,
 In decision problems, this concept is easily described trough the use of many-to-one mappings, i.e. a function that maps instances of the original problem to instances of the reduced problem. 
 
 \begin{definition}
-    A decision problem $A$ is reducible to a decision problem $B$, namely $A \leq B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. If the function can be computed in polynomial time, we say that $A \leq_p B$.
+    A decision problem $A$ is many-to-one reducible to a decision problem $B$, namely $A \leq B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. If the function can be computed in polynomial time, we say that $A \leq_p B$.
 \end{definition}
 
 Just like decision problems, search problems can also be reduced into other search problems through the use of functions, even thought the definition is slightly different.
 
 \begin{definition}
-    A search problem $R = (R_n)_{n \in \N}$ is said to be reducible into a search problem $S = (S_n)_{n \in \N}$, namely $R \leq S$, if for all $n \in \N$ there are two functions $f$ and $g$ such that:
-    \[\forall x \in \{0,1\}^n \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
+    A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, namely $R \leq S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a function $f : \{0,1\}^m \to \{0,1\}^n$ and a function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
+    \[\forall x \in \{0,1\}^m \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
     In other words, the function $f$ maps inputs of $R$ into inputs of $S$, while the function $g$ maps solutions of $S$ into solutions of $R$. 
 \end{definition}
 
 Differently from decisional problems, this definition doesn't require that non-solutions of $S$ are also mapped into non-solutions of $R$. This weaker property is needed by the very own nature of search problems since any non-solution to a problem can be reduced into a non-solution of any other problem, which partially loses the whole sense of problem reduction.
 
-Even though it is generally useful, reductions play a critical role in \textbf{class completeness}, that being the property of all problems of a class to be reduced into one specific problem.
+Even though it is generally useful, reductions play a critical role in \textbf{class completeness}, that being the property of all problems of a class to be reduced into one specific problem. \improvement{State that many-to-one reductions are transitive}
 
 \begin{definition}
     A problem $B$ is said to be complete for a class $\mathcal{C}$ if $B \in \mathcal{C}$ and $\forall A \in \mathcal{C}$ it holds that $A \leq B$.
@@ -155,7 +155,7 @@ For these reasons, in the \textsf{TFNP} case the concept of completeness is stud
 
         \node (9) [right of = 7, xshift=20]{\textsf{PPAD}};
 
-        \node (10) [below of = 7]{\textsf{CLS = EOPL}};
+        \node (10) [below of = 7]{\textsf{CLS}};
 
         \node (11) [below of = 10]{\textsf{FP}};
     
@@ -180,30 +180,211 @@ For these reasons, in the \textsf{TFNP} case the concept of completeness is stud
 
 Each of the subclasses shown in the above hierarchy is characterized by a total search problem \cite{proofs_circuits_communication,tfnp_characterization}. Such search problems are actually guaranteed to be total by \textbf{simple existence principles}. In fact, we could say that many \textsf{TFNP} problems are actually described by reduction to these simple principles:
 \begin{itemize}
-    \item \textsf{PLS} (Polynomial Local Search): the class of search problems designed to model the process of finding the local optimum of a function or alteratively the class of problems whose solution is guaranteed by the \say{Every directed acyclic graph has a sink} principle. It is formally defined as the class of search problems that are polynomial-time reducible to the \textit{Sink-of-DAG problem}.
+    \item \textsf{PLS} (Polynomial Local Search): the class of search problems designed to model the process of finding the local optimum of a function or alteratively the class of problems whose solution is guaranteed by the \say{Every directed acyclic graph has a sink} principle. It is formally defined as the class of search problems that are polynomial-time reducible to the SINK-OF-DAG problem \unsure{Maybe write problem names in italics}.
     
-    \item \textsf{PPP} (Polynomial Pigeonhole Principle): the class of problems whose solution is guaranteed by the \say{Every mapping from a set of $n+1$ elements to a set of $n$ elements has a collision}. It is defined as the class of problems that are polynomial-time reducible to the \textit{Pigeonhole problem}
+    \item \textsf{PPP} (Polynomial Pigeonhole Principle): the class of problems whose solution is guaranteed by the \say{Every mapping from a set of $n+1$ elements to a set of $n$ elements has a collision} principle. It is defined as the class of problems that are polynomial-time reducible to the PIGEON problem.
     
-    \item \textsf{PPA} (Polynomial Parity Argument): the class of problems whose solution is guaranteed by the \say{Every undirected graph with an odd-degree node must have another odd-degree node} principle. It is defined as the class of problems that are polynomial-time reducible to the \textit{Leaf problem}.
+    \item \textsf{PPA} (Polynomial Parity Argument): the class of problems whose solution is guaranteed by the \say{Every undirected graph with an odd-degree node must have another odd-degree node} principle. It is defined as the class of problems that are polynomial-time reducible to the LEAF problem
     
     \item \textsf{PPADS} (Polynomial Parity Argument - Directed with Sink): the class of problems whose solution is guaranteed the \say{Every directed graph with a positively unbalanced node (out-degree > in-degree) must
-    have a negatively unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the \textit{Sink-of-Line problem}.
+    have a negatively unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the SINK-OF-LINE problem.
     
-    \item \textsf{SOPL} (Sink of Potential Line): the class of problems that are polynomial-time reducible to the \textit{End-of-Line problem}. It has been proven that $\mathsf{SOPL} = \mathsf{PLS} \cap \mathsf{PPADS}$ \cite{Further_collapses_TFNP}
+    \item \textsf{SOPL} (Sink of Potential Line): the class of problems that are polynomial-time reducible to the SINK-OF-POTENTIAL-LINE problem. It has been proven that $\mathsf{SOPL} = \mathsf{PLS} \cap \mathsf{PPADS}$ \cite{Further_collapses_TFNP}
     
-    \item \textsf{PPAD} (Polynomial Parity Argument - Directed): the class of problems whose solution is guaranteed the \say{Every directed graph with an unbalanced node must have another unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the \textit{End-of-Line problem}.
+    \item \textsf{PPAD} (Polynomial Parity Argument - Directed): the class of problems whose solution is guaranteed the \say{Every directed graph with an unbalanced node must have another unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the END-OF-LINE problem.
     
-    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the \textit{Continuous Localpoint problem}. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the \textit{End-of-Potential-Line problem}.
+    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the CONTINUOUS-LOCALPOINT problem. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the END-OF-POTENTIAL-LINE problem.
 \end{itemize}
 
-The extensive study of \textsf{TFNP} classes has been successful in capturing the complexity of many important common problems. In fact, a lot of problems from \textit{game theory} and \textit{economics} are actually reducible to \textsf{TFNP} complete problems. For example, the \textsf{NASH} problem relative to finding a Nash equilibrium of a given game has been shown to be \textsf{PPAD}-Complete, meaning that \textsf{PPAD} $\leq_p$ \textsf{NASH}.
+The extensive study of \textsf{TFNP} classes has been successful in capturing the complexity of many important common problems. In fact, a lot of problems from \textit{cryptography}, \textit{game theory} and \textit{economics} are actually reducible to \textsf{TFNP} complete problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to be \textsf{PPAD}-Complete.
 
-For these reasons, the theory of \textsf{TFNP} problems results useful even without considering its main goal, i.e. proving any separation between one of these inclusions, which would directly conclude that \textsf{FP} $\neq$ \textsf{FNP}. Clearly, by hardness of the question itself, any unconditional separation seems to be completely out of reach just like in the decisional case. However, it turns out that the \textsf{TFNP} model indeed has separations relative to \textit{oracles}, i.e. the \textbf{black-box \textsf{TFNP}} model.
+By hardness of the question itself, any unconditional separation between these subclasses seems to be completely out of reach just like in the decisional case. However, it turns out that the \textsf{TFNP} model indeed has separations relative to \textit{oracles}, i.e. the \textbf{black-box \textsf{TFNP}} model.
  
 \quad
 
-\section{The Black-box and White-box models}
+\section{White-box \textsf{TFNP}}
 
-As discussed in the previous chapter, \textsf{TFNP} subclasses are defined in terms of basic existence principle discussed in combinatorics that characterize groups of total search problems. Each \textsf{TFNP} problem can be 
+In computer science and engineering, systems and models are divided in two categories: white-box systems and black-box system. A system is said to be a \textbf{white-box} if only its inputs, its outputs and its actual internal workings are known. Contrary, a system is said to be a \textbf{black-box} if its internal workings are unknown. The idea behind a black-box model is that we only care about the result for a given input and not how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes. 
+
+Each \textsf{TFNP} problem can be analyzed through the lens of both white-box and black-box systems: in a \textbf{white-box \textsf{TFNP}} problem we're interested in how the problem gets verified (or computed if it's also in \textsf{FP}), while a \textbf{black-box \textsf{TFNP}} problem we're interested only in the verifiability (or computability) of the problem. In recent years, these two \textsf{TFNP} models have been formalized through the use of \textit{protocols} and \textit{decision trees}. In this section we will briefly discuss protocols and the white-box model, while decision trees and the black-box model will be extensively discussed in the following chapter. 
+
+A \textit{protocol} is an algorithm that generates communications between two parties, namely Alice and Bob, who cooperate in order to achieve a common objective, like computing a function.
+
+\begin{definition}[\cite{comm_compl_appl}]
+    Let $X$ be Alice's input set and let $Y$ be Bob's input set. A protocol $\pi$ is a rooted directed binary tree whose leaves are associated to outputs and internal nodes are owned by either Alice or Bob, where the owner of $v$ is noted by $\mathrm{owner}(v)$. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node $v$ is also associated to a function $g_v : Z \to \{0,1\}$, where $Z = X$ if $\mathrm{owner}(v) = \mathrm{A}$ and $Z = Y$ if $\mathrm{owner}(v) = \mathrm{B}$. When given the input $(x,y) \in X \times Y$, the protocol computes the associated function of the current node (starting from the root), proceeding on the left child if the output is 0 and on the right child if the output is 1. When a leaf is reached, the protocol returns the associated output. The output of the protocol for a given input $(x,y)$ is denoted by $\pi(x,y)$.
+\end{definition}
+
+A function $f$ is said to be computed by the protocol $\pi$ if $f = \pi$. By their own definition, protocols are also Turing complete since they are nothing more then an algorithm computed by two parties instead of one. A protocol encodes all possible messages that may be sent by the parties during any potential conversation, producing a conversation only when it is executed using a particular input. Since a protocol always returns an answer for all possible inputs, any protocol is \textit{total}.
+
+The complexity of protocols is measured in terms of their \textit{size} and \textit{depth}, that being the number of nodes of the protocol and the length of the longest directed path from the root node to a leaf. The \textbf{communication complexity} of a function $f$ is defined as the depth of the smallest protocol that computes $f$, corresponding to the minimal number of bits that must be communicated by Alice and Bob to compute $f$ for all inputs.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[circle, draw] (1)[fill=red!20] {$v_1$};
+
+        \node[circle, draw] (2) [below left of=1, xshift=-50, fill=blue!20]{$v_2$};
+        \node[circle, draw] (3) [below right of=1, xshift=50, fill=blue!20]{$v_3$};
+
+        \node[circle, draw] (4) [below left of=2, xshift=-10, fill=red!20]{$v_4$};
+        \node[circle, draw] (5) [below right of=2, xshift=10, fill=blue!20]{$v_5$};
+        \node[circle, draw] (6) [below left of=3, fill=red!20]{$v_6$};
+        \node[rectangle, draw] (7) [below right of=3]{$o_7$};
+
+        \node[rectangle, draw] (8) [below left of=4, xshift=10]{$o_1$};
+        \node[rectangle, draw] (9) [below right of=4, xshift=-10]{$o_2$};
+        \node[rectangle, draw] (10) [below left of=5, xshift=10]{$o_3$};
+        \node[rectangle, draw] (11) [below right of=5, xshift=-10]{$o_4$};
+        \node[rectangle, draw] (12) [below left of=6, xshift=10]{$o_5$};
+        \node[rectangle, draw] (13) [below right of=6, xshift=-10]{$o_6$};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (1) edge[swap, color=Green]  node{0} (2)
+            (1) edge node{1}(3)
+
+            (2) edge[swap]  node{0} (4)
+            (2) edge[color=Green]  node{1}(5)
+
+            (3) edge[swap]  node{0} (6)
+            (3) edge  node{1}(7)
+            
+            (4) edge[swap]  node{0} (8)
+            (4) edge  node{1}(9)
+
+            (5) edge[swap]  node{0} (10)
+            (5) edge[color=Green]  node{1}(11)
+
+            (6) edge[swap]  node{0} (12)
+            (6) edge  node{1}(13)
+        ;
+    \end{tikzpicture}
+
+    \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The computation, shown by the green path, for the inputs $(x,y)$ is given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$}
+\end{figure}
+
+Protocols are clearly white-boxes capable of solving search problems since every step of the computation is known, even though the way they are defined implies that for a given protocol any input will always return the same output due to them being a deterministic computation, losing the idea of an input being capable of having more solutions. However, they are still a valid way to solve search problems, making them a valid tool to model white-box \textsf{TFNP} \cite{proofs_circuits_communication, tfnp_characterization}.
+
+\begin{definition}
+    A communication search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
+\end{definition}
+
+In particular, given a \textsf{TFNP} problem $R$, we denote with $R^{cc}$ the equivalent \textsf{TFNP}$^{cc}$ problem, where \textit{cc} stands for \textit{communication complexity}.
+
+\begin{definition}
+    We define $\mathsf{FP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $\pi_n$ such that $\pi_n(x,y) = z$ if and only if $((x,y), z) \in R_n$. Likewise, we define $\mathsf{FNP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $V_n$ such that $V_n((x,y), z) = \mathrm{True}$ if and only if $((x,y), z) \in R_n$. 
+\end{definition}
+
+Additionally, the concept of reduction also applies for communication search problems, even though it requires a pre-fixed value $t$ of maximum amount of bits usable in the reduction, i.e. the maximum depth of the reduction protocol.
+
+\newpage
+
+\begin{definition}
+    A communication search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times \{0,1\}^m \times O_m$, is said to be reducible into a search problem $S = (S_n)_{n \in \N}$, namely $R \leq S$, where $S_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there are two functions $f_X, f_Y : \{0,1\}^m \to \{0,1\}^n$ and a $t$-bit protocol $g : (\{0,1\}^m \times \{0,1\}^n) \times O_n' \to O_m$ such that:
+    \[\forall (x,y) \in \{0,1\}^m \times \{0,1\}^m \;\; (f_X(x), f_Y(y), z) \in S \implies (x, y, \pi((x,y), z)) \in R\]
+    In other words, the functions $f_X,f_Y$ map inputs of $R$ into inputs of $S$, while the protocol $g$ maps solutions of $S$ into solutions of $R$. 
+\end{definition}
+
+Nonetheless, this allows us to define the \textsf{TFNP}$^{cc}$ hierarchy in the same way as the standard one, making communication complexity a valid system capable of characterizing white-box \textsf{TFNP problems}.
+
+One of the most interesting properties of communication search problems is the ability to be reduced to be characterized by a single type of search problem: the \textit{monotone Karchmer-Widgerson game}.
+
+\begin{definition}
+    Given a Boolean function $f : \{0, 1\}^n \to \{0, 1\}$, we define the Karchmer-Wigderson game of $f$, denoted with $\mathrm{KW}(f)$, as the following communication problem: given the two inputs $x$ and $y$, where $f(x) = 0$ and $f(y) = 1$, find an index \change{Add description for $[n]$ in preliminaries} $i \in [n]$ such that $x_i \neq y_i$.
+
+    If $f$ is a monotone Boolean function, meaning that given two inputs $x,y$ if $x \leq y$ then $f(x) \leq f(y)$, the monotone Karchmer-Widgerson game of $f$, denoted with $\mathrm{mKW}(f)$, finds an index $i \in [n]$ such that $x_i < y_i$.
+\end{definition}
+
+In fact, it has been proven  that any communication search problem is equivalent to the monotone KW game of some Boolean function \cite{span_programs,adventures_monotone_tfnp}.
+
+\begin{lemma}
+    For any communication search problem $R = (R_n)_{n \in \N}$, where $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, in $t$-bit \textsf{TFNP}$^{cc}$, there is a function $f$ on $2^t\abs{O_n}$ variables such that $R$ is communication equivalent to $\mathrm{mKW}(f)$ under $t$-bit mapping reductions.
+\end{lemma}
+
+This result implies that \textsf{TFNP}$^{cc}$ actually coincides with the \textbf{study of the monotone Karchmer-Widgerson game}. Moreover, in 1990 Karchmer and Widgerson \cite{kw_games} showed that the complexity of these games is equal to the complexity of Boolean circuits solving the associated function, i.e. a circuit capable of computing a the function through logic gates.
+
+\begin{definition}[\cite{comm_compl_appl}]
+    A Boolean circuit is a directed acyclic graph whose nodes, called gates, are associated with either input variables or Boolean operators. Each gate has an out-degree equal to 1 (except for the output gate who has out-degree 0) and in-degree equal to either 0 or 2. All 0 in-degree gates correspond to input variables, the negations of input variables or constant bits, while all 2 in-degree gates compute the logical AND or the logical OR of its given input variables or Boolean function. Each gate $v$ is associated with the Boolean function $f_v$ computed by it.
+\end{definition}
+
+In particular, Boolean circuits have been proven to be \textit{Turing-complete} \cite{sipser_computation}, meaning that they are capable of processing any computable function. In fact, every modern computer is actually just a bunch of Boolean circuits wired together. Moreover, Turing machines and circuits are capable of simulating each other up to a polynomial factor, so any polynomial complexity computation achievable through one can also be achieved through the other, making circuits a valid white-box system for analyzing \textsf{TFNP} problems.
+
+The complexity of Boolean circuits is measured in terms of their \textit{size} and \textit{depth}, i.e. the number of gates of the circuit and the length of the longest directed path from an input gate to the output gate. The \textbf{circuit complexity} of function $f$ is defined as the size of the smallest Boolean circuit that computes it. 
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[<-,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[main node] (1) []{$\land$};
+
+        \node[main node] (2) [below left of=1, xshift=-40]{$\land$};
+        \node[main node] (3) [below right of=1, xshift=40]{$\land$};
+
+        \node[main node] (4) [below left of=2]{$\lor$};
+        \node[main node] (5) [below left of=4]{$\land$};
+        \node[main node] (6) [below right of=4]{$\land$};
+        \node[main node] (7) [below of=5]{$x_1$};
+        \node[main node] (8) [below of=6]{$\overline{x_1}$};
+
+        \node[main node] (9) [below left of=3]{$\lor$};
+        \node[main node] (10) [below left of=9]{$\land$};
+        \node[main node] (11) [below right of=9]{$\land$};
+
+        \node[main node] (12) [below of=10]{$x_2$};
+        \node[main node] (13) [below of=11]{$\overline{x_2}$};
+
+        \node[] (14) [below right of=3, xshift=50]{};
+        \node[] (15) [below left of=14]{};
+        \node[] (16) [below right of=14]{};
+
+        \node[main node] (17) [below of=15, yshift=8]{$x_3$};
+        \node[main node] (18) [below of=16, yshift=8]{$\overline{x_3}$};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (1) edge (2)
+            (1) edge (3)
+
+            (2) edge (4) 
+            (2) edge (17)
+
+            (3) edge (9)
+            (3) edge (18)
+
+            (4) edge (5)
+            (4) edge (6)
+
+            (5) edge (7)
+            (5) edge (13)
+
+            (6) edge (8)
+            (6) edge (12)
+
+            (10) edge (7)
+            (10) edge (12)
+
+            (11) edge (8)
+            (11) edge (13)
+
+            (9) edge (10)
+            (9) edge (11)
+
+        ;
+    \end{tikzpicture}
+
+    \caption{A Boolean circuit of size 15 and depth 4 computing $x_1 \oplus x_2 \oplus x_3$. \\The top gate is the output gate.}
+\end{figure}
+
+\begin{theorem}
+    Given a function $f : \{0, 1\}^n \to \{0, 1\}$, there exists a circuit of depth d that computes $f$ if and only if there exists a protocol of depth $d$ that solves $\mathrm{KW}(f)$. Moreover, if $f$ is monotone, the circuit is monotone and the protocol solves $\mathrm{mKW}(f)$
+
+    \change{Should be proven?}
+\end{theorem}
+
+With this result, we conclude that \textsf{TFNP}$^{cc}$ can be described in three ways: the study of communication search problems, the study of the monotone Karchmer-Widgerson game and the study of monotone Boolean circuits. This further extends the well-known connections between search problems, communication complexity and circuit complexity, establishing that any result obtained in one of these fields can be in some way extended to the others. 
+
+\improvement{Add TFNP$^{cc}$ hierarchy relative to circuits}
+
 
 \cleardoublepage

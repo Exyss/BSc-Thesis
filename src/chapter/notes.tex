@@ -1,33 +1,8 @@
-\hypersetup{colorlinks=true, linkcolor=blue, citecolor=red}
 
 
 \chapter{Notes} \label{chap:notes}
 
 The following definitions and proofs are a reformulation of the results shown in \cite{tfnp_characterization, separations_proof_complexity,proofs_circuits_communication}
-
-\begin{definition}
-    A total (query) search problem $R$ is a sequence of relations $R = \{R_n : R_n \subseteq \{0,1\}^n \times O_n\}$, one for each $n \in \mathbb{N}$, where each $O_n$ is a finite set called outcome set, such that $\forall x \in \{0,1\}^n$ there is an $o \in O_n$ for which $(x,o) \in R_n$.
-
-    A total search problem $R$ is in $\TFNP^{dt}$ if its solutions are verifiable through decision trees: for each $i \in O$ there is a decision tree $T_j : \{0,1\}^n \to \{0,1\}$ with $\mathrm{poly(\log n)}$-depth such that $T_j(x) = 1 \iff (x,j) \in R_n$.
-\end{definition}
-
-While total search problems are formally defined as sequences $R = \{R_1, \ldots, R_n\}$, it will often make sense to speak of an individual search problem $R_i$ in the sequence. Therefore, we will slightly abuse the notation and also call $R_i$ a total search problem.
-
-\begin{definition}
-    Given $R \subseteq \{0,1\}^n \times O$ and $S \subseteq \{0,1\}^m \times O'$, a decision tree reduction from $R$ to $S$ is defined by two sets of decision trees $\{T_i \mid T_i : \{0,1\}^n \to \{0,1\}\}$ and $\{T^o_j \mid T^o_j : \{0,1\}^n \to O\}$, for each $i \in [m]$ and each $j \in O'$, such that
-    \[\forall x \in \{0,1\}^n \;\; ((T_1(x), \ldots, T_m(x)), j) \in S \implies (x, T'_o(x)) \in R\]
-
-    \underline{Note}: the $o$ in the decision trees $T^o_j$ is purely a notation. 
-\end{definition}
-
-To give an easier intuition of a decision tree reduction, the decision trees $T_i$ map inputs from $Q$ to $R$, while the decision trees $T'_o$ map solutions to $R$ back into solutions of $Q$. The \textit{size} $s$ of the reduction is the number of input bits to $S$, meaning that $s = m$, while the \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction
-\[d := \max(\{D(T_i) : i \in [m]\} \cup \{D(T'_o) : o \in O_m\})\]
-
-Finally, we define the \textit{complexity} of the reduction as $\log s + d$. Moreover, we denote as $R^{dt}(S)$ the minimum complexity of any decision tree reduction from $R$ to $S$. Using this definition, we can define complexity classes of total query search problems via decision tree reductions. Given a total query search problem $S = (S_n)$, we define the subclass of problems reducible to $S$ as:
-\[S^{dt} := \{R : S^{dt}(R) = \mathrm{poly}(\log n)\}\]
-where $R = (R_n)$.
-
-Any total query search problem  with solution verifiers $T_o$ for each $o \in O$ can be \textit{encoded} into a canonical unsatisfiable $\CNF$ formula. 
 
 \begin{proposition}
     Given a total query search problem $R \subseteq \{0,1\}^n \times O$, there exists an unsatisfiable $\CNF$ formula $F$ defined on $\abs{O}$-many variables such that $R = \Search(F)$. This formula is called the canonical $\CNF$ encoding of $R$.
