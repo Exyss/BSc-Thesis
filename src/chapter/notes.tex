@@ -2,52 +2,17 @@
 
 \chapter{Notes} \label{chap:notes}
 
-The following definitions and proofs are a reformulation of the results shown in \cite{tfnp_characterization, separations_proof_complexity,proofs_circuits_communication}
-
-\begin{proposition}
-    Given a total query search problem $R \subseteq \{0,1\}^n \times O$, there exists an unsatisfiable $\CNF$ formula $F$ defined on $\abs{O}$-many variables such that $R = \Search(F)$. This formula is called the canonical $\CNF$ encoding of $R$.
-\end{proposition}
-
-\begin{proof}
-    Since $R \in \TFNP^{dt}$, for each $o \in O$ there is a $\mathrm{poly}(\log n)$-depth decision tree $T_o$ that verifies $R$. Then, for each $T_o$, let $C_o$ be the clause obtained by taking the disjunction over the conjunction of the literals along each of the accepting paths in $T_o$, meaning that $C_o$ is a $\mathsf{DNF}$ and, by De Morgan's theorem, that $\lnot{C_o}$ is a $\CNF$.
-
-    Let $F := \bigwedge\limits_{o \in O} \lnot{C_o}$. Since each $R$ is a total search problem, for each input there is a valid output, implying that at least one tree $T_o$ will have an accepting path. Hence, by definition of $C_o$, we get that $\lnot{C_o} = 0$, implying that there will always be a false clause in $F$ and thus that $F$ is an unsatisfiable $\CNF$.
-    
-    concluding that:
-    \[(x,o) \in R \iff T_o(x) = 1 \iff \lnot{C_o} = 0 \iff (x,o) \in \Search(F)\]
-\end{proof}
-
-This result implies that black-box $\TFNP$ is \textit{exactly} the study of the false clause search problem. Then, instead of studying a total search problem $R$, it's sufficient to study the search problem $\Search(F)$ associated with the canonical $\CNF$ encoding $F$ of $R$.
-
-Given a proof system $P$ and an unsatisfiable $\CNF$ formula $F$, we define the \textit{complexity required by $P$ to prove $F$}, denoted with $P(F)$, as:
-\[P(F) := \min_{\Pi \text{ $P$-proof of $F$}}(\deg(\Pi) + \log \mathrm{size}(\Pi))\]
-where $\deg$ is the \textit{degree} of the proof, which is a measure defined by the proof system itself. For example, for the Resolution proof system the degree is defined as the \textit{width} of the proof, which is the maximum number of literals in any clause in $\Pi$.
-
-\begin{definition}
-    Given $R \in \TFNP^{dt}$, we say that $R$ \textit{characterizes} and a proof system $P$ (and that $P$ \textit{characterizes} $R$) if it holds that $R^{dt} = \{\Search(F) : P(F) = \mathrm{poly}(\log n)\}$.
-\end{definition}
-
-Many of such characterizations hold in the following stronger sense. In particular, for any of the common "natural" proof systems $P$, if $R$ is the problem that characterizes $P$ then for any unsatisfiable $\CNF$ $F$ it holds that $P(F) = \theta(R^{dt}(\Search(F)))$.
-
-\begin{definition}
-    Given a proof system $P$, the reflection principle $\mathrm{Ref}_P$ states that $P$-proofs are sound: if $\Pi$ is a $P$-proof of a $\CNF$ formula $H$ then $H$ must be unsatisfiable for any assignment $\alpha$. Formally, we sat that:
-    \[\mathrm{Proof}_P(H, \Pi) \implies \mathrm{Unsat}(H, \alpha)\] 
-\end{definition}
-
-
-\newpage
-
-Tree-like resolutions for an unsatisfiable $\CNF$ formula are strictly connected to the decision trees that solve its associated search problem. In particular, it can be proven that the smallest tree-like refutation has the exact same structure of the smallest decision tree. 
+Tree-like resolutions for an unsatisfiable CNF formula are strictly connected to the decision trees that solve its associated search problem. In particular, it can be proven that the smallest tree-like refutation has the exact same structure of the smallest decision tree. 
 
 \begin{lemma} \label{lem:treeres_dt}
     \cite{treelike_res_size}
-    Let $F$ be an unsatisfiable $\CNF$ formula. If there is a tree-like refutation of $F$ with structure $T$, there also exists a decision tree with structure $T$ that solves $\Search(F)$
+    Let $F$ be an unsatisfiable CNF formula. If there is a tree-like refutation of $F$ with structure $T$, there also exists a decision tree with structure $T$ that solves $\mathrm{Search}(F)$
 \end{lemma}
 
 \begin{proof}
     We procede by induction on the size $s$ of the refutation of $F$.
 
-    Let $F = C_1 \land \ldots \land C_m$. If $s = 1$, then the refutation is made up of only one step that ends with the empty clause, implying that $\exists i \in [m]$ such that $F = C_i = \bot$. Hence, $\Search(F)$ can be solved by the decision tree made of only one vertex labeled with $i$.
+    Let $F = C_1 \land \ldots \land C_m$. If $s = 1$, then the refutation is made up of only one step that ends with the empty clause, implying that $\exists i \in [m]$ such that $F = C_i = \bot$. Hence, $\mathrm{Search}(F)$ can be solved by the decision tree made of only one vertex labeled with $i$.
 
     We now assume that every formula with a tree-like refutation with a structure of size $s$ there exists a decision tree with the same structure that solves the search problem associated with the formula.
 
@@ -55,9 +20,9 @@ Tree-like resolutions for an unsatisfiable $\CNF$ formula are strictly connected
 
     Consider now the formulas $F{\upharpoonright_{x=0}}$ and $F{\upharpoonright_{x=1}}$, respectively corresponding the formula $F$ with the value $0$ or $1$ assigned to $x$. It's easy to see that the subtrees $T_0$ and $T_1$ are valid refutations of the formulas $F{\upharpoonright_{x=0}}$ and $F{\upharpoonright_{x=1}}$: if $b = 0$, then $x$ evaluates to $0$, otherwise if $b = 1$ then $\lnot{x}$ evaluates to 0.
 
-    Since $T_0$ and $T_1$ have size $s-1$, by inductive hypothesis there exist two decision tree with structure $T_0$ and $T_1$ that solve $\Search(F{\upharpoonright_{x=0}})$ and $\Search(F{\upharpoonright_{x=1}})$.
+    Since $T_0$ and $T_1$ have size $s-1$, by inductive hypothesis there exist two decision tree with structure $T_0$ and $T_1$ that solve $\mathrm{Search}(F{\upharpoonright_{x=0}})$ and $\mathrm{Search}(F{\upharpoonright_{x=1}})$.
 
-    Finally, the search problem $\Search(F)$ can be solved by the decision tree that queries $x$ and proceeds with the decision tree $T_b$ based on the value $b \in \{0,1\}$ such that $x = b$.
+    Finally, the search problem $\mathrm{Search}(F)$ can be solved by the decision tree that queries $x$ and proceeds with the decision tree $T_b$ based on the value $b \in \{0,1\}$ such that $x = b$.
 
 \end{proof}
 
@@ -67,7 +32,7 @@ Given two rooted trees $T$ and $T'$, we say that $T$ is embeddable in $T'$ if th
 
 \begin{lemma} \label{lem:dt_treeres}
     \cite{treelike_res_size,search_problems_dt_model}
-    Let $F$ be an unsatisfiable $\CNF$ formula. If there is a decision tree with structure $T$ that solves $\Search(F)$, there also exists a tree-like refutation of $F$ with structure $T'$ such that $T'$ is embeddable in $T$.
+    Let $F$ be an unsatisfiable CNF formula. If there is a decision tree with structure $T$ that solves $\mathrm{Search}(F)$, there also exists a tree-like refutation of $F$ with structure $T'$ such that $T'$ is embeddable in $T$.
 \end{lemma}
 
 \begin{proof}
@@ -89,13 +54,13 @@ Given two rooted trees $T$ and $T'$, we say that $T$ is embeddable in $T'$ if th
 \end{proof}
 
 \begin{theorem}
-Let $F$ be an unsatisfiable $\CNF$ formula. The smallest tree-like refutation of $F$ has size $s$ and depth $d$ if and only if the smallest decision tree solving $\Search(F)$ has size $s$ and depth $d$.
+Let $F$ be an unsatisfiable CNF formula. The smallest tree-like refutation of $F$ has size $s$ and depth $d$ if and only if the smallest decision tree solving $\mathrm{Search}(F)$ has size $s$ and depth $d$.
 \end{theorem}
 
 \begin{proof}
-    Let $s$ and $d$ be the size and depth of the smallest tree-like refutation of $F$. Likewise, let $x$ and $y$ be the size and depth of the smallest decision tree solving $\Search(F)$.
+    Let $s$ and $d$ be the size and depth of the smallest tree-like refutation of $F$. Likewise, let $x$ and $y$ be the size and depth of the smallest decision tree solving $\mathrm{Search}(F)$.
 
-    Then, by \Cref{lem:treeres_dt}, we know that there exists a decision tree that solved $\Search(F)$ with the same structure of the smallest refutation. Let $\alpha$ and $\beta$ be the size and depth of this decision tree. It's easy to see that $s = \alpha \geq x$ and $d = \beta \geq y$.
+    Then, by \Cref{lem:treeres_dt}, we know that there exists a decision tree that solved $\mathrm{Search}(F)$ with the same structure of the smallest refutation. Let $\alpha$ and $\beta$ be the size and depth of this decision tree. It's easy to see that $s = \alpha \geq x$ and $d = \beta \geq y$.
 
     Viceversa, by \Cref{lem:dt_treeres}, we know that there exists a tree-like refutation of $F$ such that its structure is embeddable in the one of the smallest decision tree. Let $\gamma$ and $\beta$ be the size and depth of this tree-like refutation. Since the latter is embedded in the smallest decision tree, it's structure must be smaller or equal. Hence, it's easy to see that $x \geq \gamma \geq s$ and $y \geq \delta \geq d$. Thus, we can conclude that $s = x$ and $d = y$.
 
@@ -279,7 +244,7 @@ Hilbert's Nullstellensatz can be used to define the following proof system:
     The set of polynomials $P = \{p_1, \ldots, p_n\}$ is called the axiom set and the set $\pi = \{g_1, \ldots, g_n, h_1, \ldots, h_m\}$ is called proof of $P$.
 \end{definition}
 
-By also adding the polynomial equations $x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0$ to the set of axioms, the $\NS$ proof system is sound and complete for the set of unsatisfiable $\CNF$ formulas. Thus, in general, given the set of axioms $P = \{p_1 = 0, \ldots, p_m = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$, we say that $\pi = \{g_1, \ldots, g_m, h_1, \ldots, h_n\}$ is a $\CNF$ proof of $P$ if:
+By also adding the polynomial equations $x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0$ to the set of axioms, the $\NS$ proof system is sound and complete for the set of unsatisfiable CNF formulas. Thus, in general, given the set of axioms $P = \{p_1 = 0, \ldots, p_m = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$, we say that $\pi = \{g_1, \ldots, g_m, h_1, \ldots, h_n\}$ is a CNF proof of $P$ if:
 \[\sum_{i = 1}^m g_i p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = 1\]
 
 For any proof $\pi = \{g_1, \ldots, g_n, h_1, \ldots, h_m\}$ of the axioms $P = \{p_1, \ldots, p_n\}$, we define the \textit{degree of $\pi$} as:
@@ -377,7 +342,7 @@ If $P$ has a proof $\pi$ of degree $\deg(\pi) = d$ then we say that $P \vdash^\N
 \end{definition}
 
 \begin{theorem}
-    Let $F$ be an unsatisfiable $\CNF$. If $T$ is $\ResP$ refutation of $F$ of size $s$ then there is $\NS$ refutation of $F$ of degree $O(\log(s))$.
+    Let $F$ be an unsatisfiable CNF. If $T$ is $\ResP$ refutation of $F$ of size $s$ then there is $\NS$ refutation of $F$ of degree $O(\log(s))$.
 \end{theorem}
 
 \begin{proof}
@@ -397,7 +362,7 @@ If $P$ has a proof $\pi$ of degree $\deg(\pi) = d$ then we say that $P \vdash^\N
 
 \section{Treelike $\ResP$ and Nullstellensatz}
 
-\begin{definition}[$\FNS$ encoding of $\Res$]
+\begin{definition}[$\FNS$ encoding of $\Res(\oplus)$]
     Given a $\ResP$ linear clause $C = \bigvee\limits_{i = 0}^k (\ell_i = \alpha_i)$, the $\FNS$ encoding of $C$ is defined as $\enc_{\oplus}(C) := \prod\limits_{i = 0}^k (\alpha - \ell_i)$.
     
     In general, a $\ResP$ formula $F = C_1 \land \ldots \land C_m$ defined on the variables $x_1, \ldots, x_n$ gets encoded in $\FNS$ as the set of axioms $P_F = \{\enc_{\oplus}(C_i) = 0 \mid 1 \leq i \leq m\} \cup \{x_j^2-x_j = 0 \mid 1 \leq j \leq n\}$.

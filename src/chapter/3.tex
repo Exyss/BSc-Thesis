@@ -40,7 +40,7 @@ In complexity theory, decision problems are grouped in two major categories: pro
 Similarly, in the context of search problems we define \textsf{FP}, \textit{functional} \textsf{P}, as the class of search problems solvable by an algorithm in polynomial time and \textsf{FNP}, \textit{functional} \textsf{NP}, as the class of search problems whose solutions are verifiable by an algorithm in polynomial time. 
 
 \begin{definition}
-    We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time algorithm $A_n$ such that $A_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{\mathrm{poly(n)}}$ for which $V_n(x,y,w) = \mathrm{True}$ if and only if $(x,y) \in R_n$. 
+    We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time algorithm $A_n$ such that $A_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{\mathrm{poly(n)}}$ for which $V_n(x,y,w) = 1$ if and only if $(x,y) \in R_n$. 
 \end{definition}
 
 An important remark to be made is that, since they are defined on two different types of problems, it doesn't hold that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, each decision problem can indeed be seen as a search problem with only two possible outputs: \textit{true} or \textit{false}. In fact, an important result shows that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$, meaning that even though search problems are generally harder than decision problems, if the latter are efficiently solvable then the other also is \cite{decision_vs_search, fp_vs_p}.
@@ -130,7 +130,7 @@ Moreover, every problem inside the class \textsf{P} is \textsf{P}-Complete, whil
 
 In the search problem world, the functional versions of each of these problems, namely $\mathrm{FSAT}$, $\mathrm{FCLIQUE}$ and $\mathrm{FCOLORING}$ are also $\textsf{FNP}$-complete. In fact, the functional versions can be used to prove that the decisional version is complete and vice versa. However, it is not known if there is a $\textsf{FNP}$-complete problem that is also total. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus there is no output assignment that satisfies them.
 
-For these reasons, in the \textsf{TFNP} case the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems who have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}. In other words, given a \textsf{TFNP} problem $R = (R_n)_{n \in \N}$, we define the subclass $R$ as the set of \textsf{TFNP} problems reducible to $R$. Unexpectedly, the majority of \textsf{TFNP} problems can actually be characterized with very subclasses.
+For these reasons, in the \textsf{TFNP} case the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems who have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}. In other words, given a \textsf{TFNP} problem $R = (R_n)_{n \in \N}$, we define the subclass $R$ as the set of \textsf{TFNP} problems \textit{efficiently} reducible to $R$. Unexpectedly, the majority of \textsf{TFNP} problems can actually be characterized with very subclasses.
 
 \begin{figure}[H]
     \centering
@@ -178,7 +178,7 @@ For these reasons, in the \textsf{TFNP} case the concept of completeness is stud
     \caption{Hierarchy of the most commonly defined total search problem subclasses. \\ An arrow from class $A$ to class $B$ means that $A \subseteq B$.}
 \end{figure}
 
-Each of the subclasses shown in the above hierarchy is characterized by a total search problem \cite{proofs_circuits_communication,tfnp_characterization}. Such search problems are actually guaranteed to be total by \textbf{simple existence principles}. In fact, we could say that many \textsf{TFNP} problems are actually described by reduction to these simple principles:
+Each of the subclasses shown in the above hierarchy is characterized by a total search problem \cite{proofs_circuits_communication,tfnp_characterization}. Such search problems are actually guaranteed to be total by \textbf{simple existence principles}. In fact, we could say that many \textsf{TFNP} problems are actually described by efficient reduction to these simple principles:
 \begin{itemize}
     \item \textsf{PLS} (Polynomial Local Search): the class of search problems designed to model the process of finding the local optimum of a function or alteratively the class of problems whose solution is guaranteed by the \say{Every directed acyclic graph has a sink} principle. It is formally defined as the class of search problems that are polynomial-time reducible to the SINK-OF-DAG problem \unsure{Maybe write problem names in italics}.
     
@@ -200,8 +200,6 @@ The extensive study of \textsf{TFNP} classes has been successful in capturing th
 
 By hardness of the question itself, any unconditional separation between these subclasses seems to be completely out of reach just like in the decisional case. However, it turns out that the \textsf{TFNP} model indeed has separations relative to \textit{oracles}, i.e. the \textbf{black-box \textsf{TFNP}} model.
  
-\quad
-
 \section{White-box \textsf{TFNP}}
 
 In computer science and engineering, systems and models are divided in two categories: white-box systems and black-box system. A system is said to be a \textbf{white-box} if only its inputs, its outputs and its actual internal workings are known. Contrary, a system is said to be a \textbf{black-box} if its internal workings are unknown. The idea behind a black-box model is that we only care about the result for a given input and not how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes. 
@@ -273,7 +271,7 @@ Protocols are clearly white-boxes capable of solving search problems since every
 In particular, given a \textsf{TFNP} problem $R$, we denote with $R^{cc}$ the equivalent \textsf{TFNP}$^{cc}$ problem, where \textit{cc} stands for \textit{communication complexity}.
 
 \begin{definition}
-    We define $\mathsf{FP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $\pi_n$ such that $\pi_n(x,y) = z$ if and only if $((x,y), z) \in R_n$. Likewise, we define $\mathsf{FNP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $V_n$ such that $V_n((x,y), z) = \mathrm{True}$ if and only if $((x,y), z) \in R_n$. 
+    We define $\mathsf{FP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $\pi_n$ such that $\pi_n(x,y) = z$ if and only if $((x,y), z) \in R_n$. Likewise, we define $\mathsf{FNP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $V_n$ such that $V_n((x,y), z) = 1$ if and only if $((x,y), z) \in R_n$. 
 \end{definition}
 
 Additionally, the concept of reduction also applies for communication search problems, even though it requires a pre-fixed value $t$ of maximum amount of bits usable in the reduction, i.e. the maximum depth of the reduction protocol.

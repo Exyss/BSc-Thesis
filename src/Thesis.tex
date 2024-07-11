@@ -105,15 +105,15 @@
 
 % ================== CUSTOM ENVIRONMENTS ==================
 
-\newtheorem{lemma}{Lemma}
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}{Proposition}
-\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
 
 \theoremstyle{definition}
 \newtheorem{claimlemma}{Claim}[lemma]
 \newtheorem{claimtheorem}{Claim}[theorem]
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[chapter]
 
 % ================== CUSTOM MACROS ==================
 
@@ -124,9 +124,8 @@
 \newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
 \newcommand{\abk}[1]{\left\langle#1\right\rangle}
 
-\newcommand{\CNF}{\mathsf{CNF}\xspace}
-\newcommand{\TFNP}{\mathsf{TFNP}\xspace}
-\newcommand{\Search}{\mathsf{Search}\xspace}
+\newcommand{\TFNP}{\textsf{TFNP}\xspace}
+\newcommand{\TFNPdt}{\mathsf{TFNP}^{dt}\xspace}
 
 \newcommand{\N}{\mathbb{N}}
 \renewcommand{\P}{\mathbb{P}}
@@ -157,7 +156,7 @@
 }
 % ================== ABSTRACT ==================
 
-\input{./chapter/abstract}
+% \input{./chapter/abstract}
 
 \cleardoublepage
 
