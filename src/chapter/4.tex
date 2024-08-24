@@ -123,7 +123,7 @@ It's easy to see that any CNF formula gives rise to an associated search problem
 
 In particular, when $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is clearly a \textit{total search problem} since for any input assignment there will always be an unsatisfied clause. In a similar fashion, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$.
 
-Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, denoted with $D_T$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. We notice that, by De Morgan's theorem, $\lnot{D_T}$ is a CNF.
+Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, denoted with $D_T$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. We notice that, by De Morgan's theorem, $\vnot{D_T}$ is a CNF.
 
 \begin{proposition}
     \label{Rdt = Search(F)}
@@ -131,8 +131,8 @@ Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading 
 \end{proposition}
 
 \begin{proof}
-    Since $R = (R_n)_{n \in \N} \in \TFNP^{dt}$, for each $y \in O_n$ there is a $\mathrm{polylog}(n)$-depth decision tree $T_y$ that verifies $R_n$. Consider the CNF $F_n := \bigwedge\limits_{y \in O_n} \lnot{D_{T_y}}$. Since $R$ is a total search problem, for each input $x$ there is a valid output, implying that at least one tree $T_y$ will have an accepting path, meaning that $D_{T_y}(x) = 1$ and therefore $\lnot{D_{T_y}}(x) = 0$, concluding that $F_n$ is unsatisfiable. Moreover, this formulation also concludes that:
-    \[(x,y) \in R_n \iff T_y(x) = 1 \iff \lnot{D_{T_y}}(x) = 0 \iff (x,y) \in \mathrm{Search}(F_n)\]
+    Since $R = (R_n)_{n \in \N} \in \TFNP^{dt}$, for each $y \in O_n$ there is a $\mathrm{polylog}(n)$-depth decision tree $T_y$ that verifies $R_n$. Consider the CNF $F_n := \bigwedge\limits_{y \in O_n} \vnot{D_{T_y}}$. Since $R$ is a total search problem, for each input $x$ there is a valid output, implying that at least one tree $T_y$ will have an accepting path, meaning that $D_{T_y}(x) = 1$ and therefore $\vnot{D_{T_y}}(x) = 0$, concluding that $F_n$ is unsatisfiable. Moreover, this formulation also concludes that:
+    \[(x,y) \in R_n \iff T_y(x) = 1 \iff \vnot{D_{T_y}}(x) = 0 \iff (x,y) \in \mathrm{Search}(F_n)\]
     and thus that $R_n = \mathrm{Search}(F_n)$.
 
 \end{proof}

@@ -16,9 +16,9 @@ Tree-like resolutions for an unsatisfiable CNF formula are strictly connected to
 
     We now assume that every formula with a tree-like refutation with a structure of size $s$ there exists a decision tree with the same structure that solves the search problem associated with the formula.
 
-    Suppose now that the size $s$ of the refutation is bigger than 1. Let $x$ be the last variable resolved by the refutation and let $T_0$ and $T_1$ be the subtrees of $T$ such that $x$ is the root of $T_0$ and $\lnot{x}$ is the root of $T_1$.
+    Suppose now that the size $s$ of the refutation is bigger than 1. Let $x$ be the last variable resolved by the refutation and let $T_0$ and $T_1$ be the subtrees of $T$ such that $x$ is the root of $T_0$ and $\vnot{x}$ is the root of $T_1$.
 
-    Consider now the formulas $F{\upharpoonright_{x=0}}$ and $F{\upharpoonright_{x=1}}$, respectively corresponding the formula $F$ with the value $0$ or $1$ assigned to $x$. It's easy to see that the subtrees $T_0$ and $T_1$ are valid refutations of the formulas $F{\upharpoonright_{x=0}}$ and $F{\upharpoonright_{x=1}}$: if $b = 0$, then $x$ evaluates to $0$, otherwise if $b = 1$ then $\lnot{x}$ evaluates to 0.
+    Consider now the formulas $F{\upharpoonright_{x=0}}$ and $F{\upharpoonright_{x=1}}$, respectively corresponding the formula $F$ with the value $0$ or $1$ assigned to $x$. It's easy to see that the subtrees $T_0$ and $T_1$ are valid refutations of the formulas $F{\upharpoonright_{x=0}}$ and $F{\upharpoonright_{x=1}}$: if $b = 0$, then $x$ evaluates to $0$, otherwise if $b = 1$ then $\vnot{x}$ evaluates to 0.
 
     Since $T_0$ and $T_1$ have size $s-1$, by inductive hypothesis there exist two decision tree with structure $T_0$ and $T_1$ that solve $\mathrm{Search}(F{\upharpoonright_{x=0}})$ and $\mathrm{Search}(F{\upharpoonright_{x=1}})$.
 
@@ -43,11 +43,11 @@ Given two rooted trees $T$ and $T'$, we say that $T$ is embeddable in $T'$ if th
 
     Consider now a vertex $v$ that isn't a leaf. Let $x$ be the variable that labels $v$ and let $u_0, u_1$ be the vertices such that the edge $(v, u_0)$ is taken if $x = 0$ and the edge $(v, u_1)$ is taken if $x = 1$.  By induction, assume that $u_0$ and $u_1$ have already been associated with the clauses $C_0$ and $C_1$.
 
-    By way of contradiction, suppose that $C_0$ contains the literal $\lnot{x}$. Then, since in a decision tree each variable can be queried only once in every path, there will always be an input with $x = 0$ that reaches $v$. Since $x = 0$ and since $C_0$ contains $\lnot{x}$, this input would satisfy $C_0$, contradicting the fact that $C_0$ was associated to $u_0$ in a way that it is falsified by every input.
+    By way of contradiction, suppose that $C_0$ contains the literal $\vnot{x}$. Then, since in a decision tree each variable can be queried only once in every path, there will always be an input with $x = 0$ that reaches $v$. Since $x = 0$ and since $C_0$ contains $\vnot{x}$, this input would satisfy $C_0$, contradicting the fact that $C_0$ was associated to $u_0$ in a way that it is falsified by every input.
 
-    Thus, the only possibility is that $C_0$ can't contain the literal $\lnot{x}$. Similarly, we can show that $C_1$ can't contain the literal $x$. This leaves us with only two possibilities: either $C_0 = x \lor \alpha$ and $C_1 = \lnot{x} \lor \beta$ or one of $C_0, C_1$ doesn't contain $x, \lnot{x}$.
+    Thus, the only possibility is that $C_0$ can't contain the literal $\vnot{x}$. Similarly, we can show that $C_1$ can't contain the literal $x$. This leaves us with only two possibilities: either $C_0 = x \lor \alpha$ and $C_1 = \vnot{x} \lor \beta$ or one of $C_0, C_1$ doesn't contain $x, \vnot{x}$.
 
-    In the first case, we can simply associate to $v$ the clause $C = \alpha \lor \beta$.  In the second case, we associate to $v$ the clause that doesn't contain $x, \lnot{x}$ (chose any of them if both clauses do not contain $x, \lnot{x}$).
+    In the first case, we can simply associate to $v$ the clause $C = \alpha \lor \beta$.  In the second case, we associate to $v$ the clause that doesn't contain $x, \vnot{x}$ (chose any of them if both clauses do not contain $x, \vnot{x}$).
 
     In particular, we notice that the first case directly emulates the resolution rule, while the second case essentially represent "redundant steps". By "skipping" these redundant steps, we can obtain a tree $T'$ that is embeddable in $T$ and that contains only nodes on which the first case was applied. Finally, it's easy to deduce that the root node of $T'$ will always be associated with the empty clause $\bot$, concluding that $T'$ is the structure of a tree-like refutation of $F$.
 
@@ -77,21 +77,21 @@ Let $F$ be an unsatisfiable CNF formula. The smallest tree-like refutation of $F
     \node (1) []{$\bot$};
     
     \node (2) at ($(1)+(-2,1.75)$){};
-    \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
+    \node (3) at ($(1)+(2,1.75)$){$\vnot{y}$};
 
     \node (4) [above left of=2]{};
     \node (5) [above right of=2]{};
 
-    \node (6) [above of=3]{$\lnot{y} \lor x$};
-    \node (7) [right of=6]{$\lnot{x}$};
+    \node (6) [above of=3]{$\vnot{y} \lor x$};
+    \node (7) [right of=6]{$\vnot{x}$};
     
-    \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
-    \node (9) [above right of=6]{$z \lor \lnot{x}$};
+    \node (8) [above left of=6]{$x \lor \vnot{y} \lor z$};
+    \node (9) [above right of=6]{$z \lor \vnot{x}$};
 
-    \node (11) [right of=9]{$\lnot{z}$};
+    \node (11) [right of=9]{$\vnot{z}$};
     \node (12) [above left of=2]{$y$};
 
-    \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
+    \node (14) at ($(8)+(-2.4,0)$){$y \lor \vnot{z}$};
     \node (15) [left of=14]{$y \lor z$};
 
     \path[every node/.style={font=\sffamily\small}]
@@ -124,19 +124,19 @@ Let $F$ be an unsatisfiable CNF formula. The smallest tree-like refutation of $F
     \node (1) []{$\bot$};
     
     \node (2) at ($(1)+(-2,1.75)$){$y$};
-    \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
+    \node (3) at ($(1)+(2,1.75)$){$\vnot{y}$};
 
     \node (4) [above left of=2]{};
     \node (5) [above right of=2]{};
 
-    \node (6) [above of=3]{$\lnot{y} \lor z$};
+    \node (6) [above of=3]{$\vnot{y} \lor z$};
     
-    \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
-    \node (9) [above right of=6]{$z \lor \lnot{x}$};
+    \node (8) [above left of=6]{$x \lor \vnot{y} \lor z$};
+    \node (9) [above right of=6]{$z \lor \vnot{x}$};
 
-    \node (11) [right of=9]{$\lnot{z}$};
+    \node (11) [right of=9]{$\vnot{z}$};
 
-    \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
+    \node (14) at ($(8)+(-2.4,0)$){$y \lor \vnot{z}$};
     \node (15) [left of=14]{$y \lor z$};
 
     \path[every node/.style={font=\sffamily\small}]
@@ -172,12 +172,12 @@ Let $F$ be an unsatisfiable CNF formula. The smallest tree-like refutation of $F
 
     \node (6) [below of=3, circle, draw]{$x$};
     
-    \node (8) [below left of=6, rectangle, draw]{$x \lor \lnot{y} \lor z$};
-    \node (9) [below right of=6, rectangle, draw]{$z \lor \lnot{x}$};
+    \node (8) [below left of=6, rectangle, draw]{$x \lor \vnot{y} \lor z$};
+    \node (9) [below right of=6, rectangle, draw]{$z \lor \vnot{x}$};
 
-    \node (11) [right of=9, rectangle, draw]{$\lnot{z}$};
+    \node (11) [right of=9, rectangle, draw]{$\vnot{z}$};
 
-    \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \lnot{z}$};
+    \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \vnot{z}$};
     \node (15) [left of=14, rectangle, draw]{$y \lor z$};
 
     \path[every node/.style={font=\sffamily\small}]
