@@ -3,47 +3,55 @@
 
 \section{Decision vs. Search}
 
-As briefly discussed in the introduction, the concept of \textbf{functional problem} rose as a generalization of the concept of decision problem. Given a set of inputs called \textit{language}, a \textbf{decision problem} on such language is a problem that asks \say{does this input have the required property?}. Each input of the language can either have a positive or negative answer to the question. In other words, the output of the problem for each input can either be \say{yes} or \say{no}. 
-
-Formally, each decision problem can be described as a subset of the given language, where an input is in the subset if and only if it gives a say{yes} answer to the problem.
+For many years, the study of \textbf{decision problems} has been the main focus of computability theory. These problems can be described as a simple question with a \say{yes} or \say{no} answer, such as asking if some input object has got some property or not. Each decision problem can be described as a subset of given language $\Sigma^*$, where a string $\abk{o}$ that encodes an object $o$ is in the subset if and only if the answer to the problem for that object is positive. Usually, a positive \say{yes} answer is represented by a 1, while a negative \say{no} answer is represented by a 0. For example, given the language $\N$, the question \say{is $n$ a prime number?} is modeled by the decision problem $\mathrm{PRIMES} = \{n \in \N \mid n \text{ is prime}\}$.
 
 \begin{definition}
-    Given a language $\Sigma^*$, a decision problem for a required property $p$ is a subset $L \subseteq \Sigma^*$ such that $L = \{x \in \Sigma^* \mid p(x) = True\}$.
+    A decision problem for a property $P$ is a subset $L$ of a language $\Sigma^*$ such that $L = \{x \in \Sigma^* \mid P(x) = 1\}$.
 \end{definition}
 
-For example, given the language $\N$ corresponding to the set of natural numbers, the question \say{is $n$ prime?} is a valid decision problem on such language and it can be described as the subset $\mathrm{PRIMES} = \{n \in \N \mid n \text{ is prime}\}$.
+Any decidable problem can be \textit{decided} by a Turing machine, meaning that for any input $x$ of the language $\Sigma^*$ the \TM is capable of returning the answer 0 or 1. Decidability theory plays a core rule in math and computer science since most of problems can be modeled by it. However, by their own nature, decision problems are limited. Some problems require a more complex result then a simple yes-or-no answer. Instead of asking the question \say{does this object have the required property?}, we may be more interested in the question \say{what gives this object the following property?}. This type of questions are modeled by \textbf{functional problems}, i.e. any problem where an output that is more complex than a yes-or-no answer is expected for a given input. Functional problems are an "harder" type of problems, describing any possible type of computation achievable through the concept of computable function, even decidability itself (any decision problem is just a functional problem with only two possible outputs).
 
-By their own nature, decision problems are limited. In particular, in some cases we are more interested in finding what gives the required property to a specific input. For example, we may be more interested in the question \say{what is the prime factorization of $n$?} instead of the previous one. Since for each input the answer to this question is neither a yes nor a no, this problem is by nature \textit{more complex} than a decision problem. In general these types of problems are referred to as \textbf{functional problems}, i.e. problems that ask questions like \say{what gives this object the following property?}. 
+Formally, functional problems are described through the concept of relation: given a set of inputs $X$ and a set of possible outputs $Y$, a functional problem is as a relation $R \subseteq X \times Y$ such that the pair $(x,y)$ is in $R$ if and only if $y$ is the output to the input $x$ for the given question.
 
-An important thing to precise is that questions like \say{is $y$ a valid output for the input $x$?} are still modeled by decision problems due to it requiring a simple yes-or-no answer, while a function problem would ask the question \say{what is the output for the input $x$?}. For example, the question \say{is $(p_1, \ldots, p_k)$ the prime factorization of $n$?} corresponds to the decision problem $\mathrm{FACTORIZATION}_n = \{(p_1, \ldots, p_k) \in \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
+For example, the question \say{what is the prime factorization of $n$?} is modeled by the functional problem $\mathrm{FACTORING} = \{(n, (p_1, \ldots, p_k)) \in \N \times \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
 
-Formally, functional problems are described through the concept of \textbf{relation}: given of inputs $X$ and a set of possible outputs $Y$ of a functional problem, the latter can be described as a relation $R \subseteq X \times Y$. For example, the question \say{what is the prime factorization of $n$?} is modeled by the functional problem $\mathrm{FACTORING} = \{(n, (p_1, \ldots, p_k)) \in \N \times \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
+We observe that questions like \say{is $y$ a valid output for the input $x$?} are still modeled by decision problems due to them requiring a simple yes-or-no answer, while a function problem would ask the question \say{what is the output for the input $x$?}. For example, the question \say{is $p_1, \ldots, p_k$ the prime factorization of $n$?} corresponds to the decision problem $\mathrm{FACTORIZATION}_n = \{(p_1, \ldots, p_k) \in \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
 
-We observe that, even thought decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined in a different way. For example, the $\mathrm{PRIMES}$ problem can be modeled as the functional problem $\{(n, a) \in \N \times \{0,1\} \mid 1 \text{ if } n \text{ is prime, } 0 \text{ otherwise}\}$, but they aren't effectively the same problem even thought they answer the same question.
+Even thought decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined in a different way. For example, the decision problem $\mathrm{PRIMES}$ can be converted into the functional problem $\{(n, b) \in \N \times \{0,1\} \mid b = 1 \text{ if } n \text{ is prime, } b = 0 \text{ otherwise}\}$, but they aren't effectively the same problem even thought they answer the same question.
 
-Another important thing to notice is that even though the name implies a correlation to mathematical functions due to the concept of input-output being involved, the given definition also includes \textit{partial} and \textit{multi-valued} functions, that being functions for which not all inputs have a corresponding output and functions for which one input can have more outputs. For these reasons, the term \textit{functional problem} is considered to be slightly abused. In recent years, this issue was solved by the introduction of the more general term \textbf{search problems}, describing the idea of finding a valid output for the given input, better suiting the previous formal definition.
+Another important thing to notice is that even though the name implies a correlation to mathematical functions due to the concept of input-output being involved, the given definition also includes \textit{partial} and \textit{multivalued} functions, that being functions for which not all inputs have a corresponding output and functions for which one input can have more outputs. For these reasons, the term \textit{functional problem} is considered to be slightly abused. In recent years, this issue was solved by the introduction of the more general term \textbf{search problems}, describing the idea of finding a valid output for the given input, better suiting the previous formal definition.
 
-To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^k$ for some $k \in \N$, describing all inputs as a sequence of bits. Since each problem could have inputs of different bit-lengths, we define search problems through the use of a \textit{sequence of relations} rather than a single relation. This also allows search problems to have different types of outputs based on the length of the inputs \cite{search_problems_dt_model, rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}. 
+To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^k$ for some $k \in \N$, describing all inputs as a sequence of bits. Since each problem could have inputs of different lengths, researches have defined search problems through the use of a sequence of relations rather than a single relation \cite{search_problems_dt_model, rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}. This also allows search problems to have different types of outputs based on the length of the inputs.
 
 \begin{definition}
-    A search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
+    A search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called outcome set.
 \end{definition}
 
-A very subtle thing to notice is that this definition allows search problems to be \textit{"undefined"} for some inputs. A search problem is said to be \textbf{total} if for each $R_n$ in the sequence it holds that $\forall x \in \{0,1\}^n$ there is an $y \in O_n$ such that $(x,y) \in R_n$. In other words, a total search problem has at least an output for all possible inputs, removing partial function from the context, while multi-valued functions are still allowed. For example, $\mathrm{FACTORING}$ is a total search problem due to each natural number having a guaranteed prime factorization.
+Since it includes partial functions, this definition allows search problems to be "undefined" for some inputs, meaning that there is no answer for some inputs. A search problem is said to be \textbf{total} if for each $R_n$ in the sequence it holds that $\forall x \in \{0,1\}^n$ there is an answer $y \in O_n$ such that $(x,y) \in R_n$. In other words, a total search problem has at least an output for all possible inputs, removing partial function from the context, while multivalued functions are still allowed. For example, $\mathrm{FACTORING}$ is a total non-multivalued search problem due to each natural number having a guaranteed unique prime factorization by the Fundamental Theorem of Arithmetic.
 
 \newpage
 
 \section{The complexity classes \textsf{FP}, \textsf{FNP} and \textsf{TFNP}}
 
-In complexity theory, decision problems are grouped in two major categories: problems that can be \textbf{solved} efficiently and problems that can be \textbf{verified} efficiently. These classes are respectively referred to as \textsf{P}, the class of problems solvable by a deterministic Turing machine in polynomial time, and \textsf{NP}, the class of problems for which a solution can be  verified \change{Include the definition of verifier either here or in preliminaries} by a deterministic verifier in polynomial time (or equivalently, the class of problems solvable by a non-deterministic Turing machine). By the very definition of these classes, it's easy to see that \textsf{P} $\subseteq$ \textsf{NP} since any problem efficiently solvable can also be efficiently verified.
-
-Similarly, in the context of search problems we define \textsf{FP}, \textit{functional} \textsf{P}, as the class of search problems solvable by an algorithm in polynomial time and \textsf{FNP}, \textit{functional} \textsf{NP}, as the class of search problems whose solutions are verifiable by an algorithm in polynomial time. 
+In complexity theory, decision problems are grouped in numerous categories, each defining its own subclass of problems. One of the most important subclasses is made of problems that can be \textbf{efficiently solved}. This class is referred to as \textsf{P}, i.e. the class of problems solvable by a Turing machine in polynomial time (see \Cref{chap:preliminaries}). Not all decision problems have been shown to be efficiently solvable, in fact some of them have been proven to be outside of \textsf{P} (again, see chapter \Cref{chap:preliminaries}). However, several problems for which there is currently no answer regardless wether or not they are efficiently solvable have been shown to be \textbf{efficiently verifiable}, meaning that there is a Turing machine called \textit{verifier} that given an additional input $c$, namely the \textit{certificate}, is capable of telling in polynomial time if the value $y$ is the output of an input $x$.
 
 \begin{definition}
-    We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time algorithm $A_n$ such that $A_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ for which there exists a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{\mathrm{poly(n)}}$ for which $V_n(x,y,w) = 1$ if and only if $(x,y) \in R_n$. 
+    A verifier for a decision problem $L$ is a Turing machine $V$ such that for each input $x \in \Sigma^*$ there is a certificate $c \in \Sigma^*$ for which $V(x,c) = 1$ if and only if $x \in L$.
 \end{definition}
 
-An important remark to be made is that, since they are defined on two different types of problems, it doesn't hold that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, each decision problem can indeed be seen as a search problem with only two possible outputs: \textit{true} or \textit{false}. In fact, an important result shows that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$, meaning that even though search problems are generally harder than decision problems, if the latter are efficiently solvable then the other also is \cite{decision_vs_search, fp_vs_p}.
+The class of problems that are efficiently verifiable is referred to as \textsf{NP}. This class of problems has been shown to be equivalent to the class of problems efficiently solvable by a \textit{non-deterministic Turing machine}, a \TM that on each step of the computation can choose between a set of possible actions, branching the computation. Originally, the class \textsf{NP} was defined through this type of \TM - hence the name of the class being an abbreviation for \textit{non-deterministic polynomial time} - but it quickly got replace with the verifier definition due to \textsf{NTM}s being only a theoretical computational model that is physically unrealizable. For our purposes, it is sufficient to consider the modern definition of \textsf{NP}.
+
+By definition of these two classes, its easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every problem that is efficiently solvable can also be efficiently verified. However, it is currently not known wether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the assumption that $\mathsf{P} \neq \mathsf{NP}$. For example, cryptography assumes that for some cryptographic schemes it's easy to check that an encrypted string is the result of scheme being applied on an original message, which works as a certificate, and very hard to actually find the original message only through the encrypted string. If $\mathsf{P} = \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
+
+In the context of search problems, we define the class \textsf{FP} - \textit{functional} \textsf{P} - as the class of search problems efficiently solvable by an algorithm and \textsf{FNP} - \textit{functional} \textsf{NP} - as the class of search problems whose solutions are efficiently verifiable by a verifier. 
+
+\newpage
+
+\begin{definition}
+    We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ whereby $\forall n \in \N$ there is a polynomial time \TM $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$. We define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ whereby $\forall n \in \N$ there is a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{\mathrm{poly(n)}}$ for which $V_n(x,y,w) = 1$ if and only if $(x,y) \in R_n$. 
+\end{definition}
+
+An important remark to be made is that, even thought any decision problem can be transformed ina search problem with only two possible output, since they are defined on two different types of problems it doesn't really make sense to say that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, an important result shows that it can hold that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$ \cite{decision_vs_search, fp_vs_p}. This implies that, even though search problems are by definition more complex than decision problems, answering one of the two questions would answer both of them.
 
 \begin{theorem}
     $\textsf{P} = \textsf{NP}$ if and only if $\textsf{FP} = \textsf{FNP}$
@@ -54,11 +62,9 @@ An important remark to be made is that, since they are defined on two different 
     
     Suppose now that $\textsf{P} = \textsf{NP}$. We already know that $\textsf{FP} \subseteq \textsf{FNP}$, so we have to show that $\textsf{FP} \subseteq \textsf{FNP}$. Let $R = (R_n)_{n \in \N} \in \textsf{FNP}$ be a search problem verifiable in polynomial time.
     
-    For each $n \in \N$, let $L_n = \{(x,y) \mid \exists z \in \{0,1\}^{k}, k \leq n \text{ s.t. } (x,zw) \in R_n\}$, i.e. the set of pairs $(x,z)$ such that $z$ is the prefix of an outcome $zw$ for the problem $R_n$ with input $x$. It's easy to see that $L_n \in \textsf{NP}$ since each pair $(x,z)$ is certified by the string $zw$ itself and the correctness of this certificate can be polynomially verified since $R \in \textsf{FNP}$.
+    For each $n \in \N$, let $L_n$ be the set of pairs $(x,z)$ such that $z$ is the prefix of an outcome $zw$ for the problem $R_n$ with input $x$, formally $L_n = \{(x,y) \mid \exists z \in \{0,1\}^{k}, k \leq n \text{ s.t. } (x,zw) \in R_n\}$. It's easy to see that $L_n \in \textsf{NP}$ since each pair $(x,z)$ is certified by the string $zw$ itself and the correctness of this certificate can be polynomially verified given that $R \in \textsf{FNP}$.
     
     Since $L_n \in \textsf{NP} = \textsf{P}$, we know that there is a polynomial time algorithm $\mathrm{Partial}_n$ that decides $L_n$. Thus, for each $n \in \N$, we can construct the following polynomial time algorithm $\mathrm{Solve}_n$ which directly concludes that $R \in \textsf{FP}$ and thus that $\textsf{FNP} \subseteq \textsf{FP}$.
-
-    \newpage
 
     \begin{algorithmic}
         \Function{$\mathrm{Solve}_n$}{$x$}
@@ -77,60 +83,102 @@ An important remark to be made is that, since they are defined on two different 
     \end{algorithmic}
 \end{proof}
 
-As discussed in the previous section, not all search problems are total, meaning that a solution could not exist for some inputs. However, total search problems have actually proven to be more important than non-total ones. In fact, a lot of interesting real worlds problems have a \textit{"guaranteed solution"}, ranging from simple number functions to harder problems.
+\newpage
+
+As discussed in the previous section, not all search problems are total, meaning that a solution could not exist for some inputs. A lot of real worlds problems have a guaranteed solution for each input, ranging from simple number functions to harder problems, making total search problems more interesting than non-total ones.
 
 \begin{definition}
     We define the class $\mathsf{TFNP}$ as the subset of \textsf{FNP} problems that are also total.
 \end{definition}
 
-For simplicity, we assume that \textit{each search problem in \textsf{FP} is also total}: since problems in \textsf{FP} are solvable in polynomial time, when a solution doesn't exist we can output a pre-chosen \say{doesn't exist} solution, making the problem total. This assumption easily implies that \textsf{FP} $\subseteq$ \textsf{TFNP} $\subseteq$ \textsf{FNP}, giving us a proper hierarchy. For obvious reasons, this assumption wouldn't work for \textsf{FNP} problems since the only way to polynomially verify that a solution doesn't exist would be to solve the problem itself and find that there is no solution, but this would mean that \textsf{FP} = \textsf{FNP} is trivially true.
+For simplicity, we assume that each search problem in \textsf{FP} is also total: since problems in \textsf{FP} are solvable in polynomial time, when a solution doesn't exist we can output a pre-chosen \say{doesn't exist} solution, making the problem total. This assumption easily implies that \textsf{FP} $\subseteq$ \textsf{TFNP} $\subseteq$ \textsf{FNP}, giving us a proper hierarchy. For natural reasons, this assumption wouldn't work for \textsf{FNP} problems: the only way to polynomially verify that a solution doesn't exist would be to solve the problem itself and find that there is no solution, implying that \textsf{FP} = \textsf{FNP} would be trivially true.
 
-Another less common way to view total search problems is through the lens of \textit{polinomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. For search problems, we define the class \textsf{FcoNP} in the same way. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can both be certified and disqualified in polynomial time \cite{tfnp_f_np_conp}.
+Another way to view total search problems is through the lens of \textit{polynomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. Proving that a decision problem is in \textsf{coNP} is also equivalent to proving that for each input of that problem there is no string that can certificate that the solution is correct.
 
-\begin{theorem}
+For search problems, we define the class \textsf{FcoNP} in the same way. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can be certified or disqualified in polynomial time \cite{tfnp_f_np_conp}.
+
+\begin{proposition}
     \label{tfnp_f_np_conp}
     $\mathsf{TFNP} = \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$
-\end{theorem}
+\end{proposition}
 
 \begin{proof}
     If $R = (R_n)_{n \in \N} \in \textsf{TFNP}$ then we know that every input $x$ has an output $y$. However, this means that the complementary problem $\overline{R}$ is empty, meaning that each input is trivially verifiable in polynomial time and thus that $\overline{R} \in \textsf{FNP}$. Hence, we conclude that $R \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$.
     
-    Vice versa, if $S = (S_n)_{n \in \N} \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$ then trivially we have that $S \in \mathsf{FNP}$. Moreover, since $S \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$ we know that each input $x$ can be easily certified or disqualified in polynomial time, meaning that each input must have a solution polynomially verifiable and thus that $S \in \mathsf{TFNP}$.
+    Vice versa, if $S \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$ then trivially we have that $S \in \mathsf{FNP}$. Moreover, since $S \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$ we know that each input $x$ can be easily certified or disqualified in polynomial time, meaning that each input must have a solution polynomially verifiable and thus that $S \in \mathsf{TFNP}$.
+
 \end{proof}
+
+\newpage
 
 \section{The \textsf{TFNP} hierarchy}
 
-One of the most studied properties of problems, either decisional or functional, is the ability to be \textbf{reduced} into other problems. In particular, a problem $A$ is said to be reducible into a problem $B$ if any instance of $A$ can be mapped into an instance of $B$ whose solution gives a solution to the former. If a problem $A$ is reducible to a problem $B$, we say that $A \leq B$.
+One of the most interesting aspects of computable (and uncomputable) problems is the ability to be transformed into another problem in order to achieve a solution. Suppose that we have an instance $a$ of problem $A$ and that we know an algorithm that transforms $a$ into an instance $b$ of a problem $B$ such that $a$ is a \say{yes} answer if and only if $b$ is a \say{yes} answer. Then, by solving $b$ we would get an answer to $a$. In computer science, this concept is know as \textbf{reduction}: a problem $A$ is said to be reducible into a problem $B$, written as $A \leq B$, if any instance $a$ of $A$ can be mapped into an instance $b$ of $B$ whose solution gives a solution to the former.
 
-In decision problems, this concept is easily described trough the use of many-to-one mappings, i.e. a function that maps instances of the original problem to instances of the reduced problem. 
+In decision problems, this concept is described trough \textit{many-to-one mappings}, computable functions that map instances of the original problem to instances of the reduced problem.
 
 \begin{definition}
-    A decision problem $A$ is many-to-one reducible to a decision problem $B$, namely $A \leq B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. If the function can be computed in polynomial time, we say that $A \leq_p B$.
+    A decision problem $A$ is many-to-one reducible to a decision problem $B$, written as $A \leq_m B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. 
 \end{definition}
 
-Just like decision problems, search problems can also be reduced into other search problems through the use of functions, even thought the definition is slightly different.
+When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$, implying that the complexity of $A$ is "as hard as" $B$, meaning that its complexity is in the order of the complexity of $B$. For example, if $B$ is in \textsf{P} and the reduction $A \leq_m B$ can be computed in polynomial time then $A$ also lies in \textsf{P}.
+
+Reductions between decision problems map any \say{yes} answers of problem $A$ to some \say{yes} answers of problem $B$ and the same goes for \say{no} answers. In search problems, however, there is no concept of negative answer: even if a problem has only two possible outputs, both of them are still a solution. Some people could argue that an input for which there is no solution is a negative answer for such search problem. But how could we map inputs without solutions to other inputs without solution? What if one of the two problems involved is total and the other isn't? This clearly doesn't make sense. Even if it did make sense, we are only interested in finding solutions. We give the following definition of search problem reduction:
 
 \begin{definition}
-    A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, namely $R \leq S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a function $f : \{0,1\}^m \to \{0,1\}^n$ and a function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
+    A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, written as $R \leq_m S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a function $f : \{0,1\}^m \to \{0,1\}^n$ and a function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
     \[\forall x \in \{0,1\}^m \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
     In other words, the function $f$ maps inputs of $R$ into inputs of $S$, while the function $g$ maps solutions of $S$ into solutions of $R$. 
 \end{definition}
 
-Differently from decisional problems, this definition doesn't require that non-solutions of $S$ are also mapped into non-solutions of $R$. This weaker property is needed by the very own nature of search problems since any non-solution to a problem can be reduced into a non-solution of any other problem, which partially loses the whole sense of problem reduction.
+\newpage
 
-Even though it is generally useful, reductions play a critical role in \textbf{class completeness}, that being the property of all problems of a class to be reduced into one specific problem. \improvement{State that many-to-one reductions are transitive}
+Reductions play a critical role in computer science. In particular, they allow us to define the concept of \textbf{completeness}, the property of an entire class of problems to be reduces into one specific problem from that very same class.
 
 \begin{definition}
-    A problem $B$ is said to be complete for a class $\mathcal{C}$ if $B \in \mathcal{C}$ and $\forall A \in \mathcal{C}$ it holds that $A \leq B$.
+    A problem $B$ is said to be complete for a class of problems $\mathcal{C}$ if $B \in \mathcal{C}$ and $\forall A \in \mathcal{C}$ it holds that $A \leq B$.
 \end{definition}
 
-By definition, if a complete problem is proven to have a specific property then that property gets automatically inherited by all the problems of the class. In particular, for the classes \textsf{P}, \textsf{NP}, \textsf{FP} and \textsf{FNP}, a problem is complete only if his reductions are computable in polinomial time, meaning that for all problems $A$ in one of these classes it holds that $A \leq_p B$. This restrictions is obvious: if the reductions weren't computable in polynomial time then there would be no way of obtaining a solution in polynomial time through the reduction.
+Under some circumstances, if a complete problem is proven to have a specific property then that property gets automatically inherited by all the problems of the class. For example, if an \textsf{NP}-Complete problem is proven to be solvable in polynomial time, then every single problem inside \textsf{NP} would inherit this property, making the entire class collapse and giving an answer to the question $\mathsf{P} = \mathsf{NP}$. However, in order for this inheritance ability to hold, these reductions must still be efficient with respect to the complexity of the class. For example, for a problem $B$ to be \textsf{NP}-Complete then any \textsf{NP} problem $A$ must be reducible to $B$ in polynomial time, since otherwise there would be no way of using the reduction to efficiently obtain solutions of $A$. The same reasoning also holds for the concept of completeness in the class \textsf{FNP}.
 
-Moreover, every problem inside the class \textsf{P} is \textsf{P}-Complete, while only a few \textsf{NP} problems are \textsf{NP}-Complete. If a single \textsf{NP}-Complete problem is proven to be inside the class \textsf{P}, i.e. it can be efficiently decided by a Turing machine, the whole \textsf{NP} class would collapse, meaning that $\textsf{P} = \textsf{NP}$. Some well-known \textsf{NP}-Complete problems include the $\mathrm{SAT}$ problem, which asks \say{does this formula have an assignment that satisfies it?}, the $\mathrm{CLIQUE}$ problem, which asks \say{does this graph have a k-clique?}, and the $\mathrm{COLORING}$ problem, which asks \say{does this graph have a k-coloring?}.
+The most famous \textsf{NP}-Complete problem is the $\mathrm{SAT}$ problem, which asks \say{does this formula have an assignment that satisfies it?}, first proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem, that being $\mathrm{FSAT}$, modelling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
 
-In the search problem world, the functional versions of each of these problems, namely $\mathrm{FSAT}$, $\mathrm{FCLIQUE}$ and $\mathrm{FCOLORING}$ are also $\textsf{FNP}$-complete. In fact, the functional versions can be used to prove that the decisional version is complete and vice versa. However, it is not known if there is a $\textsf{FNP}$-complete problem that is also total. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus there is no output assignment that satisfies them.
+\begin{proposition}
+    The decisional problem $A$ is \textsf{NP}-Complete if and only if the functional problem $FA$ is \textsf{FNP}-Complete.
+\end{proposition}
+    
+However, it is not known if there is a \textsf{FNP}-Complete problem that is also \textit{total}. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus there is no output assignment that satisfies them. Researchers believe that the existence of such problem is very unlikely since this total problem would be able to give a solution to problems that aren't total.
 
-For these reasons, in the \textsf{TFNP} case the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems who have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}. In other words, given a \textsf{TFNP} problem $R = (R_n)_{n \in \N}$, we define the subclass $R$ as the set of \textsf{TFNP} problems \textit{efficiently} reducible to $R$. Unexpectedly, the majority of \textsf{TFNP} problems can actually be characterized with very subclasses.
+For these reasons, in the \textsf{TFNP} world the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems who have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}.  
+
+\begin{definition}
+    Given \textsf{TFNP} problem $R$, we define the class $R$ as the subset of \textsf{TFNP} problems efficiently reducible to the problem $R$ in polynomial time, formally $R = \{S \in \mathsf{TFNP} \mid S \leq_m R \text{ in polynomial time}\}$
+\end{definition}
+
+The extensive study of \textsf{TFNP} classes has been successful in capturing the complexity of many branches of mathematics, such as problems from cryptography, game theory and economics are actually reducible to TFNP complete problems. Unexpectedly, a vast majority of total search problems can be characterized with very few subclasses, which form the \textbf{\textsf{TFNP} hierarchy}. 
+
+\newpage
+
+Each of these subclasses is characterized by a complete total search problem that describes an elementary question, such as determining if a mapping doesn't have collision or not - or equivalently, if a function is injective or not \cite{proofs_circuits_communication,tfnp_characterization}. These complete problems are guaranteed to be total by the very combinatorial principles that dictate them:
+
+\begin{itemize}
+    \item \textsf{PLS} (Polynomial Local Search): the class of search problems designed to model the process of finding the local optimum of a function or alteratively the class of problems whose solution is guaranteed by the \say{Every directed acyclic graph has a sink} principle. It is formally defined as the class of search problems that are polynomial-time reducible to the SINK-OF-DAG problem \unsure{Maybe write problem names in italics}.
+    
+    \item \textsf{PPP} (Polynomial Pigeonhole Principle): the class of problems whose solution is guaranteed by the \say{Every mapping from a set of $n+1$ elements to a set of $n$ elements has a collision} principle. It is defined as the class of problems that are polynomial-time reducible to the PIGEON problem.
+    
+    \item \textsf{PPA} (Polynomial Parity Argument): the class of problems whose solution is guaranteed by the \say{Every undirected graph with an odd-degree node must have another odd-degree node} principle. It is defined as the class of problems that are polynomial-time reducible to the LEAF problem
+    
+    \item \textsf{PPADS} (Polynomial Parity Argument - Directed with Sink): the class of problems whose solution is guaranteed the \say{Every directed graph with a positively unbalanced node (out-degree > in-degree) must
+    have a negatively unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the SINK-OF-LINE problem.
+    
+    \item \textsf{SOPL} (Sink of Potential Line): the class of problems that are polynomial-time reducible to the SINK-OF-POTENTIAL-LINE problem. It has been proven that $\mathsf{SOPL} = \mathsf{PLS} \cap \mathsf{PPADS}$ \cite{Further_collapses_TFNP}
+    
+    \item \textsf{PPAD} (Polynomial Parity Argument - Directed): the class of problems whose solution is guaranteed the \say{Every directed graph with an unbalanced node must have another unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the END-OF-LINE problem.
+    
+    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the CONTINUOUS-LOCALPOINT problem. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the END-OF-POTENTIAL-LINE problem.
+\end{itemize}
+
+\newpage
 
 \begin{figure}[H]
     \centering
@@ -175,34 +223,18 @@ For these reasons, in the \textsf{TFNP} case the concept of completeness is stud
         ;
     \end{tikzpicture}
     
-    \caption{Hierarchy of the most commonly defined total search problem subclasses. \\ An arrow from class $A$ to class $B$ means that $A \subseteq B$.}
+    \caption{Hierarchy of the main total search problem subclasses. \\ An arrow from class $A$ to class $B$ means that $A \subseteq B$.}
 \end{figure}
 
-Each of the subclasses shown in the above hierarchy is characterized by a total search problem \cite{proofs_circuits_communication,tfnp_characterization}. Such search problems are actually guaranteed to be total by \textbf{simple existence principles}. In fact, we could say that many \textsf{TFNP} problems are actually described by efficient reduction to these simple principles:
-\begin{itemize}
-    \item \textsf{PLS} (Polynomial Local Search): the class of search problems designed to model the process of finding the local optimum of a function or alteratively the class of problems whose solution is guaranteed by the \say{Every directed acyclic graph has a sink} principle. It is formally defined as the class of search problems that are polynomial-time reducible to the SINK-OF-DAG problem \unsure{Maybe write problem names in italics}.
-    
-    \item \textsf{PPP} (Polynomial Pigeonhole Principle): the class of problems whose solution is guaranteed by the \say{Every mapping from a set of $n+1$ elements to a set of $n$ elements has a collision} principle. It is defined as the class of problems that are polynomial-time reducible to the PIGEON problem.
-    
-    \item \textsf{PPA} (Polynomial Parity Argument): the class of problems whose solution is guaranteed by the \say{Every undirected graph with an odd-degree node must have another odd-degree node} principle. It is defined as the class of problems that are polynomial-time reducible to the LEAF problem
-    
-    \item \textsf{PPADS} (Polynomial Parity Argument - Directed with Sink): the class of problems whose solution is guaranteed the \say{Every directed graph with a positively unbalanced node (out-degree > in-degree) must
-    have a negatively unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the SINK-OF-LINE problem.
-    
-    \item \textsf{SOPL} (Sink of Potential Line): the class of problems that are polynomial-time reducible to the SINK-OF-POTENTIAL-LINE problem. It has been proven that $\mathsf{SOPL} = \mathsf{PLS} \cap \mathsf{PPADS}$ \cite{Further_collapses_TFNP}
-    
-    \item \textsf{PPAD} (Polynomial Parity Argument - Directed): the class of problems whose solution is guaranteed the \say{Every directed graph with an unbalanced node must have another unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the END-OF-LINE problem.
-    
-    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the CONTINUOUS-LOCALPOINT problem. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the END-OF-POTENTIAL-LINE problem.
-\end{itemize}
+Interestingly, lots of complex problems have been proven to be reducible to these very simple combinatorial principles. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to not only lie inside \textsf{PPAD} but also be \textsf{PPAD}-Complete \cite{nash_1, nash_2}. One should ponder what it really means for a problem to be complex.
 
-The extensive study of \textsf{TFNP} classes has been successful in capturing the complexity of many important common problems. In fact, a lot of problems from \textit{cryptography}, \textit{game theory} and \textit{economics} are actually reducible to \textsf{TFNP} complete problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to be \textsf{PPAD}-Complete.
-
-By hardness of the question itself, any unconditional separation between these subclasses seems to be completely out of reach just like in the decisional case. However, it turns out that the \textsf{TFNP} model indeed has separations relative to \textit{oracles}, i.e. the \textbf{black-box \textsf{TFNP}} model.
+Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the question \textsf{P} vs. \textsf{NP}. By hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
  
+\newpage
+
 \section{White-box \textsf{TFNP}}
 
-In computer science and engineering, systems and models are divided in two categories: white-box systems and black-box system. A system is said to be a \textbf{white-box} if only its inputs, its outputs and its actual internal workings are known. Contrary, a system is said to be a \textbf{black-box} if its internal workings are unknown. The idea behind a black-box model is that we only care about the result for a given input and not how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes. 
+In computer science and engineering, systems and models are divided in two categories: white-box systems and black-box system. A system is said to be a \textbf{white-box} if  its internal workings are known, meaning that given any input it is possible to know how the system achieves a result. Contrary, the computational process is unknown in a \textbf{black-box} system. Black-box models allow us to consider only the result for a given input, ignoring how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes.
 
 Each \textsf{TFNP} problem can be analyzed through the lens of both white-box and black-box systems: in a \textbf{white-box \textsf{TFNP}} problem we're interested in how the problem gets verified (or computed if it's also in \textsf{FP}), while a \textbf{black-box \textsf{TFNP}} problem we're interested only in the verifiability (or computability) of the problem. In recent years, these two \textsf{TFNP} models have been formalized through the use of \textit{protocols} and \textit{decision trees}. In this section we will briefly discuss protocols and the white-box model, while decision trees and the black-box model will be extensively discussed in the following chapter. 
 

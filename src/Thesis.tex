@@ -38,7 +38,7 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{cleveref}
-\usepackage[Algoritmo]{algorithm}      
+\usepackage[Algoritmh]{algorithm}      
 \usepackage{algpseudocode}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
@@ -91,8 +91,8 @@
 \setlength{\parskip}{5pt}
 
 % Metadata
-\hypersetup{pdftitle={Thesis},pdfauthor={Simone Bianco}, urlcolor=black, linkcolor=black, colorlinks=true}
-\title{Thesis Title}
+\hypersetup{pdftitle={BScThesis},pdfauthor={Simone Bianco}, urlcolor=black, linkcolor=black, colorlinks=true}
+\title{Introduction of parity-based computational models in total search problems}
 \author{Simone Bianco}
 \IDnumber{1986936}
 \course{Bachelor's Degree in Computer Science}
@@ -118,6 +118,8 @@
 
 % ================== CUSTOM MACROS ==================
 
+\newcommand\blankchar[1][1.25ex]{\mbox{\kern.06em\vrule height1ex}\vbox{\hrule width#1}\hbox{\vrule height1ex}}         % Tape blank character
+
 \newcommand{\vnot}{\overline}
 \newcommand{\abs}[1]{\left|#1\right|}
 \newcommand{\say}[1]{\flqq\textit{#1}\frqq}
@@ -125,12 +127,17 @@
 \newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
 \newcommand{\abk}[1]{\left\langle#1\right\rangle}
 
+\newcommand{\TM}{\textsf{TM}\xspace}
+
+\newcommand{\FP}{\textsf{FP}\xspace}
+\newcommand{\FNP}{\textsf{FNP}\xspace}
 \newcommand{\TFNP}{\textsf{TFNP}\xspace}
 \newcommand{\TFNPdt}{\mathsf{TFNP}^{dt}\xspace}
 
 \newcommand{\N}{\mathbb{N}}
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
 \newcommand{\F}{\mathbb{F}}
 
 \newcommand{\Res}{\mathsf{Res}}
