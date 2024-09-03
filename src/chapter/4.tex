@@ -3,37 +3,39 @@
 
 \section{Oracles and decision trees}
 
-In the previous chapter, we have discussed how \TFNP subclasses are defined in terms of basic existence principles which can be converted into white-box total search problems solvable by protocols that are reducible to the Karchmer-Widgerson game. In this chapter, instead, we will extensively discuss the \textbf{black-box model}.
+In the previous chapter we have briefly shown how \TFNP subclasses are defined in terms of basic existence principles that capture white-box total search problems solvable by protocols reducible to Karchmer-Widgerson games. From now on, we will shift our focus to the black-box model.
 
-The difference between the white-box and black-box \TFNP models can be formally described as the difference between problems verifiable (or computable) by a simple Turing machine or by a Turing machine equipped with an \textbf{oracle}. 
+Black-boxes have been used by complexity theorists since early days, mostly through the concept of \textbf{oracle}, a device capable of instantly solving an instance of a designated problem. In particular, these problems may even be uncomputable, an assumption that allows us to view oracles as a magical devices. Turing machines can be allowed to query such oracles to an additional \textit{oracle tape}. The machine writes a string on such tape, asking the oracle to solve the problem for that input. The output of the oracle is then written on the same tape, which can then be read by the Turing machine. Any query made to the oracle requires $\Theta(1)$ time, meaning that they don't influence the cost of the computation.
 
 \begin{definition}
-    An oracle for a problem $A$ is an external device that is capable of instantaneously verifying a solution for of such problem. An oracle Turing machine is a Turing machine provided with the ability of querying an oracle. We write $M^A$ to describe an oracle Turing machine provided with an oracle for the problem $A$.
+    An oracle for a problem $A$ is an external device that is capable of instantaneously solving an instance of $A$. An oracle Turing machine is a Turing machine provided with the ability of querying an oracle. We write $M^A$ to describe a Turing machine provided with an oracle for the problem $A$.
 \end{definition}
 
-By definition, it's easy to see that an oracle is nothing more than a black-box device. In particular, an oracle for a decision problem is capable of determining if an input object has the the required property, while an oracle for a search problem is capable of determining if an output is the solution for the associated problem with the given input. Any query to the oracle made by the Turing machine has a complexity of $\Theta(1)$, meaning that it doesn't affect the cost of the computation. This allows us to give the following definition of query search problem \cite{proofs_circuits_communication, tfnp_characterization}.
+Given a class $\mathcal{C}$ and an oracle for a problem $A$, the \textit{relativized version} of the class $\mathcal{C}$, written $\mathcal{C}^A$ is the set of all problems of $\mathcal{C}$ solvable (or verifiable) with access to the oracle of $A$. For example, $\mathsf{P}^{\mathrm{SAT}}$ is the class of problems solvable in polynomial time by a Turing machine with an oracle for the $\mathrm{SAT}$ problem. More generally, given two classes $\mathcal{C}, \mathcal{B}$, we write $\mathcal{C}^{\mathcal{B}}$ to denote the set of all problems of $\mathcal{C}$ solvable (or verifiable) with access to an oracle for any problem that lies in $\mathcal{B}$. In other words, we have that $\mathcal{C}^{\mathcal{B}} = \bigcup_{A \in \mathcal{B}} \mathcal{C}^{A}$.
+
+Oracles proved to be surprisingly useful for studying the relationship between $\mathsf{P}$ and $\mathsf{NP}$ by considering the relationship between $\mathsf{P}^A$ and $\mathsf{NP}^A$ for an oracle $A$. In a celebrated result \cite{relativization_p_np}, Baker et al. showed that there are two problems $A$ and $B$ such that $\mathsf{P}^A = \mathsf{NP}^A$ and $\mathsf{P}^B \neq \mathsf{NP}^B$. This fact makes commonly used proof techniques useless, meaning that any answer to the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question will require unconventional techniques, thus the hardness of the question.
+
+Oracles provide a simple yet effective way to generalize the concept of reduction through the so called \textit{Turing reductions}: if a Turing machine provided with an oracle for the problem $B$ is capable of resolving a problem $A$ then the problem $A$ can be reduced to solving multiple instances of the problem $B$. When $A$ is Turing reducible to $B$, we write $A \leq_T B$. Clearly, if the oracle machine $M^B$ can solve $A$ then any query to the oracle can be replaced with a call to a subroutine that solves $B$. This conversion is ofter referred to as \textit{de-relativization}. Many-to-one reductions can be seen as a specific case of Turing reductions, where the machine makes exactly one query to the oracle and then returns the the output of such query.
+
+In the particular case of total search problems, it was proven that the reducibility between search problems is strictly connected to the reducibility of their relativized versions up to all oracles \cite{rel_comp_np_search}.
+
+\begin{theorem}
+    Given two search problems $R,S \in \mathsf{TFNP}$ and their relative classes it holds that $R \leq_m S$ if and only if $R^A \leq_m S^A$ for all oracles $A$.
+\end{theorem}
+
+This result implies that proving any relativized separation is equivalent to proving a non-relativized separation, allowing us to use the intuitive nature of oracles to rule out possible collapses in \TFNP subclasses. Many \TFNP subclasses have been proven to be different through separations between the respective query search problems. \cite{proofs_circuits_communication, tfnp_characterization}
 
 \begin{definition}
     A query search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
 \end{definition}
 
-Additionally, oracles provide a simple yet effective way to generalize the concept of reduction, called \textbf{Turing reductions}: if a Turing machine provided with an oracle for the problem $B$ is capable of resolving a problem $A$ then the problem $A$ can be reduced to the problem $B$. The idea behind this kind of reductions is simple: if $M^B$ can solve $A$ then any query to the oracle can be replaced with a call to a subroutine that solves $B$. Many-to-one reductions can be seen as restricted variants of Turing reductions where the number of calls made to the subroutine of problem $B$ is exactly one and the value returned by the reduction is the same value as the one returned by the subroutine.
-
-More generally, given a class $\mathcal{C}$ and an oracle for a problem $A$, the \textit{relativized version} of the class $\mathcal{C}$ is the set of all problems of $\mathcal{C}$ verifiable (or solvable) with access to the oracle of $A$. Obviously, this definition implies that $\mathcal{C} \subseteq \mathcal{C}^A$ for all oracles $A$ since any problem that is already in $\mathcal{C}$ can just ignore the oracle. In the particular case of \TFNP, it was proven that the relation between each total search problem is strictly connected to the relation of the relativized versions of their classes \cite{rel_comp_np_search}.
-
-\begin{theorem}
-    Given two search problems $R,S \in \mathsf{TFNP}$ and their relative classes it holds that $R \subseteq S$ if and only if $R^A \subseteq S^A$ for all oracles $A$.
-\end{theorem}
-
-This result states that proving any relativized separation is equivalent to proving a non-relativized separation, allowing us to use the intuitive nature of oracles to rule out possible collapses in \TFNP subclasses. Through these relativized separations, many \TFNP subclasses have been proven to be different.
-
-Moreover, the use of oracles allows us to model total search problem through the lens of \textbf{decision trees}.
+A good eye will surely have noticed that the previous definition does not vary from the normal definition of search problems, unlike communication search problems. In fact, the only true difference between their computational models: query search problems are solved (or verified) through \textbf{decision trees}.
 
 \begin{definition}[\cite{search_problems_dt_model}]
     A decision tree is a rooted directed binary tree whose nodes are associated with either an output value or an input Boolean variable. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node is labeled by a variable and the two outgoing edges are labeled by the two possible values of that variable.
 \end{definition}
 
-Decision trees can be viewed as nothing more than the \textit{black-box version} of protocols: we don't care about who computes the next step and how they do it, we only care about the result being either a 0 or a 1 in order to proceed with the computation. In fact, like their white-box counterpart, a decision tree encodes all possible ways to obtain a result, making them \textit{total}. Likewise, the complexity of a decision tree computing a function follows the same complexity measures as a protocol, i.e. its \textit{size} and its \textit{depth}.
+Decision trees can be viewed as nothing more than the black-box version of protocols: we don't care about who computes the next step or how they do it, we only care about the result being either a 0 or a 1 in order to proceed with the computation. In fact, like their white-box counterpart, decision trees encode all possible ways to obtain a result, making them \textit{total}. Likewise, the complexity of a decision tree computing a function follows the same complexity measures as a protocol, i.e. its \textit{size} and its \textit{depth}. A function $f$ is said to be computed by the decision tree $T$ if for all inputs $x$ it holds that $f(x) = T(x)$. 
 
 \begin{figure}[H]
     \centering
@@ -78,52 +80,236 @@ Decision trees can be viewed as nothing more than the \textit{black-box version}
         ;
     \end{tikzpicture}
 
-    \caption{An example of decision tree of size 13 and depth 3. The computation, shown by the green path, for the input $x \in \{0,1\}^n$ is given by $x = 011$}
+    \caption{An example of decision tree of size 13 and depth 3. The green path shows the computation made for the input $x = 011$.}
 \end{figure}
 
-Decision trees give an easier way to describe the computation of an oracle Turing machine: if $M^B$ verifies (or solves) a problem $A$ then the $i$-th query made by the procedure corresponds to a variable $x_i$ for the decision tree where $x_i = 1$ if the query returns a positive result and 0 otherwise. In other words, the computation tree of an oracle Turing machine is actually a decision tree.
+Decision trees give an easier way to describe the computation of an oracle Turing machine: if $M^B$ solves (or verifies) a problem $A$ then the $i$-th query made by the procedure corresponds to a variable $x_i$ for the decision tree where $x_i = 1$ if the query returns a positive result and 0 otherwise. In other words, the computation tree of an oracle Turing machine is actually a decision tree.
 
 \begin{proposition}
-    If there is an oracle Turing machine $M^B$ that verifies (or solves) a problem $A$ then there is a decision tree that verifies (or solves) $A$. \unsure{Not sure if it's an if and only if, possibly yes}
+    Given a search problem $A \in \mathsf{TFNP}$, there is an oracle Turing machine $M^B$ that solves (or verifies) $A$ if and only if there is a decision tree that solves (or verifies) $A$.
 \end{proposition}
 
-The above proposition gives a strong result that allows us to characterize black-box \TFNP through decision trees instead of oracles: \textit{any decision tree separation implies a relativized separation}. As in the communication complexity formulation described for the white-box model, given a \TFNP problem $R$, we denote with $R^{dt}$ the equivalent $\TFNPdt$ problem, where \textit{dt} stands for \textit{decision tree} \cite{proofs_circuits_communication, tfnp_characterization}.
+The above proposition gives a strong result that allows us to characterize black-box \TFNP through decision trees instead of oracles: \textit{any decision tree separation implies a relativized separation} \cite{proofs_circuits_communication, tfnp_characterization}. As in the communication complexity formulation, given a \TFNP problem $R$, we denote with $R^{dt}$ the equivalent $\TFNP^{dt}$ problem, where \textit{dt} stands for \textit{decision tree}. We will omit this notation when the context makes it clear.
 
 \begin{definition}
     We define $\mathsf{FP}^{dt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth decision tree $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}^{dt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth decision tree $T_y$ such that $T_y(x) = 1$ if and only if $(x,y) \in R_n$.
 \end{definition}
 
-Furthermore, we also introduce the concept of decision tree reductions. Differently from classic and communication search problems, these reductions are based on a more fine-grained definition, where the function that maps inputs of the first problem to inputs of the second problem is computed by many decision trees with output $\{0,1\}$. This definition will allow us to prove some following results in a more convenient way. An analogous formulation can be obtained by computing this function through a simple decision tree. 
+Like protocols, in query search problems the certificate is the verifying decision tree itself. Decision tree reductions are based on a more fine-grained definition, where the function that maps inputs of the first problem to inputs of the second problem is computed by many decision trees with output $\{0,1\}$.
 
 \begin{definition}
-    A query search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a query search problem $S = (S_n)_{n \in \N}$, namely $R \leq S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a family of decision trees $T_i : \{0,1\}^m \to \{0,1\}$ for each $i \in [n]$ and a decision tree $T_y^o : \{0,1\}^m \to O_m$ for each $y \in O_n'$ such that:
+    A query search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a query search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a family of decision trees $T_i : \{0,1\}^m \to \{0,1\}$ for each $i \in [n]$ and a decision tree $T_y^o : \{0,1\}^m \to O_m$ for each $y \in O_n'$ such that:
     \[\forall x \in \{0,1\}^m \;\; (T(x), y) \in S \implies (x, T_y^o(x)) \in R\]
-    where $T(x) := (T_1(x), \ldots, T_n(x))$. In other words, the decision trees $T_1, \ldots, T_n$ map inputs of $R$ into inputs of $S$, while the decision tree $g$ maps solutions of $S$ into solutions of $R$. 
+    where $T(x) := (T_1(x), \ldots, T_n(x))$.
 \end{definition}
 
-The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former give a $\{0,1\}$ output, while the latter gives a more output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, including each $T_i$ and each $T_y^o$. The \textbf{complexity of the reduction} is given by $\log n + d$. Moreover, we denote as $S^{dt}(R)$ the minimum complexity of any decision tree reduction from $R$ to $S$.
+The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter return an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, including each $T_i$ and each $T_y^o$. The complexity of the reduction is denoted as $S^{dt}_\leq(R)$ and it's equal $\log n + d$. A decision tree reduction is considered efficient if its complexity is polylogarithmic, i.e. equal to $O(\log^k n)$. 
 
-\newpage
-
-Using this definition, we can define complexity classes of total query search problems via decision tree reductions: given a total query search problem $S = (S_n)_{n \in \N}$, we re-define the subclass of problems \textbf{efficiently reducible to $S$} as:
-\[S^{dt} := \{R : S^{dt}(R) = \mathrm{polylog}(n)\}\]
-where $R = (R_m)_{n \in \N}$.
+\begin{definition}
+    Given $S \in \mathsf{TFNP}^{dt}$, we define the class $S^{dt}$ as the subset of \textsf{TFNP}$^{dt}$ problems efficiently reducible through decision trees to the problem $S$, formally $S^{dt} = \{R \in \mathsf{TFNP} \mid S^{dt}_\leq(R) = O(\log^k n)\}$
+\end{definition}
 
 \section{Connections to Proof Complexity}
 
-Like in the white-box case, the black-box \TFNP model can be studied under multiple lenses. In particular, a well known result extensively discusses even before the rise of the black-box model is the connection between total query search problems and \textbf{propositional proof complexity} \cite{tfnp_characterization, separations_proof_complexity,proofs_circuits_communication}.
+Like the white-box model, black-box total search problems can be studied under multiple lenses, such as \textbf{proof complexity}. This branch of complexity theory studies the complexity measures needed for a propositional formula to be proved by propositional proof systems, that being any system of rules that can prove the truthfulness of a propositional formula, i.e. a string made of logical operators applied on a set of $n$ variables, such as $F = x_1 \land (x_1 \to \lnot x_2 \lor x_3)$. Any statement can be encoded by propositional formulas, which is either a \textit{tautology} (a statement that is always true), a \textit{satisfiable} formula (a statement that can be true or false based on the assignment) or an \textit{unsatisfiable} formula (a statement that is always false). Proving that a formula $F$ is a tautology is equivalent to proving that $\lnot F$ is unsatisfiable.
 
-\improvement{Add proof complexity discussion here or in preliminaries}
-
-It's easy to see that any CNF formula gives rise to an associated search problem: finding an unsatisfied clause inside the formula (if there is any).
+Proof systems can be viewed as an algorithm that manipulates propositional formulas in order to produce a new one. When a formula $G$ is derived by the formula $F$ in the proof system $S$, we write $F \stackrel{S}{\vdash} G$. Proof systems must be \textit{sound}: if $F \stackrel{S}{\vdash} G$ then $G$ is a \textit{logical consequence} of $F$, which means that $F \to G$ is a tautology. In 1979, Cook and Reckhow gave the following formal definition of propositional proof system - often called Cook-Reckhow proof systems.
 
 \begin{definition}
-    Given the CNF $F = C_1 \land \ldots \land C_m$ over $n$ variables, we define  $\mathrm{Search}(F)$ as the following associated search problem: given an input assignment $\alpha(x_1, \ldots, x_n)$, return the index of an unsatisfied clause (if there is any).
+    A propositional proof system (or pps) is a polynomial time computabile surjective function $f : \Sigma^* \to \mathrm{TAUT}$, where $\mathrm{TAUT}$ is the set of logical tautologies.
 \end{definition}
 
-In particular, when $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is clearly a \textit{total search problem} since for any input assignment there will always be an unsatisfied clause. In a similar fashion, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$.
+Given a formula $F \in \mathrm{TAUT}$ a string $s \in \Sigma^*$ and a proof system $f$, we say that $s$ encodes $F$ for the pps $f$ if it holds that $f(s) = F$. This idea justifies why we want proof systems to be surjective: any true statement must have a valid encoding in the proof system. This property is called \textit{completeness} of the proof system.
 
-Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, denoted with $D_T$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. We notice that, by De Morgan's theorem, $\vnot{D_T}$ is a CNF.
+The most studied proof system is \textit{resolution} (or \textsf{Res}). Given a formula $F \in \mathrm{TAUT}$, this proof system is able to prove that it is indeed a tautology by proving that $\lnot F \in \mathrm{UNSAT}$. A \textit{CNF formula} $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal form:
+\[F = (x_1 \lor x_2 \lor \overline{x_3} \lor x_4) \land (x_1 \lor \vnot{x_2}) \land x_3\]
+
+Any formula can be expressed as an equivalent CNF formula, making resolution a \textit{complete} and \textit{sound} proof system. Resolution proof are based on repeated applications of the following simple rule called the \textit{resolution rule}:
+\[\dfrac{C \lor x \qquad D \lor \vnot x}{C \lor D}\]
+
+Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}.
+
+\begin{proposition}
+    Given a CNF formula $F$, it holds that $F \in \mathrm{UNSAT}$ if and only if $F$ is refuted by Resolution
+\end{proposition}
+
+For example, given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \vnot{z}) \land (x \lor \vnot{y} \lor z) \land (\vnot{x} \lor z) \land \vnot{z}$, a Resolution proof is given by:
+\[\begin{array}{lcl}
+    D_1 & \vnot{z} & \text{Axiom} \\
+    D_2 & (y \lor z) & \text{Axiom} \\
+    D_3 & y & \text{Res. on $D_1, D_2$} \\
+    D_4 & (x \lor \vnot{y} \lor z)  & \text{Axiom} \\
+    D_5 & (x \lor \vnot{y}) & \text{Res. on $D_1, D_4$} \\
+    D_6 & (\vnot{x} \lor z) & \text{Axiom} \\
+    D_7 & \vnot{x} & \text{Res. on $D_1, D_6$} \\
+    D_8 & \vnot{y} & \text{Res. on $D_5, D_7$} \\
+    D_9 & \bot & \text{Res. on $D_3, D_8$} \\
+\end{array}\]
+
+which can also be graphically expressed as:
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+        \node (1) []{$\bot$};
+        
+        \node (2) at ($(1)+(-2,1.75)$){};
+        \node (3) at ($(1)+(2,1.75)$){$\vnot{y}$};
+    
+        \node (4) [above left of=2]{};
+        \node (5) [above right of=2]{};
+    
+        \node (6) [above of=3]{$\vnot{y} \lor x$};
+        \node (7) [right of=6]{$\vnot{x}$};
+        
+        \node (8) [above left of=6]{$x \lor \vnot{y} \lor z$};
+        \node (9) [above right of=6]{$\vnot{x} \lor z$};
+    
+        \node (11) [right of=9]{$\vnot{z}$};
+        \node (12) [above left of=2]{$y$};
+    
+        \node (14) at ($(8)+(-2.4,0)$){$y \lor \vnot{z}$};
+        \node (15) [left of=14]{$y \lor z$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (15) edge (12)
+            
+            (6) edge (3)
+            (7) edge (3)
+            
+            (8) edge (6)
+            (11) edge (6)
+            
+            (9) edge (7)
+            (11) edge (7)
+    
+            (11) edge (12)
+    
+            (12) edge (1)
+            (3) edge (1)
+        ;
+    \end{tikzpicture}
+    
+    \caption{Dag-like refutation of the previous formula}
+\end{figure}
+
+Through this representation, each refutation produces a directed acyclic graph (DAG), also knows as dag-like refutations. When each clause appears only once in a refutation, the latter is referred to as a tree-like refutation due to how the underlying graph is actually a tree.
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (1) []{$\bot$};
+        
+        \node (2) at ($(1)+(-2,1.75)$){$y$};
+        \node (3) at ($(1)+(2,1.75)$){$\vnot{y}$};
+    
+        \node (4) [above left of=2]{};
+        \node (5) [above right of=2]{};
+    
+        \node (6) [above of=3]{$\vnot{y} \lor z$};
+        
+        \node (8) [above left of=6]{$x \lor \vnot{y} \lor z$};
+        \node (9) [above right of=6]{$\vnot{x} \lor z$};
+    
+        \node (11) [right of=9]{$\vnot{z}$};
+    
+        \node (14) at ($(8)+(-2.4,0)$){$y \lor \vnot{z}$};
+        \node (15) [left of=14]{$y \lor z$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (14) edge (2)
+            (15) edge (2)
+    
+            (8) edge (6)
+            (9) edge (6)
+    
+            (6) edge (3)
+            (11) edge (3)
+    
+            (2) edge (1)
+            (3) edge (1)
+        ;
+    \end{tikzpicture}
+    
+    \caption{Tree-like refutation of the previous formula}
+\end{figure}
+
+This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutations require trees of exponential size and polynomial depth compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+
+But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. If we can show that either one of these problems is also in $\mathsf{NP}$ then we would have an answer to the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
+
+Proof systems are essential to work on this question: given the encoding $s$ of a tautology $F$, a verifier can follow the rules defined by a proof system in order to prove that $F$ is indeed a tautology. In this case, $s$ serves as a certificate for $F$ while the pps defines the algorithm. We give the following equivalent definition of propositional proof system equivalent to the previous one.
+
+\begin{definition}
+    A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $s \in \Sigma^*$ such that $V(F,s) = 1$.
+\end{definition}
+
+On first glance, one could think that this definition imply that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the size of such certificates: in order to be an efficient verifier, the size of the certificates must be polynomially bounded by the size of $F$. In other words, it must hold that $\abs{s} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$ (which is equivalent to proving that $\mathrm{TAUT} \in \mathsf{NP}$) we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded certificates for all tautologies.
+
+\begin{proposition}
+    There is a polynomially bounded proof system if and only if $\mathsf{NP} \neq \mathsf{coNP}$.
+\end{proposition}
+
+We already discussed how researches believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. In order to prove this, we would have to prove that there cannot be a polynomially bounded pps. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential size encoding for every discovered and undiscovered proof system. Even thought this result seems out of reach, proof complexity is highly related to other branches of complexity theory, including our case!
+
+In order to get to this relation between proof complexity and $\mathsf{TFNP}^{dt}$, we will restrict our focus to \textbf{conjunctive normal form (CNF) formulas}. 
+
+By construction, a CNF formula can be unsatisfiable if and only if for all assignments $\alpha(x_1, \ldots, x_n)$ there is a clause $C_i$ that is false. It's easy to see this fact implies that any CNF formula gives rise to an associated search problem: finding a falsified clause inside the formula (if there is any) for each possible assignment.
+
+\begin{definition}
+    Given a CNF $F = C_1 \land \ldots \land C_m$ over $n$ variables, we define $\mathrm{Search}(F)$ as the following search problem: given an input assignment $\alpha(x_1, \ldots, x_n)$, return an index $i$ such that the assignment falsifies $C_i$.
+\end{definition}
+
+This problem is usually referred to as the \textit{false clause search problem}. 
+When $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is clearly a total search problem since for any input assignment there will always be an unsatisfied clause. Moreover, the search problem of any unsatisfiable formula can easily be solved (or verified) by a decision tree for any formula $F$: if the assignment $\alpha(x_1 = b_1, \ldots, x_n = b_2)$ falsifies the clause $C_i$, define a path $x_1 = b_1, \ldots, x_n = b_n$ on the decision tree and let $C_i$ be the output of such path. In other words, for all $\lnot F \in \mathrm{TAUT}$ it holds that $\mathrm{Search}(F) \in \mathsf{TFNP}^{dt}$. 
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (1)[circle, draw]{$y$};
+        
+        \node (2) at ($(1)+(-2,-1.75)$) [circle, draw]{$z$};
+        \node (3) at ($(1)+(2,-1.75)$) [circle, draw]{$z$};
+    
+        \node (4) [below left of=2]{};
+        \node (5) [below right of=2]{};
+    
+        \node (6) [below of=3, circle, draw]{$x$};
+        
+        \node (8) [below left of=6, rectangle, draw]{$x \lor \vnot{y} \lor z$};
+        \node (9) [below right of=6, rectangle, draw]{$z \lor \vnot{x}$};
+    
+        \node (11) [right of=9, rectangle, draw]{$\vnot{z}$};
+    
+        \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \vnot{z}$};
+        \node (15) [left of=14, rectangle, draw]{$y \lor z$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (14) edge [swap] node{1} (2)
+            (15) edge node{0} (2)
+    
+            (8) edge node{0}(6)
+            (9) edge node[swap]{1}(6)
+    
+            (6) edge node{0}(3)
+            (11) edge [swap] node{1}(3)
+    
+            (2) edge node {0} (1)
+            (3) edge node [swap] {1} (1)
+        ;
+    \end{tikzpicture}
+    
+    \caption{Decision tree for the unsatisfiable formula $(y \lor z) \land (y \lor \vnot{z}) \land (x \lor \vnot{y} \lor z) \land (\vnot{x} \lor z) \land \vnot{z}$}
+    \end{figure}
+
+    In a similar fashion, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$.
+
+Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, denoted with $D_T$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. By De Morgan's theorem, $\vnot{D_T}$ is a CNF.
 
 \begin{proposition}
     \label{Rdt = Search(F)}
@@ -137,30 +323,28 @@ Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading 
 
 \end{proof}
 
-This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in \N}$, where $F_1, F_2, \ldots$ is a family of CNF formulas, and by extension that black-box \TFNP is \textit{exactly} the study of the false clause search problem. Like in the white-box case, the upshot is that it is sufficient to restrict our interests on the study of search problems associated to unsatisfiable CNF formulas.
+This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in \N}$, where $F_1, F_2, \ldots$ is a family of CNF formulas, and by extension that black-box \TFNP is exactly \textit{the study of the false clause search problem}. Like in the white-box case, the upshot is that it is sufficient to restrict our interests on the study of search problems associated to unsatisfiable CNF formulas.
 
-Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\TFNPdt$ search problem and vice versa. 
-
-Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
+Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
 \[P(F) := \min\{\log \mathrm{size}(\Pi) + \mathrm{deg}(\Pi) : \Pi \text{ is a $P$-proof of } F\}\]
-where $\mathrm{size}(\Pi)$ is the \textit{size} of $\Pi$ in $P$, i.e. the sum of the sizes of all the formulas inside it or in other words the total number of symbols in $\Pi$, and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. This degree measure will be specified for the proof systems used in following sections.
+where $\mathrm{size}(\Pi)$ is the sum of the sizes of all the formulas inside it, or in other words the total number of symbols in $\Pi$, and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. This degree measure will be specified for the proof systems analyzed in following sections.
 
-Since each $\TFNPdt$ problem is equivalent to the false clause search problem of a family $F$ of formulas, the complexity parameter defined above can be used to define another characterization of $\TFNPdt$ problems.
+To make things more readable, we will refer to $\mathrm{Search}(F)$ as $S_F$. Since each $\TFNPdt$ problem is equivalent to $S_F$ for some formula $F$, the complexity parameter defined above can be used to give another characterization of $\TFNPdt$ problems.
 
 \begin{definition}
-    We say that a proof system $P$ \textbf{characterizes} a $\TFNPdt$ problem $R$ (and reflexively that $R$ characterizes $P$) if it holds that \[R^{dt} = \{\mathrm{Search}(F) : P(F) = \mathrm{polylog}(n)\}\]
-    where $F = F_1, F_2, \ldots$ is a family of formulas. In a stronger sense, it holds that $R^{dt}(\mathrm{Search}(F)) = \Theta(P(F))$.
+    We say that a proof system $P$ \textbf{characterizes} a $\TFNPdt$ problem $R$ (and reflexively that $R$ characterizes $P$) if it holds that \[R^{dt} = \{S_F : P(F) = \mathrm{polylog}(n)\}\]
+    where $F = F_1, F_2, \ldots$ is a family of formulas. In a stronger sense, it holds that $R^{dt}(S_F) = \Theta(P(F))$. 
 \end{definition}
 
-Most of the \TFNP subclasses discussed in previous sections has been shown to have a characterizing proof system. References and proofs to these characterizations can be found in \cite{separations_proof_complexity,tfnp_characterization}.
+Most of the \TFNP subclasses discussed in previous sections has been shown to have a characterizing proof system:
 \begin{itemize}
-    \item $\mathrm{PLS}^{dt}(\mathrm{Search}(F)) = \Theta(\mathrm{TreeRes}(F))$
-    \item $\mathrm{PPA}^{dt}(\mathrm{Search}(F)) = \Theta(\F_2\mathrm{-NS}(F))$
-    \item $\mathrm{PPADS}^{dt}(\mathrm{Search}(F)) = \Theta(\mathrm{unary-NS}(F))$
-    \item $\mathrm{PPAD}^{dt}(\mathrm{Search}(F)) = \Theta(\mathrm{unary-SA}(F))$
-    \item $\mathrm{SOPL}^{dt}(\mathrm{Search}(F)) = \Theta(\mathrm{RevRes}(F))$
-    \item $\mathrm{CLS}^{dt}(\mathrm{Search}(F)) = \Theta(\mathrm{RevResT}(F))$
-    \item $\mathrm{FP}^{dt}(\mathrm{Search}(F)) = \Theta(\mathrm{TreeRes}(F))$
+    \item $\mathrm{FP}^{dt}(S_F) = \Theta(\mathrm{TreeRes}(F))$ \cite{search_problems_dt_model}
+    \item $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathrm{Res}(F))$  \cite{approx_counting}
+    \item $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\mathrm{\text{-}NS}(F))$ \cite{adventures_monotone_tfnp}
+    \item $\mathrm{PPADS}^{dt}(S_F) = \Theta(\mathrm{unary\text{-}NS}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{PPAD}^{dt}(S_F) = \Theta(\mathrm{unary\text{-}SA}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathrm{RevRes}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathrm{RevResT}(F))$ \cite{separations_proof_complexity}
 \end{itemize}
 
 \newpage
