@@ -93,7 +93,7 @@ As discussed in the previous section, not all search problems are total, meaning
 
 For simplicity, we assume that each search problem in \textsf{FP} is also total: since problems in \textsf{FP} are solvable in polynomial time, when a solution doesn't exist we can output a pre-chosen \say{doesn't exist} solution, making the problem total. This assumption easily implies that \textsf{FP} $\subseteq$ \textsf{TFNP} $\subseteq$ \textsf{FNP}, giving us a proper hierarchy. For natural reasons, this assumption wouldn't work for \textsf{FNP} problems: the only way to polynomially verify that a solution doesn't exist would be to solve the problem itself and find that there is no solution, implying that \textsf{FP} = \textsf{FNP} would be trivially true.
 
-Another way to view total search problems is through the lens of \textit{polynomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. Proving that a decision problem is in \textsf{coNP} is also equivalent to proving that for each input of that problem there is no string that can certificate that the solution is correct. Researchers currently believe that $\mathsf{NP} \neq \mathsf{coNP}$, even though this is still an open question.
+Another way to view total search problems is through the lens of \textit{polynomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. Proving that a decision problem is in \textsf{coNP} is also equivalent to proving that for each input of that problem there is no string that can certificate that the solution is correct. Researchers currently believe that $\mathsf{NP} \neq \mathsf{coNP}$, even though this is still an open question. If the answer to this question were proved to be negative, we would also have a direct answer to the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question: we know that if $\mathsf{NP} \neq \mathsf{coNP}$ then $\mathsf{P} \neq \mathsf{NP}$ \cite{complexity_arora_barak, sipser_computation}
 
 For search problems, we define the class \textsf{FcoNP} in the same way. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can be certified or disqualified in polynomial time \cite{tfnp_f_np_conp}.
 
@@ -228,7 +228,7 @@ Each of these subclasses is characterized by a complete total search problem tha
 
 Interestingly, lots of complex problems have been proven to be reducible to these basic problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to not only lie inside \textsf{PPAD} but also be \textsf{PPAD}-Complete \cite{nash_1, nash_2}. One should ponder what it really means for a problem to be complex.
 
-Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the question \textsf{P} vs. \textsf{NP}. By hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
+Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$. By hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
  
 \newpage
 
@@ -364,21 +364,21 @@ Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A fu
         \node[main node] (5) [below left of=4]{$\land$};
         \node[main node] (6) [below right of=4]{$\land$};
         \node[main node] (7) [below of=5]{$x_1$};
-        \node[main node] (8) [below of=6]{$\overline{x_1}$};
+        \node[main node] (8) [below of=6]{$\vnot{x_1}$};
 
         \node[main node] (9) [below left of=3]{$\lor$};
         \node[main node] (10) [below left of=9]{$\land$};
         \node[main node] (11) [below right of=9]{$\land$};
 
         \node[main node] (12) [below of=10]{$x_2$};
-        \node[main node] (13) [below of=11]{$\overline{x_2}$};
+        \node[main node] (13) [below of=11]{$\vnot{x_2}$};
 
         \node[] (14) [below right of=3, xshift=50]{};
         \node[] (15) [below left of=14]{};
         \node[] (16) [below right of=14]{};
 
         \node[main node] (17) [below of=15, yshift=8]{$x_3$};
-        \node[main node] (18) [below of=16, yshift=8]{$\overline{x_3}$};
+        \node[main node] (18) [below of=16, yshift=8]{$\vnot{x_3}$};
 
         \path[every node/.style={font=\sffamily\small}]
             (1) edge (2)

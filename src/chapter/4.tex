@@ -98,15 +98,15 @@ The above proposition gives a strong result that allows us to characterize black
 Like protocols, in query search problems the certificate is the verifying decision tree itself. Decision tree reductions are based on a more fine-grained definition, where the function that maps inputs of the first problem to inputs of the second problem is computed by many decision trees with output $\{0,1\}$.
 
 \begin{definition}
-    A query search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a query search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a family of decision trees $T_i : \{0,1\}^m \to \{0,1\}$ for each $i \in [n]$ and a decision tree $T_y^o : \{0,1\}^m \to O_m$ for each $y \in O_n'$ such that:
+    A query search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a query search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is sequence $T = (T_i)_{i \in [n]}$ of decision trees $T_i : \{0,1\}^m \to \{0,1\}$ and a decision tree $T_y^o : \{0,1\}^m \to O_m$ for each $y \in O_n'$ such that:
     \[\forall x \in \{0,1\}^m \;\; (T(x), y) \in S \implies (x, T_y^o(x)) \in R\]
     where $T(x) := (T_1(x), \ldots, T_n(x))$.
 \end{definition}
 
-The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter return an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, including each $T_i$ and each $T_y^o$. The complexity of the reduction is denoted as $S^{dt}_\leq(R)$ and it's equal $\log n + d$. A decision tree reduction is considered efficient if its complexity is polylogarithmic, i.e. equal to $O(\log^k n)$. 
+The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter return an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, including each $T_i$ and each $T_y^o$. The complexity of the reduction is denoted as $S(R)$  and it's equal $\log n + d$. A decision tree reduction is considered efficient if its complexity is polylogarithmic, i.e. equal to $O(\log^k n)$. 
 
 \begin{definition}
-    Given $S \in \mathsf{TFNP}^{dt}$, we define the class $S^{dt}$ as the subset of \textsf{TFNP}$^{dt}$ problems efficiently reducible through decision trees to the problem $S$, formally $S^{dt} = \{R \in \mathsf{TFNP} \mid S^{dt}_\leq(R) = O(\log^k n)\}$
+    Given $S \in \mathsf{TFNP}^{dt}$, we define the class $S^{dt}$ as the subset of \textsf{TFNP}$^{dt}$ problems efficiently reducible through decision trees to the problem $S$, formally $S^{dt} = \{R \in \mathsf{TFNP} \mid S(R) = O(\log^k n)\}$
 \end{definition}
 
 \section{Connections to Proof Complexity}
@@ -121,29 +121,29 @@ Proof systems can be viewed as an algorithm that manipulates propositional formu
 
 Given a formula $F \in \mathrm{TAUT}$ a string $s \in \Sigma^*$ and a proof system $f$, we say that $s$ encodes $F$ for the pps $f$ if it holds that $f(s) = F$. This idea justifies why we want proof systems to be surjective: any true statement must have a valid encoding in the proof system. This property is called \textit{completeness} of the proof system.
 
-The most studied proof system is \textit{resolution} (or \textsf{Res}). Given a formula $F \in \mathrm{TAUT}$, this proof system is able to prove that it is indeed a tautology by proving that $\lnot F \in \mathrm{UNSAT}$. A \textit{CNF formula} $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal form:
-\[F = (x_1 \lor x_2 \lor \overline{x_3} \lor x_4) \land (x_1 \lor \vnot{x_2}) \land x_3\]
+The most studied proof system is \textit{resolution} (or \textsf{Res}). Given a formula $F \in \mathrm{TAUT}$, this proof system is able to prove that it is indeed a tautology by proving that $\lnot F \in \mathrm{UNSAT}$. A \textit{conjunctive normal form} (CNF) formula $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal form:
+\[F = (x_1 \lor x_2 \lor \lnot{x_3} \lor x_4) \land (x_1 \lor \lnot{x_2}) \land x_3\]
 
 Any formula can be expressed as an equivalent CNF formula, making resolution a \textit{complete} and \textit{sound} proof system. Resolution proof are based on repeated applications of the following simple rule called the \textit{resolution rule}:
-\[\dfrac{C \lor x \qquad D \lor \vnot x}{C \lor D}\]
+\[\dfrac{C \lor x \qquad D \lor \lnot x}{C \lor D}\]
 
 Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}.
 
 \begin{proposition}
-    Given a CNF formula $F$, it holds that $F \in \mathrm{UNSAT}$ if and only if $F$ is refuted by Resolution
+    Given a CNF formula $F$, it holds that $F \in \mathrm{TAUT}$ if and only if $\lnot F$ is refuted by Resolution
 \end{proposition}
 
-For example, given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \vnot{z}) \land (x \lor \vnot{y} \lor z) \land (\vnot{x} \lor z) \land \vnot{z}$, a Resolution proof is given by:
+For example, given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
 \[\begin{array}{lcl}
-    D_1 & \vnot{z} & \text{Axiom} \\
-    D_2 & (y \lor z) & \text{Axiom} \\
-    D_3 & y & \text{Res. on $D_1, D_2$} \\
-    D_4 & (x \lor \vnot{y} \lor z)  & \text{Axiom} \\
-    D_5 & (x \lor \vnot{y}) & \text{Res. on $D_1, D_4$} \\
-    D_6 & (\vnot{x} \lor z) & \text{Axiom} \\
-    D_7 & \vnot{x} & \text{Res. on $D_1, D_6$} \\
-    D_8 & \vnot{y} & \text{Res. on $D_5, D_7$} \\
-    D_9 & \bot & \text{Res. on $D_3, D_8$} \\
+    D_1 :& \lnot{z} & \text{Axiom} \\
+    D_2 :& (y \lor z) & \text{Axiom} \\
+    D_3 :& y & \text{Res. on $D_1, D_2$} \\
+    D_4 :& (x \lor \lnot{y} \lor z)  & \text{Axiom} \\
+    D_5 :& (x \lor \lnot{y}) & \text{Res. on $D_1, D_4$} \\
+    D_6 :& (\lnot{x} \lor z) & \text{Axiom} \\
+    D_7 :& \lnot{x} & \text{Res. on $D_1, D_6$} \\
+    D_8 :& \lnot{y} & \text{Res. on $D_5, D_7$} \\
+    D_9 :& \bot & \text{Res. on $D_3, D_8$} \\
 \end{array}\]
 
 which can also be graphically expressed as:
@@ -155,21 +155,21 @@ which can also be graphically expressed as:
         \node (1) []{$\bot$};
         
         \node (2) at ($(1)+(-2,1.75)$){};
-        \node (3) at ($(1)+(2,1.75)$){$\vnot{y}$};
+        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
     
         \node (4) [above left of=2]{};
         \node (5) [above right of=2]{};
     
-        \node (6) [above of=3]{$\vnot{y} \lor x$};
-        \node (7) [right of=6]{$\vnot{x}$};
+        \node (6) [above of=3]{$\lnot{y} \lor x$};
+        \node (7) [right of=6]{$\lnot{x}$};
         
-        \node (8) [above left of=6]{$x \lor \vnot{y} \lor z$};
-        \node (9) [above right of=6]{$\vnot{x} \lor z$};
+        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
+        \node (9) [above right of=6]{$\lnot{x} \lor z$};
     
-        \node (11) [right of=9]{$\vnot{z}$};
+        \node (11) [right of=9]{$\lnot{z}$};
         \node (12) [above left of=2]{$y$};
     
-        \node (14) at ($(8)+(-2.4,0)$){$y \lor \vnot{z}$};
+        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
         \node (15) [left of=14]{$y \lor z$};
     
         \path[every node/.style={font=\sffamily\small}]
@@ -204,19 +204,19 @@ Through this representation, each refutation produces a directed acyclic graph (
         \node (1) []{$\bot$};
         
         \node (2) at ($(1)+(-2,1.75)$){$y$};
-        \node (3) at ($(1)+(2,1.75)$){$\vnot{y}$};
+        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
     
         \node (4) [above left of=2]{};
         \node (5) [above right of=2]{};
     
-        \node (6) [above of=3]{$\vnot{y} \lor z$};
+        \node (6) [above of=3]{$\lnot{y} \lor z$};
         
-        \node (8) [above left of=6]{$x \lor \vnot{y} \lor z$};
-        \node (9) [above right of=6]{$\vnot{x} \lor z$};
+        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
+        \node (9) [above right of=6]{$\lnot{x} \lor z$};
     
-        \node (11) [right of=9]{$\vnot{z}$};
+        \node (11) [right of=9]{$\lnot{z}$};
     
-        \node (14) at ($(8)+(-2.4,0)$){$y \lor \vnot{z}$};
+        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
         \node (15) [left of=14]{$y \lor z$};
     
         \path[every node/.style={font=\sffamily\small}]
@@ -239,25 +239,23 @@ Through this representation, each refutation produces a directed acyclic graph (
 
 This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutations require trees of exponential size and polynomial depth compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
 
-But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. If we can show that either one of these problems is also in $\mathsf{NP}$ then we would have an answer to the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
+But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. Showing that any of these problems is also in $\mathsf{NP}$ would answer the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
 
-Proof systems are essential to work on this question: given the encoding $s$ of a tautology $F$, a verifier can follow the rules defined by a proof system in order to prove that $F$ is indeed a tautology. In this case, $s$ serves as a certificate for $F$ while the pps defines the algorithm. We give the following equivalent definition of propositional proof system equivalent to the previous one.
+Proof systems are essential to work on this question: given the encoding $\Pi$ of a proof  of $F$ in a proof system, a verifier can follow the rules defined by the proof system in order to prove that $F$ is indeed a tautology. In this case, $\Pi$ serves as a certificate for $F$ while the pps defines the verifier. We give the following equivalent definition of propositional proof system equivalent to the previous one.
 
 \begin{definition}
-    A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $s \in \Sigma^*$ such that $V(F,s) = 1$.
+    A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $\Pi \in \Sigma^*$ such that $V(F,\Pi) = 1$.
 \end{definition}
 
-On first glance, one could think that this definition imply that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the size of such certificates: in order to be an efficient verifier, the size of the certificates must be polynomially bounded by the size of $F$. In other words, it must hold that $\abs{s} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$ (which is equivalent to proving that $\mathrm{TAUT} \in \mathsf{NP}$) we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded certificates for all tautologies.
+On first glance, one could think that this definition implies that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the size of such proofs: in order to be an efficient verifier, the size of the certificates must be polynomially bounded by the size of $F$. In other words, it must hold that $\abs{\Pi} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$ (which is equivalent to proving that $\mathrm{TAUT} \in \mathsf{NP}$) we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded proofs for all tautologies.
 
 \begin{proposition}
     There is a polynomially bounded proof system if and only if $\mathsf{NP} \neq \mathsf{coNP}$.
 \end{proposition}
 
-We already discussed how researches believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. In order to prove this, we would have to prove that there cannot be a polynomially bounded pps. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential size encoding for every discovered and undiscovered proof system. Even thought this result seems out of reach, proof complexity is highly related to other branches of complexity theory, including our case!
+We already discussed how researches believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. In order to prove this, we would have to prove that there cannot be a polynomially bounded pps. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential size encoding for every discovered and undiscovered proof system.
 
-In order to get to this relation between proof complexity and $\mathsf{TFNP}^{dt}$, we will restrict our focus to \textbf{conjunctive normal form (CNF) formulas}. 
-
-By construction, a CNF formula can be unsatisfiable if and only if for all assignments $\alpha(x_1, \ldots, x_n)$ there is a clause $C_i$ that is false. It's easy to see this fact implies that any CNF formula gives rise to an associated search problem: finding a falsified clause inside the formula (if there is any) for each possible assignment.
+Even thought this result seems out of reach, proof complexity is highly related to other branches of complexity theory, including our case! In order to get to this relation between proof complexity and $\mathsf{TFNP}^{dt}$, we will restrict our focus to CNF formulas: by construction, a CNF formula can be unsatisfiable if and only if for all assignments $\alpha(x_1, \ldots, x_n)$ there is a clause $C_i$ that is false. It's easy to see this fact implies that any CNF formula gives rise to an associated search problem: finding a falsified clause inside the formula (if there is any) for each possible assignment.
 
 \begin{definition}
     Given a CNF $F = C_1 \land \ldots \land C_m$ over $n$ variables, we define $\mathrm{Search}(F)$ as the following search problem: given an input assignment $\alpha(x_1, \ldots, x_n)$, return an index $i$ such that the assignment falsifies $C_i$.
@@ -281,12 +279,12 @@ When $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is clearly a tota
     
         \node (6) [below of=3, circle, draw]{$x$};
         
-        \node (8) [below left of=6, rectangle, draw]{$x \lor \vnot{y} \lor z$};
-        \node (9) [below right of=6, rectangle, draw]{$z \lor \vnot{x}$};
+        \node (8) [below left of=6, rectangle, draw]{$x \lor \lnot{y} \lor z$};
+        \node (9) [below right of=6, rectangle, draw]{$z \lor \lnot{x}$};
     
-        \node (11) [right of=9, rectangle, draw]{$\vnot{z}$};
+        \node (11) [right of=9, rectangle, draw]{$\lnot{z}$};
     
-        \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \vnot{z}$};
+        \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \lnot{z}$};
         \node (15) [left of=14, rectangle, draw]{$y \lor z$};
     
         \path[every node/.style={font=\sffamily\small}]
@@ -304,12 +302,12 @@ When $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is clearly a tota
         ;
     \end{tikzpicture}
     
-    \caption{Decision tree for the unsatisfiable formula $(y \lor z) \land (y \lor \vnot{z}) \land (x \lor \vnot{y} \lor z) \land (\vnot{x} \lor z) \land \vnot{z}$}
+    \caption{Decision tree for the previous unsatisfiable formula}
     \end{figure}
 
     In a similar fashion, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$.
 
-Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, denoted with $D_T$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. By De Morgan's theorem, $\vnot{D_T}$ is a CNF.
+Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, written as $D(T)$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. By De Morgan's theorem, $\lnot{D(T)}$ is a CNF.
 
 \begin{proposition}
     \label{Rdt = Search(F)}
@@ -317,8 +315,8 @@ Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading 
 \end{proposition}
 
 \begin{proof}
-    Since $R = (R_n)_{n \in \N} \in \TFNP^{dt}$, for each $y \in O_n$ there is a $\mathrm{polylog}(n)$-depth decision tree $T_y$ that verifies $R_n$. Consider the CNF $F_n := \bigwedge\limits_{y \in O_n} \vnot{D_{T_y}}$. Since $R$ is a total search problem, for each input $x$ there is a valid output, implying that at least one tree $T_y$ will have an accepting path, meaning that $D_{T_y}(x) = 1$ and therefore $\vnot{D_{T_y}}(x) = 0$, concluding that $F_n$ is unsatisfiable. Moreover, this formulation also concludes that:
-    \[(x,y) \in R_n \iff T_y(x) = 1 \iff \vnot{D_{T_y}}(x) = 0 \iff (x,y) \in \mathrm{Search}(F_n)\]
+    Since $R = (R_n)_{n \in \N} \in \TFNP^{dt}$, for each $y \in O_n$ there is a $\mathrm{polylog}(n)$-depth decision tree $T_y$ that verifies $R_n$. Consider the CNF $F_n := \bigwedge\limits_{y \in O_n} \lnot{D(T_y)}$. Since $R$ is a total search problem, for each input $x$ there is a valid output, implying that at least one tree $T_y$ will have an accepting path, meaning that $D(T_y)$ with input $x$ accepts and therefore $\lnot{D(T_y)}$ with input $x$ rejects, concluding that $F_n$ is unsatisfiable. Moreover, this formulation also concludes that:
+    \[(x,y) \in R_n \iff (x,y) \in \mathrm{Search}(F_n)\]
     and thus that $R_n = \mathrm{Search}(F_n)$.
 
 \end{proof}
@@ -327,65 +325,125 @@ This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in
 
 Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
 \[P(F) := \min\{\log \mathrm{size}(\Pi) + \mathrm{deg}(\Pi) : \Pi \text{ is a $P$-proof of } F\}\]
-where $\mathrm{size}(\Pi)$ is the sum of the sizes of all the formulas inside it, or in other words the total number of symbols in $\Pi$, and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. This degree measure will be specified for the proof systems analyzed in following sections.
+where $\mathrm{size}(\Pi)$ is the sum of the sizes of all the formulas inside it, or in other words the total number of symbols in $\Pi$, and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. For example, in Tree-like Resolution the degree is the depth of the proof tree. This degree measure will be specified for the proof systems analyzed in following sections.
 
 To make things more readable, we will refer to $\mathrm{Search}(F)$ as $S_F$. Since each $\TFNPdt$ problem is equivalent to $S_F$ for some formula $F$, the complexity parameter defined above can be used to give another characterization of $\TFNPdt$ problems.
 
 \begin{definition}
     We say that a proof system $P$ \textbf{characterizes} a $\TFNPdt$ problem $R$ (and reflexively that $R$ characterizes $P$) if it holds that \[R^{dt} = \{S_F : P(F) = \mathrm{polylog}(n)\}\]
-    where $F = F_1, F_2, \ldots$ is a family of formulas. In a stronger sense, it holds that $R^{dt}(S_F) = \Theta(P(F))$. 
+    where $F = (F_i)_{i \in \N}$ is a family of formulas. In a stronger sense, it must hold that $R^{dt}(S_F) = \Theta(P(F))$. 
 \end{definition}
 
 Most of the \TFNP subclasses discussed in previous sections has been shown to have a characterizing proof system:
 \begin{itemize}
-    \item $\mathrm{FP}^{dt}(S_F) = \Theta(\mathrm{TreeRes}(F))$ \cite{search_problems_dt_model}
-    \item $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathrm{Res}(F))$  \cite{approx_counting}
-    \item $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\mathrm{\text{-}NS}(F))$ \cite{adventures_monotone_tfnp}
-    \item $\mathrm{PPADS}^{dt}(S_F) = \Theta(\mathrm{unary\text{-}NS}(F))$ \cite{separations_proof_complexity}
-    \item $\mathrm{PPAD}^{dt}(S_F) = \Theta(\mathrm{unary\text{-}SA}(F))$ \cite{separations_proof_complexity}
-    \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathrm{RevRes}(F))$ \cite{separations_proof_complexity}
-    \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathrm{RevResT}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{FP}^{dt}(S_F) = \Theta(\mathsf{TreeRes}(F))$ \cite{search_problems_dt_model}
+    \item $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$  \cite{approx_counting}
+    \item $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\textsf{-NS}(F))$ \cite{adventures_monotone_tfnp}
+    \item $\mathrm{PPADS}^{dt}(S_F) = \Theta(\textsf{unary-NS}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{PPAD}^{dt}(S_F) = \Theta(\textsf{unary-SA}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathsf{RevRes}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathsf{RevResT}(F))$ \cite{separations_proof_complexity}
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (2) []{\textsf{TFNP}$^{dt}$};
+
+        \node (3) [below of = 2]{\textsf{PPP}$^{dt}$};
+
+        \node (4) [left of = 3, xshift=-40]{\textsf{PLS}$^{dt}$};
+
+        \node (5) [right of = 3, xshift=40]{\textsf{PPA}$^{dt}$};
+
+        \node (6) [below of = 3]{\textsf{PPADS}$^{dt}$};
+
+        \node (7) [below of = 6]{};
+
+        \node (8) [left of = 7, xshift=-40]{\textsf{SOPL}$^{dt}$};
+
+        \node (9) [right of = 7, xshift=40]{\textsf{PPAD}$^{dt}$};
+
+        \node (10) [below of = 7]{\textsf{CLS}$^{dt}$};
+
+        \node (11) [below of = 10]{\textsf{FP}$^{dt}$};
+
+        \node (12) [left of = 4, xshift = 25]{\textsf{Res} $=$};
+
+        \node (13) [left of = 6, xshift = 5]{\textsf{unary-NS} $=$};
+        
+        \node (14) [left of = 8, xshift = 12.5]{\textsf{RevRes} $=$};
+        
+        \node (15) [left of = 10, xshift = 12.5]{\textsf{RevResT} $=$};
+
+        \node (16) [right of = 5, xshift = -17.5]{$=$ \textsf{$\F_2$-NS}};
+
+        \node (17) [right of = 9, xshift = -7.5]{$=$ \textsf{unary-SA}};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (3) edge (2)
+            (4) edge (2)
+            (5) edge (2)
+            (6) edge (3)
+            (8) edge (4)
+            (8) edge (6)
+            (9) edge (5)
+            (9) edge (6)
+            (10) edge (8)
+            (10) edge (9)
+            (11) edge (10)
+        ;
+    \end{tikzpicture}
+    
+    \caption{Black-box \textsf{TFNP} classes and their characterizing proof systems}
+\end{figure}
+
 
 \newpage
 
-\section{Canonical Proof Systems}
+\section{Reductions through CNF formulas}
 
-In an intuitive way, this characterization also shows that \textit{any} $\TFNPdt$ problem can be transformed into a proof system for refuting unsatisfiable CNF formulas of polylogarithmic width: since any $\TFNPdt$ is equivalent to the search problem for some unsatisfiable CNF formula, any efficient decision tree reduction between problems is nothing more than an efficient proof in the characterizing proof system and vice versa. To formalize this idea, we introduce the concept of \textbf{reductions between CNF formulas} \cite{tfnp_characterization}.
+In an intuitive way, the characterization given in the previous section shows that any $\TFNPdt$ problem can be transformed into a proof system for refuting unsatisfiable CNF formulas of polylogarithmic width: since any $\TFNPdt$ is equivalent to the search problem for some unsatisfiable CNF formula, any efficient decision tree reduction between problems is nothing more than an efficient proof in the characterizing proof system and vice versa. To formalize this idea, we introduce the concept of \textbf{reductions between CNF formulas} \cite{tfnp_characterization}.
 
-Suppose that $C$ is a clause over $n$ variables and that $T = (T_i)_{i \in [n]}$ is a sequence of depth-$d$ decision trees, where $T_i : \{0,1\}^{n'} \to \{0,1\}$. We refer to $C(T)$ as the CNF formula obtained by substituting each variable $x_i$ in $C$ with the associated tree $T_i$ and rewriting the result as a CNF, or more conveniently:
-\[C(T) := \bigwedge_{i \in [n]} \, \bigwedge_{\substack{r \,:\, \text{rejecting} \\ \text{path of $T_i$}}} \overline{r}\]
+Suppose that $C$ is a clause over $n$ variables and that $T = (T_i)_{i \in [n]}$ is a sequence of depth-$d$ decision trees, where $T_i : \{0,1\}^{m} \to \{0,1\}$. We refer to $C(T)$ as the CNF formula obtained by substituting each variable $x_i$ in $C$ with $D(T_i)$ and rewriting the result as a CNF, or more conveniently:
+\[C(T) := \bigwedge_{i \in [n]} \, \bigwedge_{\substack{r \,:\, \text{rejecting} \\ \text{path of $T_i$}}} \lnot{r}\]
+
 
 \begin{definition}
-    Let $F = C_1 \land \ldots \land C_{m_F}$ be an unsatisfiable CNF over $n_F$ variables. We say that a CNF formula $H$ made of $m_H$ clauses over $n_H$ variables reduces to $F$ via depth-$d$ decision trees if there exist two sequences of depth-$d$ decision trees $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$, where $T_i : \{0,1\}^{n_H} \to \{0,1\}$ and $T_j^o : \{0,1\}^{n_H} \to [m_H]$, such that given the following formula:
-    \[F_H := \bigwedge_{j \in [m_F]} \,\bigwedge_{\substack{p \,:\; \text{path} \\ \text{in } T_j^o}} C_i(T) \lor \overline{p}\]
+    Let $F = C_1 \land \ldots \land C_{m_F}$ be an unsatisfiable CNF over $n_F$ variables. We say that a CNF formula $H$ made of $m_H$ clauses over $n_H$ variables reduces to $F$ via depth-$d$ decision trees if there exist two sequences of depth-$d$ decision trees $T = (T_i)_{i \in [n_F]}$ and $T^o = (T_j^o)_{j \in [m_F]}$, where $T_i : \{0,1\}^{n_H} \to \{0,1\}$ and $T_j^o : \{0,1\}^{n_H} \to [m_H]$, such that given the following formula:
+    \[F_H := \bigwedge_{j \in [m_F]} \,\bigwedge_{\substack{p \,:\; \text{path} \\ \text{in } T_j^o}} C_i(T) \lor \lnot{p}\]
     it holds that if $F$ is unsatisfiable then $F_H$ is unsatisfiable and by consequence that $H$ is unsatisfiable. 
 \end{definition}
 
-In particular, we notice that $F_H$ can also be written as a CNF by simply distributing each $\overline{p}$ inside $C_i(T)$. Each clause $C_i(T) \lor \overline{p}$ must be either tautological (since it could contain a variable and its negation) or a weakening of the corresponding clause of $H$ indexed by the label at the end of the path $p$. Moreover, we notice that through this formulation any depth-$d$ decision tree reduction from $\mathrm{Search}(H)$ to $\mathrm{Search}(F)$ induces the search problem $\mathrm{Search}(F_H)$.
+In particular, we notice that $F_H$ can also be written as a CNF by simply distributing each $\lnot{p}$ inside $C_i(T)$. Each clause $C_i(T) \lor \lnot{p}$ must be either tautological (since it could contain a variable and its negation) or a weakening of the corresponding clause of $H$ - meaning that it is a formula $Q$ such that $H \to Q$ - indexed by the label at the end of the path $p$. Moreover, we notice that through this formulation any depth-$d$ decision tree reduction from $S_H$ to $S_F$ induces the search problem $S_{F_H}$. By construction, reductions between CNF formulas are just a formal way to say that reductions between search problems reduction are actually proof systems.
 
-Reductions between CNF formulas imply that reductions between search problems reduction are actually a proof system. In particular, given a problem $\mathrm{Search}(F) \in \TFNPdt$, the \textbf{canonical proof system} of such problem, denoted with $P_F$ proves an unsatisfiable formula $H$ over $n_H$ variables if $H$ is reducible to an instance of $F$ over $n_F$ variables. A $P_F$-proof of $H$ consists of the decision trees that make such reduction possible. The \textit{size} of such proof is given by $n_F$, while the \textit{degree}, or \textit{depth} in this case, is given by the maximum depth among the involved decision trees. Hence, the $P_F$ complexity of $H$ is given by:
-\[P_F(H) := \min\{\log n_H + \mathrm{depth}(\Pi) : \Pi \text{ is a $P_F$-proof of } H\}\]
+\begin{definition}
+    Given a problem $S_F \in \TFNPdt$ the \textbf{canonical proof system} of such problem, written as $P_F$, is a proof system that refutes an unsatisfiable formula $H$ over $n_H$ variables if $H$ is reducible to an instance of $F$ over $n_F$ variables. 
+\end{definition} 
 
-These proof systems are \textit{sound}, since by construction any valid substitution of an unsatisfiable CNF formula is also unsatisfiable, and also \textit{efficiently verifiable}, since it suffices to check that each of the clauses of $F_H$ is either tautological or a weakening of a clause in $H$, which can be done polynomially in size of the proof.
+A $P_F$-proof of $H$ consists of the decision trees that make such reduction possible. The \textit{size} of such proof is given by $n_F$, while the \textit{degree} is given by the maximum depth among the involved decision trees. Hence, the $P_F$ complexity of $H$ is given by:
+    \[P_F(H) := \min\{\log n_H + \mathrm{depth}(\Pi) : \Pi \text{ is a $P_F$-proof of } H\}\]
 
-From this definition of canonical proof system, the following theorem is given for free. This theorem plays a crucial role in $\TFNPdt$ characterization through proof complexity, stating that $P_F$ has a short proof of $H$ if and only if $\mathrm{Search}(H)$ efficiently reduces to $\mathrm{Search}(F)$. 
+This definition directly implies that given $S_F \in \TFNPdt$, the \textbf{characterizing proof system} of $S_F^{dt}$ is equivalent to the canonical proof system $P_F$. Canonical proof systems are \textit{sound}, since by construction any valid substitution of an unsatisfiable CNF formula is also unsatisfiable, and also \textit{efficiently verifiable}, since it suffices to check that each of the clauses of $F_H$ is either tautological or a weakening of a clause in $H$, which can both be done in polynomial time compared to the size of the proof.
 
-In particular, we observe that \textbf{any characterizing proof system} is actually the canonical proof system of the associated search problem, a result that follows from the two definitions. In other words, proving a formula in a characterizing proof system automatically gives a reduction to the corresponding complete search problem.
+The following theorem plays a crucial role in $\TFNPdt$ characterization through proof complexity, stating that the proof system $P_F$ has a short proof of $H$ if and only if $S_H$ efficiently reduces to $S_F$. In other words, an efficient proof of a formula in a characterizing proof system automatically gives an efficient reduction to the corresponding complete search problem.
 
 \begin{theorem}
-    Let $\mathrm{Search}(F) \in \TFNPdt$ and let $H$ be an unsatisfiable CNF formula. The two following results hold:
+    \label{equiv_proof}
+    Let $S_F \in \TFNPdt$ and let $H$ be an unsatisfiable CNF formula. The two following results hold:
     \begin{enumerate}
-        \item If $H$ has a size $s$ and depth $d$ proof in $P_F$ then $\mathrm{Search}(H)$ has a size $O(s)$ and depth $d$ reduction to $S_F$
-        \item If $\mathrm{Search}(H)$ has a size $s$ and depth $d$ decision tree reduction to $\mathrm{Search}(F)$ then $H$ has a size $s2^{O(d)}$ and depth $d$ proof in $P_F$
+        \item If $H$ has a size $s$ and depth $d$ proof in $P_F$ then $S_H$ has a size $O(s)$ and depth $d$ reduction to $S_F$
+        \item If $S_H$ has a size $s$ and depth $d$ decision tree reduction to $S_F$ then $H$ has a size $s2^{O(d)}$ and depth $d$ proof in $P_F$
     \end{enumerate}
-    In particular, this implies that $\mathrm{Search}(F)^{dt}(\mathrm{Search}(H)) = \Theta(P_F(H))$.
+    In particular, this implies that $S_F^{dt}(S_H) = \Theta(P_F(H))$.
 \end{theorem}
 
 \begin{proof}
-    Suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a $P_F$ proof of $H$ of size $s$ and depth $d$. Given any assignment $x$ such that $(x, i) \in \mathrm{Search}(F)$, let $C_i$ be the clause of $F$ falsified by $T_1(x), \ldots, T_{n_F}(x)$ and let $p$ be the path followed by $T_i^o(x)$. It's easy to see that a clause of the formula $C_i(T) \lor \overline{p}$ must be falsified by $x$. In particular, such clause is also the weakening of the $T_i^o(x)$-th clause of $H$, concluding that $(x, T_i^o(x)) \in \mathrm{Search}(H)$. In other words, the $P_F$ proof of $H$ corresponds to a reduction from $\mathrm{Search}(H)$ to $\mathrm{Search}(F)$ of size $n_F = O(s)$ and depth $d$.
+    Suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a $P_F$ proof of $H$ of size $s$ and depth $d$. Given any assignment $\alpha$ such that $(\alpha, i) \in S_F$, let $C_i$ be the clause of $F$ falsified by $T_1(\alpha), \ldots, T_{n_F}(\alpha)$ and let $p$ be the path followed by $T_i^o(\alpha)$. It's easy to see that a clause of the formula $C_i(T) \lor \lnot{p}$ must be falsified by $\alpha$. In particular, such clause is also the weakening of the $T_i^o(\alpha)$-th clause of $H$, concluding that $(\alpha, T_i^o(\alpha)) \in S_H$. In other words, the $P_F$ proof of $H$ corresponds to a reduction from $S_H$ to $S_F$ of size $n_F = O(s)$ and depth $d$.
 
-    Vice versa, suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a decision tree reduction from $\mathrm{Search}(H)$ to $\mathrm{Search}(F)$ of size $s$ and depth $d$. Then, we can construct $F_H$ as previously described through the use of these decision trees. Let $L$ be a clause of $C_i(T)$ for some $i \in [m_F]$ and let $p$ be any path in $T_i^o$. If the formula $C_i(T) \lor \overline{p}$ is tautological, then it can be ignored since $F_H$ is a CNF. Otherwise, let $x$ be an assignment that falsifies $L \lor \overline{p}$. Then, it holds that $T_1(x), \ldots, T_{n_F}(x)$ falsifies $C_i(T)$ and that $T_i^o(x)$ follows path $p$. Thus, the $T_i(x)$-th clause of $\overline{H}$ must also be false, implying that $L \lor \overline{p}$ is a weakening of such clause. This concludes that $F_H$ is a $P_F$-proof of $H$ of depth at most $d$ (due to how $F_H$ is constructed) and thus that the size is at most $s2^{O(d)}$.
+    Vice versa, suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a decision tree reduction from $S_H$ to $S_F$ of size $s$ and depth $d$. Then, we can construct $F_H$ as previously described through the use of these decision trees. Let $L$ be a clause of $C_i(T)$ for some $i \in [m_F]$ and let $p$ be any path in $T_i^o$. If the formula $C_i(T) \lor \lnot{p}$ is tautological, then it can be ignored since $F_H$ is a CNF. Otherwise, let $\alpha$ be an assignment that falsifies $L \lor \lnot{p}$. Then, it holds that $T_1(\alpha), \ldots, T_{n_F}(\alpha)$ falsifies $C_i(T)$ and that $T_i^o(\alpha)$ follows path $p$. Thus, the $T_i(\alpha)$-th clause of $\lnot{H}$ must also be false, implying that $L \lor \lnot{p}$ is a weakening of such clause. This concludes that $F_H$ is a $P_F$-proof of $H$ of depth at most $d$ (due to how $F_H$ is constructed) and thus that the size is at most $s2^{O(d)}$.
 
 \end{proof}
 
