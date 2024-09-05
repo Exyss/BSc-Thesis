@@ -103,7 +103,11 @@ Like protocols, in query search problems the certificate is the verifying decisi
     where $T(x) := (T_1(x), \ldots, T_n(x))$.
 \end{definition}
 
-The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter return an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, including each $T_i$ and each $T_y^o$. The complexity of the reduction is denoted as $S(R)$  and it's equal $\log n + d$. A decision tree reduction is considered efficient if its complexity is polylogarithmic, i.e. equal to $O(\log^k n)$. 
+The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter return an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, meaning that
+\[d = \max (\{\mathrm{depth}(T_i) : i \in [n]\} \cup \{\mathrm{depth}(T_y^o) : o \in O_m\})\]
+
+The complexity of a reduction from $R$ to $S$, written as $S(R)$, is equal to the sum of the size and the minimal depth of a decision tree reduction from $R$ to $S$.
+\[S(R) := \min(\{\log m + \mathrm{depth}(T) : T\})\]
 
 \begin{definition}
     Given $S \in \mathsf{TFNP}^{dt}$, we define the class $S^{dt}$ as the subset of \textsf{TFNP}$^{dt}$ problems efficiently reducible through decision trees to the problem $S$, formally $S^{dt} = \{R \in \mathsf{TFNP} \mid S(R) = O(\log^k n)\}$
@@ -111,7 +115,9 @@ The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the
 
 \section{Connections to Proof Complexity}
 
-Like the white-box model, black-box total search problems can be studied under multiple lenses, such as \textbf{proof complexity}. This branch of complexity theory studies the complexity measures needed for a propositional formula to be proved by propositional proof systems, that being any system of rules that can prove the truthfulness of a propositional formula, i.e. a string made of logical operators applied on a set of $n$ variables, such as $F = x_1 \land (x_1 \to \lnot x_2 \lor x_3)$. Any statement can be encoded by propositional formulas, which is either a \textit{tautology} (a statement that is always true), a \textit{satisfiable} formula (a statement that can be true or false based on the assignment) or an \textit{unsatisfiable} formula (a statement that is always false). Proving that a formula $F$ is a tautology is equivalent to proving that $\lnot F$ is unsatisfiable.
+Like the white-box model, black-box total search problems can be studied under multiple lenses, such as \textbf{proof complexity}. This branch of complexity theory studies the complexity measures needed for a propositional formula to be proved by propositional proof systems, that being any system of rules that can prove the truthfulness of a propositional formula, i.e. a string made of logical operators applied on a set of $n$ variables, such as $F = x_1 \land (x_1 \to \lnot x_2 \lor x_3)$.
+
+Any statement can be encoded by propositional formulas, which is either a \textit{tautology} (a statement that is always true), a \textit{satisfiable} formula (a statement that can be true or false based on the assignment) or an \textit{unsatisfiable} formula (a statement that is always false). Proving that a formula $F$ is a tautology is equivalent to proving that $\lnot F$ is unsatisfiable.
 
 Proof systems can be viewed as an algorithm that manipulates propositional formulas in order to produce a new one. When a formula $G$ is derived by the formula $F$ in the proof system $S$, we write $F \stackrel{S}{\vdash} G$. Proof systems must be \textit{sound}: if $F \stackrel{S}{\vdash} G$ then $G$ is a \textit{logical consequence} of $F$, which means that $F \to G$ is a tautology. In 1979, Cook and Reckhow gave the following formal definition of propositional proof system - often called Cook-Reckhow proof systems.
 
@@ -133,18 +139,20 @@ Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have t
     Given a CNF formula $F$, it holds that $F \in \mathrm{TAUT}$ if and only if $\lnot F$ is refuted by Resolution
 \end{proposition}
 
-For example, given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
+Given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
 \[\begin{array}{lcl}
     D_1 :& \lnot{z} & \text{Axiom} \\
-    D_2 :& (y \lor z) & \text{Axiom} \\
+    D_2 :& y \lor z & \text{Axiom} \\
     D_3 :& y & \text{Res. on $D_1, D_2$} \\
-    D_4 :& (x \lor \lnot{y} \lor z)  & \text{Axiom} \\
-    D_5 :& (x \lor \lnot{y}) & \text{Res. on $D_1, D_4$} \\
-    D_6 :& (\lnot{x} \lor z) & \text{Axiom} \\
+    D_4 :& x \lor \lnot{y} \lor z  & \text{Axiom} \\
+    D_5 :& x \lor \lnot{y} & \text{Res. on $D_1, D_4$} \\
+    D_6 :& \lnot{x} \lor z & \text{Axiom} \\
     D_7 :& \lnot{x} & \text{Res. on $D_1, D_6$} \\
     D_8 :& \lnot{y} & \text{Res. on $D_5, D_7$} \\
     D_9 :& \bot & \text{Res. on $D_3, D_8$} \\
 \end{array}\]
+
+\newpage
 
 which can also be graphically expressed as:
 
@@ -235,9 +243,14 @@ Through this representation, each refutation produces a directed acyclic graph (
     \end{tikzpicture}
     
     \caption{Tree-like refutation of the previous formula}
+    \label{treelike_res_proof}
 \end{figure}
 
-This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutations require trees of exponential size and polynomial depth compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutations require proofs of exponential length compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+
+\newpage
+
+Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Resolution proof is the length of the longest path from an axiom to the empty clause. The \textit{width} of a Resolution proof is the maximum number of literals appearing in a clause of the proof. For example, the proof shown in in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}$ nodes.
 
 But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. Showing that any of these problems is also in $\mathsf{NP}$ would answer the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
 
@@ -247,13 +260,13 @@ Proof systems are essential to work on this question: given the encoding $\Pi$ o
     A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $\Pi \in \Sigma^*$ such that $V(F,\Pi) = 1$.
 \end{definition}
 
-On first glance, one could think that this definition implies that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the size of such proofs: in order to be an efficient verifier, the size of the certificates must be polynomially bounded by the size of $F$. In other words, it must hold that $\abs{\Pi} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$ (which is equivalent to proving that $\mathrm{TAUT} \in \mathsf{NP}$) we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded proofs for all tautologies.
+On first glance, one could think that this definition implies that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the length of such proofs: in order to be an efficient verifier, the length of the certificates must be polynomially bounded by the length of $F$. In other words, it must hold that $\abs{\Pi} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$ (which is equivalent to proving that $\mathrm{TAUT} \in \mathsf{NP}$) we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded proofs for all tautologies.
 
 \begin{proposition}
     There is a polynomially bounded proof system if and only if $\mathsf{NP} \neq \mathsf{coNP}$.
 \end{proposition}
 
-We already discussed how researches believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. In order to prove this, we would have to prove that there cannot be a polynomially bounded pps. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential size encoding for every discovered and undiscovered proof system.
+We already discussed how researches believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. In order to prove this, we would have to prove that there cannot be a polynomially bounded pps. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential length encoding for every discovered and undiscovered proof system.
 
 Even thought this result seems out of reach, proof complexity is highly related to other branches of complexity theory, including our case! In order to get to this relation between proof complexity and $\mathsf{TFNP}^{dt}$, we will restrict our focus to CNF formulas: by construction, a CNF formula can be unsatisfiable if and only if for all assignments $\alpha(x_1, \ldots, x_n)$ there is a clause $C_i$ that is false. It's easy to see this fact implies that any CNF formula gives rise to an associated search problem: finding a falsified clause inside the formula (if there is any) for each possible assignment.
 
@@ -325,7 +338,7 @@ This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in
 
 Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
 \[P(F) := \min\{\log \mathrm{size}(\Pi) + \mathrm{deg}(\Pi) : \Pi \text{ is a $P$-proof of } F\}\]
-where $\mathrm{size}(\Pi)$ is the sum of the sizes of all the formulas inside it, or in other words the total number of symbols in $\Pi$, and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. For example, in Tree-like Resolution the degree is the depth of the proof tree. This degree measure will be specified for the proof systems analyzed in following sections.
+where $\mathrm{size}(\Pi)$ is the the total number of symbols in $\Pi$ and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. For example, in Tree-like Resolution the degree is the \textit{depth} of the proof, while in Resolution the degree is the \textit{width} of the proof. This degree measure will be specified for the proof systems analyzed in following sections.
 
 To make things more readable, we will refer to $\mathrm{Search}(F)$ as $S_F$. Since each $\TFNPdt$ problem is equivalent to $S_F$ for some formula $F$, the complexity parameter defined above can be used to give another characterization of $\TFNPdt$ problems.
 
@@ -344,6 +357,8 @@ Most of the \TFNP subclasses discussed in previous sections has been shown to ha
     \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathsf{RevRes}(F))$ \cite{separations_proof_complexity}
     \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathsf{RevResT}(F))$ \cite{separations_proof_complexity}
 \end{itemize}
+
+\newpage
 
 \begin{figure}[H]
     \centering
@@ -372,7 +387,7 @@ Most of the \TFNP subclasses discussed in previous sections has been shown to ha
 
         \node (12) [left of = 4, xshift = 25]{\textsf{Res} $=$};
 
-        \node (13) [left of = 6, xshift = 5]{\textsf{unary-NS} $=$};
+        \node (13) [left of = 6, xshift = 5]{\textsf{unary-SA} $=$};
         
         \node (14) [left of = 8, xshift = 12.5]{\textsf{RevRes} $=$};
         
@@ -380,7 +395,7 @@ Most of the \TFNP subclasses discussed in previous sections has been shown to ha
 
         \node (16) [right of = 5, xshift = -17.5]{$=$ \textsf{$\F_2$-NS}};
 
-        \node (17) [right of = 9, xshift = -7.5]{$=$ \textsf{unary-SA}};
+        \node (17) [right of = 9, xshift = -7.5]{$=$ \textsf{unary-NS}};
     
         \path[every node/.style={font=\sffamily\small}]
             (3) edge (2)
@@ -399,9 +414,6 @@ Most of the \TFNP subclasses discussed in previous sections has been shown to ha
     
     \caption{Black-box \textsf{TFNP} classes and their characterizing proof systems}
 \end{figure}
-
-
-\newpage
 
 \section{Reductions through CNF formulas}
 
@@ -424,7 +436,7 @@ In particular, we notice that $F_H$ can also be written as a CNF by simply distr
 \end{definition} 
 
 A $P_F$-proof of $H$ consists of the decision trees that make such reduction possible. The \textit{size} of such proof is given by $n_F$, while the \textit{degree} is given by the maximum depth among the involved decision trees. Hence, the $P_F$ complexity of $H$ is given by:
-    \[P_F(H) := \min\{\log n_H + \mathrm{depth}(\Pi) : \Pi \text{ is a $P_F$-proof of } H\}\]
+    \[P_F(H) := \min\{\log \mathrm{size(\Pi)}+ \mathrm{depth}(\Pi) : \Pi \text{ is a $P_F$-proof of } H\}\]
 
 This definition directly implies that given $S_F \in \TFNPdt$, the \textbf{characterizing proof system} of $S_F^{dt}$ is equivalent to the canonical proof system $P_F$. Canonical proof systems are \textit{sound}, since by construction any valid substitution of an unsatisfiable CNF formula is also unsatisfiable, and also \textit{efficiently verifiable}, since it suffices to check that each of the clauses of $F_H$ is either tautological or a weakening of a clause in $H$, which can both be done in polynomial time compared to the size of the proof.
 
