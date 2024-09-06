@@ -2,51 +2,5 @@
 
 \chapter{Notes} \label{chap:notes}
 
-\section{Treelike $\Res$ and Nullstellensatz}
-
-\begin{definition}[$\FNS$ encoding of $\Res$]
-    Given a $\Res$ linear clause $C = \bigvee\limits_{i = 0}^{k_1} x_i \lor  \bigvee\limits_{j = 0}^{k_2} \overline{x_j}$, the $\FNS$ encoding of $C$ is defined as $\enc(C) := \prod\limits_{i = 0}^{k_1} x_i \cdot \prod\limits_{j = 0}^{k_2} (1-x_j)$.
-    
-    In general, a $\ResP$ formula $F = C_1 \land \ldots \land C_m$ defined on the variables $x_1, \ldots, x_n$ gets encoded in $\FNS$ as the set of axioms $P_F = \{\enc(C_i) = 0 \mid 1 \leq i \leq m\} \cup \{x_j^2-x_j = 0 \mid 1 \leq j \leq n\}$.
-\end{definition}
-
-\begin{theorem}
-    Let $F$ be an unsatisfiable CNF. If $T$ is $\ResP$ refutation of $F$ of size $s$ then there is $\NS$ refutation of $F$ of degree $O(\log(s))$.
-\end{theorem}
-
-\begin{proof}
-    Let $F = C_1 \land \cdots \land C_n$. We proceed by strong induction on the size $s$.
-    
-    If $s = 1$ then the $T$ contains only the empty clause $\bot$, meaning that it also is one of the starting clauses and thus one of the axioms. We notice that $\mathrm{enc}(\bot) = 1$, which easily concludes that $\bot \vdash_{0}^\NS 1$.
-
-    Suppose now that $s > 1$. Let $\mathcal{L}$ be axioms of $T$. Since $T$ is a binary tree, by \Cref{13_23_lewis} we know that there is a clause $C_k$, i.e. a node, of $T$ such that $T_{C_k}$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$.
-
-    Let $T' = (T - T_{C_k}) \cup \{C_k\}$. Due to the size of $T_{C_k}$, we get that $T'$ has size between $\floor{\frac{1}{3} s}+1$ and $\ceil{\frac{2}{3} s}+1$. Moreover, we notice that since $T$ is a treelike refutation it holds that $T_{C_k}$ and $T'$ work with different clauses (except $C_k$), thus their axioms are disjoint. Let $\mathcal{L}_1, \mathcal{L}_2$ be the two sets of axioms respectively used by $T_{C_k}$ and $T'$.
-    
-    By construction, we notice that $T_{C_k}$ derives the clause $C_k$ using the axioms $\mathcal{L}_1$, while $T_{C_k}$ derives the clause $\bot$ using the axioms $\mathcal{L}_2, C_k$. Thus, since $T_{C_k}$ and $T'$ have size lower than $s$, by induction hypothesis we get that $\enc(\mathcal{L}_1) \vdash_{c_1 \cdot \log s}^\NS \enc(C_k)$ and $\enc(\mathcal{L}_2), \enc(C_k) \vdash_{c_2 \cdot \log s}^\NS 1$ for some constants $c_1, c_2$. By \Cref{neg_refutation} we easily conclude that $\enc(\mathcal{L}_1), (1- \enc(C_k)) \vdash_{c_1 \cdot \log s}^\NS 1$ and, by \Cref{union_ref}, that $\enc(\mathcal{L}_1), \enc(\mathcal{L}_2) \vdash_{(c_1+c_2) \cdot \log s}^\NS 1$. Finally, since $\mathcal{L}_1 \cup \mathcal{L}_2 = \mathcal{L}$, we get that $\enc(\mathcal{L}) \vdash_{(c_1+c_2) \cdot \log s}^\NS 1$, meaning that $\mathcal{L}$ has a $\NS$ refutation of degree $O(\log s)$.
-
-\end{proof}
-
-\section{Treelike $\ResP$ and Nullstellensatz}
-
-\begin{definition}[$\FNS$ encoding of $\Res(\oplus)$]
-    Given a $\ResP$ linear clause $C = \bigvee\limits_{i = 0}^k (\ell_i = \alpha_i)$, the $\FNS$ encoding of $C$ is defined as $\enc_{\oplus}(C) := \prod\limits_{i = 0}^k (\alpha - \ell_i)$.
-    
-    In general, a $\ResP$ formula $F = C_1 \land \ldots \land C_m$ defined on the variables $x_1, \ldots, x_n$ gets encoded in $\FNS$ as the set of axioms $P_F = \{\enc_{\oplus}(C_i) = 0 \mid 1 \leq i \leq m\} \cup \{x_j^2-x_j = 0 \mid 1 \leq j \leq n\}$.
-\end{definition}
-
-\begin{theorem}[\cite{res_parity}]
-    \;
-    \begin{enumerate}
-        \item Every tree-like $\ResP$ proof of an unsatisfiable formula $F$ may be translated to a parity decision tree for $F$ without increasing the size of the tree.
-        
-        \item Every parity decision tree for an unsatisfiable linear CNF may be translated into a tree-like $\ResP$ proof and the size of the resulting proof is at most twice the size of the parity decision tree (and where the weakening is applied only to the axioms).
-    \end{enumerate}
-\end{theorem}
-
-\begin{corollary}
-    Every tree-like $\ResP$ proof of an unsatisfiable formula $F$ can be converted to a tree-like $\ResP$ proof of at most double the size and with weakening applied only to the axioms.
-\end{corollary}
-
 
 \cleardoublepage

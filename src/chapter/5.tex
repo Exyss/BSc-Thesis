@@ -386,6 +386,7 @@ This result makes working with the weakening rule easier: any a clause $D$ deriv
 We will now show that $\mathsf{Res}_\oplus$ tree-like proofs and parity decision trees can be viewed as two sides of the same coin. In fact, any tree-like $\ResP$ refutation of a linear CNF $F$ can be used to construct an (almost) equivalent PDT that solves $S_F$ and vice versa \cite{res_lin_2}.
 
 \begin{lemma}
+    \label{resp_to_pdt}
     Let $F$ be an linear CNF formula. If there is a $\mathsf{TreeRes}_\oplus$ refutation of $F$ with size $s$ and depth $d$, there also is a PDT of size at most $s$ and depth at most $d$ that solves $S_F$.
 \end{lemma}
 
@@ -428,7 +429,8 @@ We will now show that $\mathsf{Res}_\oplus$ tree-like proofs and parity decision
 \end{figure}
 
 \begin{lemma}
-    Let $F$ be an linear CNF formula. If there is a PDT of size $s$ and depth $d$ that solves $S_F$, there also is a tree-like $\mathsf{TreeRes}_\oplus$ refutation of $F$ with size at most $2s$, depth at most $d+1$ and the weakening rule applied only to the leaves.
+    \label{pdt_to_resp}
+    Let $F$ be an linear CNF formula. If there is a PDT of size $s$ and depth $d$ that solves $S_F$, there also is a tree-like $\mathsf{TreeRes}_\oplus$ refutation of $F$ with size at most $2s$, depth at most $d+1$ and the weakening rule applied only to the axioms.
 \end{lemma}
 
 \begin{proof}
@@ -563,13 +565,20 @@ Initially, our first hypothesis was that $\mathsf{TreeRes}_\oplus$ is a very pow
 
 This result rings a bell: looks like PDTs actually aren't that strong. We quickly shifted our prospective on our previous study on relationships with Nullstellensatz, trying to show that the simulation holds in the other direction. Indeed, we were capable of proving that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}NS}$ proof, providing us a \textbf{black-box inclusion} for our new class.
 
-\section{Simulation of $\mathrm{TreeRes}_\oplus$ in $\mathrm{NS\text{-}}\F_2$}
+\section{From $\mathrm{TreeRes}_\oplus$ to $\F_2$-Nullstellensatz}
 
 We prove that Nullstellensatz over $\F_2$ is capable of efficiently simulating $\mathrm{TreeRes}_\oplus$. Given the linear clause $C = \bigvee_{i = 1}^k (f_i = \alpha_i)$, the algebraic encoding of $C$, written as $p_C$, is given by $p_C := \prod_{i = 1}^{k} (f_i + a_i)$. The algebraic encoding of a linear CNF formula $F = C_1 \land \ldots \land C_m$ is given by the set of polynomial equations $p_F = \{p_{C_1} = 0, \ldots, p_{C_m} = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$.
 
-To achieve our result, we first convert the $\mathrm{TreeRes}_\oplus$ proof into an (almost) equivalent proof through the method shown in \Cref{chap:parity-tfnp} and then balance the degree of the $\mathsf{\F_2-NS}$ proof obtained from the tree-like proof.
+To achieve our result, we first convert the $\mathrm{TreeRes}_\oplus$ proof into an (almost) equivalent proof through the method shown in \Cref{chap:parity-tfnp} and then balance the degree of the $\mathsf{\F_2-NS}$ proof obtained from the tree-like proof. The following result follows from \Cref{resp_to_pdt} and \Cref{pdt_to_resp}.
+
+\begin{corollary}
+    \label{leaf_weakening}
+    Every tree-like $\ResP$ proof of size $s$ and depth $d$ can be converted to a tree-like $\ResP$ proof of size $O(s)$, degree $O(d)$ and with the weakening rule applied only to the axioms.
+\end{corollary}
 
 The balancing process is obtained through a well-known result called $\frac{1}{2}, \frac{2}{3}$ lemma \cite{13_23_lemma} which is commonly used to show that protocols and tree-like circuits (or \textit{formulas}) can be balanced, meaning that for any tree of size $s$ there is an equivalent tree of size $s^{O(1)}$ and degree $O(\log s)$.
+
+\newpage
 
 \begin{lemma}
     \label{13_23_lewis}
@@ -584,7 +593,7 @@ The balancing process is obtained through a well-known result called $\frac{1}{2
     \end{claimlemma}
 
     \begin{proof}[Proof of the claim]
-        If $T_{v_i}$ has also size less than $\ceil{\frac{2}{3} s}$ then we are done. Otherwise, since $T_{v_i} = \{v_i\} \cup T_{a_i} \cup T_{b_i}$, one between the subtrees $T_{a_i}, T_{b_i}$ must have size at least $\frac{1}{2} \ceil{2}{3} s - 1$, meaning that it has size at least $\floor{\frac{1}{3} s}$. If this subtree has also a size at most $\ceil{\frac{2}{3} s}$ then we are done. Instead, if this doesn't hold for both subtrees, we can repeat the process (assuming that $v_{i+1} := a_i$ without loss of generality) since we know that $T_{v_{i+1}}$ has size greater than $\floor{\frac{1}{3} s}$.
+        If $T_{v_i}$ has size less than $\ceil{\frac{2}{3} s}$ then we are done. Otherwise, since $T_{v_i} = \{v_i\} \cup T_{a_i} \cup T_{b_i}$, one between the subtrees $T_{a_i}, T_{b_i}$ must have size at least $\frac{1}{2} \ceil{2}{3} s - 1$, meaning that it has size at least $\floor{\frac{1}{3} s}$. If this subtree has also a size at most $\ceil{\frac{2}{3} s}$ then we are done. Instead, if this doesn't hold for both subtrees, we can repeat the process (assuming that $v_{i+1} := a_i$ without loss of generality) since we know that $T_{v_{i+1}}$ has size greater than $\floor{\frac{1}{3} s}$.
 
         By way of contradiction, suppose that this process never finds a subtree with size at most $\ceil{\frac{2}{3} s}$. Then, this would mean that it also holds for $v_k = \ell$. However, since $\ell$ is a leaf, we know that $T_{v_\ell}$ must have size 1, which is definitely at most $\ceil{\frac{2}{3} s}$ for any value of $s$, giving a contradiction. Thus, there must be a node that terminates the process.
 
@@ -594,7 +603,7 @@ The balancing process is obtained through a well-known result called $\frac{1}{2
     
 \end{proof}
 
-We'll now show a way to simulate the Resolution rule through $\F_2$-Nullstellensatz by converting two \textsf{NS} refutations $P_1 \stackrel{\mathsf{NS}}{\vdash} 1$ and $P_2 \stackrel{\mathsf{NS}}{\vdash} 1$, where $P_1$ and $P_2$ are disjoint into a refutation  $P_1, P_2 \stackrel{\mathsf{NS}}{\vdash} 1$ with degree equal to the degree of the two initial refutations. To lighten up notation, we will drop the $\textsf{NS}$ for the following .
+We'll now show a way to simulate the Resolution rule through $\F_2$-Nullstellensatz by converting two \textsf{NS} refutations $P_1 \stackrel{}{\vdash} 1$ and $P_2 \stackrel{}{\vdash} 1$, where $P_1$ and $P_2$ are disjoint, into a refutation  $P_1, P_2 \stackrel{}{\vdash} 1$ with degree equal to the degree of the two initial refutations.
 
 \begin{lemma}
     \label{union_ref}
@@ -642,18 +651,39 @@ We'll now show a way to simulate the Resolution rule through $\F_2$-Nullstellens
 
 \end{proof}
 
-\begin{proposition}
-    \label{neg_refutation}
+\newpage
+
+The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz. However, if $D$ is derived through weakening from an axiom clause $C_i$ of a CNF formula $F$, it is indeed easy to simulate such rule. This result is enough for our purposes but it can also be extended to derivations from a non-axiom clause with a little blow-up in degree. 
+
+\begin{lemma}
+    \label{weakening_ns}
+
+    Let $F = C_1 \land \ldots \land C_m$ be a CNF formula and let $D$ be a linear clause. If $C_i \implies D$ then $p_{C_i} \vdash p_D$ with degree $d+k$, where $d$ is the width of $D$ and $k$ is the width of $C_i$.
+\end{lemma}
+
+\begin{proof}
+    Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $1(1+q)$ can be derived with degree 2 from axioms. 
+    \[(y_1 + \ldots + y_t)(y_1 + \ldots y_t + 1) = \sum_{i = 1}^t y_i^2 + \sum_{i = 1}^t y_i + 2 \sum_{i \neq j} y_i y_j = \sum_{i = 1}^t y_i^2 + y_i\]
+    since $2 = 0$ in $\F_2$. This implies that for each $j \in [d]$ we can derive $p(f_j+\beta_j+1)$ with degree $d+1$.
+
+    Since $C \implies D$, this can only happen if each $x_i + \alpha_i$ is a linear combination of $(f_1 + \beta_1 + 1), \ldots, (f_d + \beta_d + 1)$, concluding that each $p_D(x_i+\alpha_i)$ is derivable in $\F_2$-Nullstellensatz with degree $d+1$.
+
+    Finally, we notice that:
+    \[p_D = p_C + p_D(x_1+\alpha_1+1) + p_D(x_2+\alpha_2+1)(x_1+\alpha_1)+ \ldots + p_D(x_d+\alpha_d+1)\prod_{i = 0}^{d-1} (x_i+\alpha_i)\]
+    which is a derivation of $p_D$ from $p_{C}$ with degree $d + k$.
+    
+\end{proof}
+
+\begin{lemma}
+    \label{refutation_with_negation}
     Given a set of axioms $P$, if $P \stackrel{\mathsf{NS}}{\vdash} q$ with degree $d$ then $P, 1-q \stackrel{\mathsf{NS}}{\vdash} 1$ with the same degree. 
-\end{proposition}
+\end{lemma}
 
 \begin{proof}
     
     Since $P \vdash^\NS_d q$, we know that $\exists g_1, \ldots, g_m, h_1, \ldots, h_n \in \F[x_1, \ldots, x_n]$ such that:
     \[\sum_{i = 1}^m g_i p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = q\]
-    where $\deg(q) = d$.
-
-    Let $p_{m+1} := 1-q$ and $P' = P \cup \{p_{m+1} = 0\}$. We define $g_1', \ldots, g_m', g_{m+1}'$ as:
+    where $\deg(q) \leq d$. We define $g_1', \ldots, g_m', g_{m+1}'$ as:
     \[g_i' = \left \{ \begin{array}{ll}
         1 & \text{if } i = m+1 \\
         g_i & \text{otherwise}  \\
@@ -662,8 +692,40 @@ We'll now show a way to simulate the Resolution rule through $\F_2$-Nullstellens
     With simple algebra we get that:
     \[\sum_{i = 1}^{m+1} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = g_{m+1}'p_{m+1} + \sum_{i = 1}^{m} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = (1-q) + q = 1\]
     
-    thus $\pi = \{g_1', \ldots, g_{m+1}', h_1, \ldots, h_n\}$ is a proof of $P$. Moreover, since $\deg(q) = d$ implies that $\deg(g_{m+1}'p_{m+1}) = d$, it's easy to see that $\deg(\pi) = d$ holds, concluding that $P, 1-q \vdash_d^\NS 1$
+    thus $\Pi = \{g_1', \ldots, g_{m+1}', h_1, \ldots, h_n\}$ is a proof of $P$ with degree $d$.
 
 \end{proof}
+
+\begin{theorem}
+    Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ then there is $\NS$ refutation of $F$ of degree $O(\log(s)+w)$.
+\end{theorem}
+
+\begin{proof}
+    Let $F = C_1 \land \cdots \land C_m$ and assume that $F$ has a $\mathsf{TreeRes}_\oplus$-proof of size $s$ and depth $d$. Through \Cref{leaf_weakening} we know that there must also be a $\mathsf{TreeRes}_\oplus$-proof of size $O(s)$ and depth $O(d)$ with the weakening rule applied only to the leaves.
+    
+    Let $\widehat{C_1}, \ldots, \widehat{C_m}$ be the linear clauses obtained through such weakening rules and let $T$ be the subtree of the proof that has $\widehat{C_1}, \ldots, \widehat{C_m}$ as leaves.
+
+    \change{Add image}
+
+    First, we show that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. We proceed by strong induction on the size $s$.
+
+    If $s = 1$ then the $T$ contains only the empty clause $\bot$, which has width $w = 0$. Since $p_{\bot} = 1$ we easily conclude that $p_{\bot} \vdash 1$ with degree $0 = O(\log 1 + 0)$. Suppose now that $s > 1$. Let $\mathcal{L}$ be axioms of $T$. Since $T$ is a binary tree, by \Cref{13_23_lewis} we know that there is a clause $D$, i.e. a node of $T$ such that $T_{D}$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$. Let $T' = (T - T_{D}) \cup \{D\}$. Due to the size of $T_{D}$, we get that $T'$ has size between $\floor{\frac{1}{3} s}+1$ and $\ceil{\frac{2}{3} s}+1$. 
+
+    \change{Add image}
+    
+    Since $T$ is a treelike refutation it holds that $T_{D}$ and $T'$ work with different clauses (except $D$), thus their axioms are disjoint. Let $\mathcal{L}_1, \mathcal{L}_2$ be the two sets of axioms respectively used by $T_{D}$ and $T'$. By construction, $T_{D}$ derives the clause $D$ using the axioms $\mathcal{L}_1$, while $T'$ derives the clause $\bot$ using the axioms $\mathcal{L}_2, D$. Since $T_{D}$ and $T'$ have size lower than $s$, by induction hypothesis we get that $p_{\mathcal{L}_1} \vdash p_{D}$ with degree $c_1 (\log s + w)$ and $p_{\mathcal{L}_2}, p_D \vdash 1$ with degree $c_2 (\log s + w)$, for some constants $c_1, c_2$.
+    
+    
+    Through \Cref{refutation_with_negation} we easily conclude that $p_{\mathcal{L}_1}, (1-p_{D})\vdash 1$ with degree $c_1 (\log s + w)$. Then, by \Cref{union_ref} we get that $p_{\mathcal{L}_1}, p_{\mathcal{L}_2} \vdash 1$ with degree $c_1 (\log s + w) + c_2 (\log s + w) = O(\log s + w)$. Finally, since $\mathcal{L}_1 \cup \mathcal{L}_2 = \mathcal{L}$, we get that $p_\mathcal{L} \vdash 1$ with degree $O(\log s + w)$.
+
+    By recursively applying the inductive process to the whole tree $T$, we get that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. This clearly also implies that for each index $i$ it holds that $\mathrm{deg}(p_{\widehat{C_i}}) = O(\log(s)+w)$. Since each $widehat{C_i}$ is a weakening of $C_i$, by \cref{weakening_ns} we know that $p_{C_i} \vdash p_{\widehat{C_i}}$ with degree $O(\log(s)+ w)$.
+
+    Again, by \Cref{refutation_with_negation} we get that $p_{C_i}, (1-p_{\widehat{C_i}}) \vdash 1$  with degree $O(\log(s)+ w)$ which together with the fact that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$ allows us to conclude, by \Cref{union_ref}, that $p_{C_1}, p_{\widehat{C_2}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. After repeating this process for each weakening clause, we finally conclude that $p_{C_1}, \ldots, p_{C_m} \vdash 1$ with degree $O(\log(s)+w)$.
+
+\end{proof}
+
+\begin{corollary}
+    $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$
+\end{corollary}
 
 \cleardoublepage
