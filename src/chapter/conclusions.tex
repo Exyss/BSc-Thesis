@@ -1,0 +1,75 @@
+\chapter*{Conclusions}
+
+\addcontentsline{toc}{chapter}{Conclusions}
+
+The relations between total search problems, protocols, circuits and proofs make \textsf{TFNP} an interesting theory that may be even capable of capturing all of these branches of complexity theory under an \textit{universal theory}. However, such universal characterizations are still \textit{fuzzy}: relations between the white-box and black-box models such as \textit{query-to-communication lifting} theorems and \textit{interpolation theorems} are not strong enough.
+
+We have shown that parity applied to black-box total search problems defines a stronger computational model through parity decision trees. Moreover, we have discussed how parity decision trees are easily characterized by Tree-like Linear Resolution over $\F_2$. Through this characterization, we were able to show that this model's computational power seems to be limited when applied in this context.
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (1) []{\textsf{FNP}};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (2) [below of = 1]{\textsf{TFNP}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (3) [below of = 2]{\textsf{PPP}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (4) [left of = 3, xshift=-30]{\textsf{PLS}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (5) [right of = 3, xshift=30]{\textsf{PPA}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (6) [below of = 3]{\textsf{PPADS}$^{dt}$};
+
+        \node (7) [below of = 6]{};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (8) [left of = 7, xshift=-30]{\textsf{SOPL}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (9) [right of = 7, xshift=30]{\textsf{PPAD}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (10) [below of = 7]{\textsf{CLS}$^{dt}$};
+
+        \node (13) [right of = 10, xshift=30]{};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (11) [below of = 13]{\textsf{FP}$^{dt}$};
+    
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm, color=blue]  (12) [right of = 9, xshift=100]{\textsf{FP}$^{pdt}$};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (2) edge (1)
+            (3) edge (2)
+            (4) edge (2)
+            (5) edge (2)
+            (6) edge (3)
+            (8) edge (4)
+            (8) edge (6)
+            (9) edge (5)
+            (9) edge (6)
+            (10) edge (8)
+            (10) edge (9)
+            (11) edge (10)
+
+            (4) edge[dashed, near end, color=blue] node[yshift=10, xshift=-40]{\Cref{pls_not_inside_fp_pdt}}(12) 
+            (11) edge[color=blue] node{\Cref{fp_dt_inside_fp_pdt}}(12) 
+            (12) edge[bend right, swap, color=blue] node{\Cref{main_thm}}(5) 
+            (12) edge[dashed, bend left, color=blue] node{\Cref{fp_pdt_not_inside_fp_dt}}(11) 
+            ;
+    \end{tikzpicture}
+
+    
+    \caption{$\TFNPdt$ hierarchy extended through our results. An arrow $A \to B$ means that $A \subseteq B$ while a dashed arrow $A \dashrightarrow B$ means that $A \not\subseteq B$.}   
+\end{figure} 
+
+\newpage
+
+\newpage
+
+The results open questions that further research could investigate:
+\begin{enumerate}
+    \item We have discussed how parity decision trees are stronger than decision trees. Can the whole black-box \textsf{TFNP} hierarchy also be modeled through PDTs? Is $\mathsf{TFNP}^{pdt}$ a stronger model? How is it related to $\mathsf{TFNP}^{dt}$?
+    \item Reductions in the current black-box model are modeled through decision trees. Can these reductions be modeled through parity decision tree reductions? Do the same inclusions between classes of the hierarchy hold?
+    \item Our results are based on the $\F_2$ field. Are they extendable to $\F_n$? Is Tree-like Linear Resolution over $\F_n$ capable of characterizing a computational model that generalizes parity decision trees?
+    \item Parity decision trees are also related to communication complexity \cite{parity_complexity, pdts_comm_compl}. Is there an equivalent model also in white-box \textsf{TFNP}? Is it characterized by a specific type of circuit model?
+\end{enumerate}
