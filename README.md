@@ -2,7 +2,7 @@
 
 Source code for my Bachelor's Degree Thesis in Computer Science at Sapienza Università di Roma, entitled ___"The Role of Parity-based Computation in Black-Box Total Search Problems"___.
 
-The thesis summarizes complexity theory results in the study of total search problems, in particular the black-box model characterized by decision trees, while also extending the known results through the introduction of Parity Decision Trees, a stronger computational. In particular, the results include the introduction of $\textsf{FP}^{pdt}$, i.e. the class of TFNP problems efficiently solvable by a PDT, the proof complexity characterization of such class through Tree-like Linear Resolution over $\textsf{F}_2$ and relations between $\textsf{FP}^{pdt}$ and the already known classes, in particular the inclusion $\textsf{FP}^{pdt} \subseteq \textsf{PPA}^{dt}$.
+The thesis summarizes complexity theory results in the study of total search problems, in particular the black-box model characterized by decision trees, while also extending the known results through the introduction of Parity Decision Trees, a stronger computational. In particular, the results include the introduction of $\textsf{FP}^{pdt}$, i.e. the class of TFNP problems efficiently solvable by a PDT, the proof complexity characterization of such class through Tree-like Linear Resolution over $\textsf{F}_2$ and relations between $\textsf{FP}^{pdt}$ and the already known classes, in particular the inclusions $\textsf{FP}^{dt} \subsetneq \textsf{FP}^{pdt} \subseteq \textsf{PPA}^{dt}$ and the non-inclusion $\textsf{PLS}^{dt} \not\subseteq \textsf{FP}^{dt}$.
 
 ## 📑 Contents
 
