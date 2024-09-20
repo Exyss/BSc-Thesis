@@ -34,8 +34,8 @@ The thesis summarizes complexity theory results in the study of total search pro
 
 &nbsp;&nbsp;&nbsp;4.1 Parity decision trees
 
-&nbsp;&nbsp;&nbsp;4.2 Linear Resolution over F2
+&nbsp;&nbsp;&nbsp;4.2 Linear Resolution over $\textsf{F}_2$
 
 &nbsp;&nbsp;&nbsp;4.3 Nullstellensatz
 
-&nbsp;&nbsp;&nbsp;4.4 From TreeRes⊕ to F2-Nullstellensatz
+&nbsp;&nbsp;&nbsp;4.4 From TreeRes⊕ to $\textsf{F}_2$-Nullstellensatz
