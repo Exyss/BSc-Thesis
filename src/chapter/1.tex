@@ -1,14 +1,106 @@
 
-\chapter*{Introduction} 
-\addcontentsline{toc}{chapter}{Introduction}
+\chapter{Introduction} \label{chap:introduction}
 
-In computability theory, a \textit{search problem} is a type of computational problem based on finding a specific property, object or structure in a given instance of a particular entity. Search problems describe any input-output-based problem, even everyday problems, ranging from number factorization to complex graph theory questions. Not all search problems are solvable by a device capable of carrying out a computation. Furthermore, some computable search problems are without a doubt harder than others. For a given instance, some problems may even take the age of the universe to be solved by a machine. Complexity theorists study the complexity measures of such problems to identify what can and cannot be computed efficiently, i.e. in a reasonable amount of time.
+\section{Computation and Turing machines}
 
-In recent years, total search problems, i.e. search problems that have at least one solution for all possible instances of the problem, have been studied under two distinct models: the white-box and black-box models. In the former, each partial step of the computation is explicitly defined, while in the latter we only care about the results of such steps. Extensive study of total search problems has shown that it is sufficient to restrict our interest to a small set of problems, each corresponding to a basic combinatorial principle, defining what is now referred to as the \textsf{TFNP} hierarchy. 
-Moreover, the two models have been proven to be highly related to other complexity theory branches. The white-box model is highly related to circuits and protocols, while the black-box model is highly related to decision trees and proof systems. These characterizations inspired researchers to extend the known results in hope of achieving an \textit{universal theory}. However, the known relations are still not strong enough to give this title to total search problems.
+Throughout history, humans have been solving problems through a wide variety of models capable of computing valid results, ranging from their intellect to mechanical devices capable of solving problems. In particular, a computation made by a model can be described as a list of sequential operations and initial conditions that will always yield the same result each time the computation is executed.
 
-This thesis focuses on exploring the relations between the black-box model and parity decision trees, an extension of the decision tree computational model based on linear equations in $\F_2$. First, we show that parity defines a computational model stronger than the traditional one and how this model is characterized by Tree-like Linear Resolution over $\F_2$, an extension of the Tree-like Resolution proof system. Then, we show that short proofs of this proof system can be converted into short proofs of the Nullstellensatz proof system, which characterizes all problems reducible to the parity argument principle, i.e. an application of the handshaking lemma. These results are enough to show interesting relations between our class of total search problems and the already-known ones.
+In modern mathematics, this idea is formalized through the concept of \textbf{algorithm}, a finite list of unambiguous instructions that, given some set of initial conditions, can be performed to compute the answer to a given problem. Even though this is a straightforward definition, it isn't as "mathematically stable" as it seems: each computational model could have access to a different set of possible operations, meaning that the same problem could be solved by different computational models in various ways. This innate nature of computational models makes life difficult for mathematicians, who want to prove results that are as general as possible. 
 
+In 1933, Kurt Gödel - one of the greatest logicians of all time - tried to capture the concept of computation through logic, formalizing the definition of the class of \textbf{general recursive functions}, i.e. the class functions $f : \N \to \N$ that are "computable" in an intuitive sense. Formally, this corresponds to the smallest class of functions $f : \N \to \N$ that is closed under composition, recursion and minimization while also including the value zero, the successor operator and all the projection operators. \textit{Gödel's thesis} states that every mechanically calculable function can be in some way defined using general recursive functions \cite{godel}. However, Gödel's definition of computation wasn't good enough due to general recursive functions being a hard tool to work with.
 
+In 1936, inspired by Gödel's ideas, Alonzo Church defined \textbf{lambda calculus}, a formal system in mathematical logic that expresses computation through abstraction, function application, variable binding and substitution. Church \cite{church} and his student Stephen Kleene \cite{kleene} were able to prove that a function is lambda-computable if and only if it is general recursive, showing that the two models were equivalently able to capture the concept of computation. Even though lambda calculus is indeed simpler to work with compared to the axioms of general recursive functions, this model was still considered too much abstract compared to "real" computations that were being executed by the very distant ancestors of modern computers. In 1950, Alan Turing - another of Church's distinguished students - defined the now-called \textbf{Turing machine}, an abstract machine capable of capturing the concept of computation itself through simple - but sufficient - operations.
 
-\cleardoublepage
+Informally, a Turing machine is made of:
+\begin{itemize}
+    \item A \textit{tape} divided into cells, where each cell contains a symbol from a finite set called \textit{alphabet}, usually assumed to contain only 0 and 1, or a special symbol $\blankchar$, namely the \textit{blank character}. The tape is finite on the left side but infinite on the right side. 
+    \item A \textit{read-write head} capable of reading and writing symbols on the tape. The head is always positioned on a single cell of the tape and can shift left and right only one cell per shift.
+    \item A finite set of \textit{states} that can be assumed by the machine. At all times the machine only knows its current state. The set contains at least one state that is capable of immediately halting the machine when reached (such states could be unreachable, making the machine go in an infinite loop).
+    \item A finite set of \textit{instructions} which, given the current state and the current cell read by the read-write head, dictate how the machine behaves. Each instruction tells the machine to do three things: replace the symbol of the current cell (which can be replaced with itself), move the head one cell to the left or one cell to the right and move from the current state to a new one (which can be the current state itself).
+\end{itemize}
+
+Initially, the machine's tape contains only an \textit{input string}, while all the other infinite cells contain the blank character. At the end of the computation, the tape contains only the \textit{output string}, which is the result of the computation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.525]{resources/images/tm.png}
+
+    \caption{A Turing machine}
+\end{figure}
+
+\newpage
+
+\begin{definition}
+ A Turing machine is a 7-uple $M = (Q, F, \Gamma, \Sigma, q_0, \delta)$ where:
+    \begin{itemize}
+        \item $Q$ is a finite set of states, $F \subseteq Q$ is a finite set of halting states and $q_0 \in Q$ is the initial state taken by the machine.
+        \item $\Gamma$ is a finite set of symbols, usually called the tape alphabet. The tape alphabet always contains the symbol $\blankchar\,$.
+        \item $\Sigma$ is a finite set of symbols, usually called the input alphabet, where $\Sigma \subseteq \Gamma - \{\blankchar\}$. The input string can be formed only of these characters.
+        \item $\delta : (Q - F) \times \Gamma \to Q \times \Gamma \times \{\mathsf{L}, \mathsf{R}\}$ is a partial function, usually called the transition function, where $\mathsf{L}$ and $\mathsf{R}$ represents a left or right shift of the read-write head. Intuitively, if $\delta(q, a) = (p, b, L)$ then it holds that, when the machine is in state $q$ and it reads the symbol $a$ on the current cell of the tape, it transitions to the state $p$, replaces the symbol $a$ with $b$ and moves the head to the left.
+    \end{itemize}
+\end{definition}
+
+Turing \cite{turing} showed that a function can be computed by his theoretical machine if and only if it is lambda-computable, proving that the two models are equivalent. Turing's characterization of computation was acclaimed by Gödel himself, who deemed it "an absolute definition of an interesting epistemological notion". The computational characterizations devised by Church and Turing would later be referred to as the \textbf{Church-Turing thesis}, constituting a formal definition of algorithm and computation.
+
+Moreover, Turing proved the existence of an \textit{Universal Turing machine}, a \TM that is capable of simulating any other Turing machine. In other words, an \textsf{UTM} is capable of computing any function computable by another Turing machine. This result shouldn't be a surprise: modern computers are nothing more than a \textsf{UTM}s that can execute any given algorithm, producing an output for a given input.
+
+The concept of Universal Turing machine also allows us to easily prove that many other computational models are capable of characterizing computation: if a model is capable of simulating an \textsf{UTM} then it is capable of making any possible computation. This idea is known as \textit{Turing completeness}.
+
+After achieving a mathematically stable definition of computation through Turing machines, Church and Turing's focus shifted to understanding which problems are computable. In particular, they showed that some functions are \textbf{uncomputable} by proving that there cannot exist a Turing machine capable of carrying out their computation without going in infinite loops, i.e. never halting and thus never finding a solution. The main example of such a problem is Turing's famous \textit{Halting problem}: can we determine if a machine will halt or not for a given input?
+
+The existence of uncomputable functions - and thus uncomputable problems - gives a negative answer to the \textit{Entscheidungsproblem} (german for \textit{decision problem}), a question posed by David Hilbert in 1928 which asks if there is an algorithm that for each input statement answers "yes" or "no" according to whether the statement is universally true.
+
+\newpage
+
+\section{Complexity measures}
+
+Once the existence of the absolute limits of computation was discovered, researchers shifter their focus on the "practical" limits of computation. A "good" algorithm (or \TM) should be able to solve a problem, in an efficient way. But what does it mean for a computation to be \textit{efficient}? To formally describe this idea, computer scientists defined \textbf{complexity measures} to quantify the amount of computational resources needed by a Turing machine. An efficient \TM should be able to solve a task with low computational resources. Above all, we are interested in studying the amount of steps needed and the amount of cells needed to achieve such computations. These two concepts are referred to as the \textit{time complexity} and the \textit{space complexity} of a Turing machine.
+
+\begin{definition}
+ Given a Turing machine $M$ that halts on every input, we define the time complexity and space complexity of $M$ as the two functions $t, s : \N \to \R^+$ such that $t(n)$ and $s(n)$ are respectively the maximum number of steps and the number of initially blank cells used by $M$ for any input.
+\end{definition}
+
+Even between small powers there is a huge difference in resources. For example, an algorithm that requires $n$ steps is clearly a lot more efficient than one that requires $n^2$ steps. In complexity theory, we consider as \textit{efficient solutions} every solution that requires a "reasonable" amount of resources, even when they are huge. For example, an algorithm that requires $n^{1000}$ steps is still considered "reasonable", while the same doesn't hold for an algorithm that requires $2^n$ steps. In other words, efficiency dictates whether a problem is \textit{practically feasible} or not in the real world: if a problem is computable by a \TM but it requires an immense amount of time or space to get to the result, then the computation is practically unachievable. These problems are often referred to as \textbf{intractable problems} \cite{complexity_arora_barak,sipser_computation}.
+
+Time and space complexity are intrinsically related one to the other: time limits the amount of space and vice versa. Usually, these two measures are proportionally inverse: if we allow our algorithm to use more space then the computation can be sped up, while if we want to lower the amount space needed then the computation will require more steps. Larger inputs require a larger amount of computational resources, making the values $t(n)$ and $s(n)$ proportional to the size $n$ of the input. For this reason, as the input size grows, we are interested in the asymptotic behavior of these measures. This concept is captured by the so-called \textit{big-Oh notation}.
+
+\begin{definition}
+ Given two functions $f, g : \N \to \R^+$, we say that:
+    \begin{enumerate}
+        \item $f$ is in big-Oh of $g$, written as $f(n) = O(g(n))$, if there are two constants $c \in \R$ and $N \in \N_{> 0}$ such that $\forall n \geq N$ it holds that $f(n) \leq c g(n)$.
+        \item $f$ is in Omega of $g$, written as $f(n) = \Omega(g(n))$, if there are two constants $c \in \R$ and $N \in \N_{> 0}$ such that $\forall n \geq N$ it holds that $f(n) \geq c g(n)$.
+        \item $f$ is in Theta of $g$, written as $f(n) = \Theta(g(n))$, iif there are two constants $c \in \R$ and $N \in \N_{> 0}$ such that $\forall n \geq N$ it holds that $c g(n) \leq f(n) \leq d g(n)$.
+    \end{enumerate}
+\end{definition}
+
+In other words, as the input size $n$ grows the function $f$ can dominate, be dominated or both by a function $g$, defining the \textit{lower} and \textit{upper} bounds of the value $f(n)$. In particular, when $f(n) = \Theta(g(n))$ the two functions can be considered to be \textit{almost} the same due to them following the same growth pattern. Additionally, its easy to see that $f(n) = \Omega(g(n))$ if and only if $g(n) = O(f(n))$ and likewise that $f(n) = \Theta(g(n))$ if and only if $f(n) = O(g(n))$ and $f(n) = \Omega(g(n))$.
+
+In general, we consider an algorithm as \textit{time efficient} if it can compute the answer to any input in at most a polynomial amount of time, i.e. in $O(n^k)$ time for some $k \in \N$. Likewise, it is considered \textit{space efficient} if it can compute the answer to any input in at most a polynomial amount of space.
+
+For example, consider the following informally defined Turing machine $M$ which takes the binary encoding $\abk{m}$ of a natural number $m \in \N$ as the input string and returns $\abk{m^2}$ as the output string. The computation made by $M$ is achieved by repeatedly adding the value $m$.
+
+$M$ = "Given the input string $\abk{m}$:
+\begin{enumerate}
+    \item Copy the string $\abk{m}$ on a blank set of contiguous cells. This copied string will be referred to as the value $k$.
+    \item Copy the string $\abk{m}$ on a blank set of contiguous cells. This copied string will be referred to as the value $y$.
+    \item Repeat while the value $k$ is bigger than $1$:
+    \begin{enumerate}[label={\arabic*.}, start=3]
+        \item Copy the string $\abk{y}$ on a blank set of contiguous cells. This copied string will be referred to as the value $x$.
+        \item Compute $x + n$ and store the result on the space occupied by the string $\abk{y}$. In other words, compute $y \gets x + n$.
+        \item Compute $k - 1$ and store the result on the space occupied by the string $\abk{k}$. In other words, compute $k \gets k - 1$.
+    \end{enumerate}
+\end{enumerate}
+\begin{enumerate}[label={\arabic*.}, start=6]
+    \item Write $\blankchar$ on all the cells on the tape, except for the cells of the string $\abk{o}$.
+    \item Halt the machine and return the output string $\abk{o}$."
+\end{enumerate}
+
+We know that any natural number $m \in \N$ can be encoded in binary with $\log_2 m$ bits. This means that the length $n$ of the input string $\abk{m}$ is $\log_2 m$.
+
+Consider now the values $k$ and $o$ obtained in the computation. These values are natural numbers and they are bounded by $cm$ for some $c \in \R$. This means that $k, x, y = O(m)$ and thus that they can be encoded with $O(\log m)$ bits (asymptotic notation allows us to drop the subscript of the logarithm), therefore requiring $3 \cdot O(\log m)$ cells, which is asymptotically equivalent to $O(\log m)$ cells. We conclude that the space complexity of our \TM is $O(\log m) = O(n)$.
+
+To copy a string of length $\ell$, the Turing machine needs to copy $\ell$ cells but also requires to make additional shifts in order to repeatedly move from the original string to the copied one, making the total amount of steps required $O(\ell)$. In a similar fashion, binary addition (or subtraction) between two numbers $a$ and $b$ can be computed in $O(\log a + \log b)$ steps. Since we initially set $k = m$ and the machine decrements the value of $k$ by 1 on each iteration of the loop, the computations inside the loop get executed $m-1$ times. This means that the total number of loop steps is $O((m-1) \log m)$. By adding the initial two copy procedures, the total number of steps done by the machine is $O(2 \log m + (m-1) \log m)$, which is asymptotically equivalent to $O(m \log m)$. Thus, we conclude that the time complexity of such $\TM$ is $O(m \log m) = O(2^n n)$.
+
+These complexity measures clearly imply that this \TM is highly time inefficient since it requires an exponential amount of time. But does this mean that the problem is intractable? Modern computers can square a number in milliseconds, so the answer to this question should clearly be no. In fact, even by implementing the common column method for multiplying numbers usually taught to kids, this problem can be solved efficiently.
+
+Efficiency is one of the lingering question in modern computer scientists. We know that some problems are computationally unattainable, but where is the line that separates tractable and intractable problems? What property defines problems that cannot be solved efficiently? Finding an answer to these questions may seem easy, but after more than 70 years of research it still persists in the minds of complexity theorists.

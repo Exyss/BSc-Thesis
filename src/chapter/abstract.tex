@@ -1,5 +1,13 @@
 \begin{abstract}
-    TODO.
+    
+In computability theory, a \textit{search problem} is a type of computational problem based on finding a specific property, object or structure in a given instance of a particular entity. Search problems describe any input-output-based problem, even everyday problems, ranging from number factorization to complex graph theory questions. Not all search problems are solvable by a device capable of carrying out a computation. Furthermore, some computable search problems are without a doubt harder than others. For a given instance, some problems may even take the age of the universe to be solved by a machine. Complexity theorists study the complexity measures of such problems to identify what can and cannot be computed efficiently, i.e. in a reasonable amount of time.
+
+In recent years, total search problems, i.e. search problems that have at least one solution for all possible instances of the problem, have been studied under two distinct models: the white-box and black-box models. In the former, each partial step of the computation is explicitly defined, while in the latter we only care about the results of such steps. Extensive study of total search problems has shown that it is sufficient to restrict our interest to a small set of problems, each corresponding to a basic combinatorial principle, defining what is now referred to as the \textsf{TFNP} hierarchy. 
+Moreover, the two models have been proven to be highly related to other complexity theory branches. The white-box model is highly related to circuits and protocols, while the black-box model is highly related to decision trees and proof systems. These characterizations inspired researchers to extend the known results in hope of achieving an \textit{universal theory}. However, the known relations are still not strong enough to give this title to total search problems.
+
+This thesis focuses on exploring the relations between the black-box model and parity decision trees, an extension of the decision tree computational model based on linear equations in $\F_2$. First, we show that parity defines a computational model stronger than the traditional one and how this model is characterized by Tree-like Linear Resolution over $\F_2$, an extension of the Tree-like Resolution proof system. Then, we show that short proofs of this proof system can be converted into short proofs of the Nullstellensatz proof system, which characterizes all problems reducible to the parity argument principle, i.e. an application of the handshaking lemma. These results are enough to show interesting relations between our class of total search problems and the already-known ones.
+
+
 \end{abstract}
 
 \let\cleardoublepage\clearpage

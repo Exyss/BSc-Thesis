@@ -1,468 +1,809 @@
 
-\chapter{Black-box TFNP} \label{chap:bb-tfnp}
+\chapter{Parity in black-box \textsf{TFNP}} \label{chap:parity-tfnp}
 
-\section{Oracles and decision trees}
+\section{Parity decision trees}
 
-In the previous chapter, we have briefly shown how \TFNP subclasses are defined in terms of basic existence principles that capture white-box total search problems solvable by protocols reducible to Karchmer-Widgerson games. From now on, we will shift our focus to the black-box model.
-
-Black boxes have been used by complexity theorists since the early days, mostly through the concept of \textbf{oracle}, a device capable of instantly solving an instance of a designated problem. In particular, these problems may even be uncomputable, an assumption that allows us to view oracles as magical devices. Turing machines can be allowed to query such oracles to an additional \textit{oracle tape}. The machine writes a string on such tape, asking the oracle to solve the problem for that input. The output of the oracle is then written on the same tape, which can then be read by the Turing machine. Any query made to the oracle requires $\Theta(1)$ time, meaning that they don't influence the cost of the computation.
+The concept of parity is extensively studied in computer science. In our case, we are interested in exploring parity through the lens of \textit{linear forms modulo 2}, i.e. linear equations defined on $n$ variables over the algebraic field $\F_2$. In this field, each term can either be a 0 or a 1, with the defining characteristic that $1+1 = 0$.
 
 \begin{definition}
- An oracle for a problem $A$ is an external device that is capable of instantaneously solving an instance of $A$. An oracle Turing machine is a Turing machine provided with the ability to query an oracle. We write $M^A$ to describe a Turing machine provided with an oracle for the problem $A$.
+ Given $n$ variables $x_1, \ldots, x_n$, we define a \textbf{linear form} as a linear equation over $\F_2$. In general, a linear form can be expressed as $\sum\limits_{i = 1}^n \alpha_i x_i$, where $\alpha_1, \ldots, \alpha_n \in \F_2$
 \end{definition}
 
-Given a class $\mathcal{C}$ and an oracle for a problem $A$, the \textit{relativized version} of the class $\mathcal{C}$, written $\mathcal{C}^A$ is the set of all problems of $\mathcal{C}$ solvable (or verifiable) with access to the oracle of $A$. For example, $\mathsf{P}^{\mathrm{SAT}}$ is the class of problems solvable in polynomial time by a Turing machine with an oracle for the $\mathrm{SAT}$ problem. More generally, given two classes $\mathcal{C}, \mathcal{B}$, we write $\mathcal{C}^{\mathcal{B}}$ to denote the set of all problems of $\mathcal{C}$ solvable (or verifiable) with access to an oracle for any problem that lies in $\mathcal{B}$. In other words, we have that $\mathcal{C}^{\mathcal{B}} = \bigcup_{A \in \mathcal{B}} \mathcal{C}^{A}$.
+Intuitively, each sum in a linear form is nothing more than an application of the XOR operator: the linear form $x_1 + x_2$ is equal to 1 if and only if $x_1$ is \textit{different} from $x_2$ (i.e. if $x_1 = 1$ and $x_2 = 0$ or if $x_1 = 0$ and $x_2 = 1$). Additionally, in $\F_2$ the concepts of addition and subtraction are equivalent: since $1+1 = 0$, we easily get that $1 = -1$. Through these properties, parity can be used to determine if two or more objects are equal or not. For example, consider the following system of linear forms:
+\[\left \{ \begin{array}{l}
+ x_1 + x_2 + x_3 = 1 \\
+ x_1 + x_2 + x_4 = 1 \\
+ x_1 + x_3 = 1
+\end{array} \right .\]
 
-Oracles proved to be surprisingly useful for studying the relationship between $\mathsf{P}$ and $\mathsf{NP}$ by considering the relationship between $\mathsf{P}^A$ and $\mathsf{NP}^A$ for an oracle $A$. In a celebrated result \cite{relativization_p_np}, Baker et al. showed that there are two problems $A$ and $B$ such that $\mathsf{P}^A = \mathsf{NP}^A$ and $\mathsf{P}^B \neq \mathsf{NP}^B$. This fact makes commonly used proof techniques useless, meaning that any answer to the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question will require unconventional techniques, thus the hardness of the question.
+By simplifying the linear system we get that:
+\[\left \{ \begin{array}{l}
+ x_1 + x_2 + x_3 = 1 \\
+ x_1 + x_2 + x_4 = 1 \\
+ x_1 + x_3 = 1
+\end{array} \right . \longrightarrow
+\left \{ \begin{array}{l}
+ x_2 = 1\\
+ x_1 + 1 + x_4 = 1 \\
+ x_1 + x_3 = 1
+\end{array} \right . \longrightarrow
+\left \{ \begin{array}{l}
+ x_2 = 1\\
+ x_1 = x_4 \\
+ x_1 = 1+x_3
+\end{array} \right .\]
 
-Oracles provide a simple yet effective way to generalize the concept of reduction through the so-called \textit{Turing reductions}: if a Turing machine provided with an oracle for the problem $B$ is capable of resolving a problem $A$ then the problem $A$ can be reduced to solving multiple instances of the problem $B$. When $A$ is Turing reducible to $B$, we write $A \leq_T B$. Clearly, if the oracle machine $M^B$ can solve $A$ then any query to the oracle can be replaced with a call to a subroutine that solves $B$. This conversion is often referred to as \textit{de-relativization}. Many-to-one reductions can be seen as a specific case of Turing reductions, where the machine makes exactly one query to the oracle and then returns the output of such query.
+which tells us that $x_2 = 1$ and $x_1 = x_4 \neq x_3$ must hold.
 
-In the particular case of total search problems, it was proven that the reducibility between search problems is strictly connected to the reducibility of their relativized versions up to all oracles \cite{rel_comp_np_search}.
+\newpage
 
-\begin{theorem}
- Given two search problems $R,S \in \mathsf{TFNP}$ and their relative classes it holds that $R \leq_m S$ if and only if $R^A \leq_m S^A$ for all oracles $A$.
-\end{theorem}
+But what happens if we apply the concept of parity in decision trees? What if, instead of querying variables to know their value, we ask the parity of a set of values by querying linear forms? This idea gives rise to the extended model of \textbf{parity decision trees}.
 
-This result implies that proving any relativized separation is equivalent to proving a non-relativized separation, allowing us to use the intuitive nature of oracles to rule out possible collapses in \TFNP subclasses. Many \TFNP subclasses have been proven to be different through separations between the respective query search problems. \cite{proofs_circuits_communication, tfnp_characterization}
-
-\begin{definition}
- A query search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
-\end{definition}
-
-A good eye will surely notice that the previous definition does not vary from the normal definition of search problems, unlike communication search problems. The only true difference resides in their computational models: query search problems are solved (or verified) through \textbf{decision trees}.
-
-\begin{definition}[\cite{search_problems_dt_model}]
- A decision tree is a rooted directed binary tree whose nodes are associated with either an output value or an input Boolean variable. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node is labeled by a variable and the two outgoing edges are labeled by the two possible values of that variable.
-\end{definition}
-
-Decision trees can be viewed as nothing more than the black-box version of protocols: we don't care about who computes the next step or how they do it, we only care about the result being either a 0 or a 1 to proceed with the computation. In fact, like their white-box counterpart, decision trees encode all possible ways to obtain a result, making them \textit{total}. Likewise, the complexity of a decision tree computing a function follows the same complexity measures as a protocol, i.e. its \textit{size} and its \textit{depth}. A function $f$ is said to be computed by the decision tree $T$ if for all inputs $x$ it holds that $f(x) = T(x)$. 
+Instead of being labeled by single variables, the nodes of a parity decision tree (PDT for short) are labeled by a linear form $f$. Each node has two outgoing edges, one labeled by $f = 0$ and the other by $f = 1$. Every path from the root of the PDT to one of its nodes defines a system of linear forms given by all the labels of the edges on the path. In general, given the PDT $T$ and a node $v$, we denote this system with $\Phi_v^T$. Given an assignment $\alpha(x_1, \ldots, x_n)$, the output of a PDT is dictated by the parity queries made by each node.
 
 \begin{figure}[H]
     \centering
 
     \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
 
-        \node[circle, draw] (1)[] {$x_1$};
+        \node[ellipse, draw] (1)[] {$x_1+x_2+x_3$};
 
-        \node[circle, draw] (2) [below left of=1, xshift=-50, ]{$x_2$};
-        \node[circle, draw] (3) [below right of=1, xshift=50, ]{$x_3$};
+        \node[ellipse, draw] (2) [below left of=1, xshift=-50, ]{$x_1+x_2$};
+        \node[ellipse, draw] (3) [below right of=1, xshift=50, ]{$x_1$};
 
-        \node[circle, draw] (4) [below left of=2, xshift=-10, ]{$x_3$};
-        \node[circle, draw] (5) [below right of=2, xshift=10, ]{$x_3$};
-        \node[circle, draw] (6) [below left of=3, ]{$x_2$};
+        \node[ellipse, draw] (4) [below left of=2, xshift=-10, ]{$x_2+x_3$};
+        \node[ellipse, draw] (5) [below right of=2, xshift=10, ]{$x_2$};
+        \node[ellipse, draw] (6) [below left of=3, ]{$x_2$};
         \node[rectangle, draw] (7) [below right of=3]{$o_7$};
 
-        \node[rectangle, draw] (8) [below left of=4, xshift=10]{$o_1$};
-        \node[rectangle, draw] (9) [below right of=4, xshift=-10]{$o_2$};
-        \node[rectangle, draw] (10) [below left of=5, xshift=10]{$o_3$};
-        \node[rectangle, draw] (11) [below right of=5, xshift=-10]{$o_4$};
-        \node[rectangle, draw] (12) [below left of=6, xshift=10]{$o_5$};
-        \node[rectangle, draw] (13) [below right of=6, xshift=-10]{$o_6$};
+        \node[rectangle, draw] (8) [below left of=4, xshift=10, yshift=-10]{$o_1$};
+        \node[rectangle, draw] (9) [below right of=4, xshift=-10, yshift=-10]{$o_2$};
+        \node[rectangle, draw] (10) [below left of=5, xshift=10, yshift=-10]{$o_3$};
+        \node[rectangle, draw] (11) [below right of=5, xshift=-10, yshift=-10]{$o_4$};
+        \node[rectangle, draw] (12) [below left of=6, xshift=10, yshift=-10]{$o_5$};
+        \node[rectangle, draw] (13) [below right of=6, xshift=-10, yshift=-10]{$o_6$};
 
         \path[every node/.style={font=\sffamily\small}]
- (1) edge[swap, color=Green]  node{0} (2)
- (1) edge node{1}(3)
+            (1) edge[swap, color=Green]  node{0} (2)
+            (1) edge node{1}(3)
 
- (2) edge[swap]  node{0} (4)
- (2) edge[color=Green]  node{1}(5)
+            (2) edge[swap]  node{0} (4)
+            (2) edge[color=Green]  node{1}(5)
 
- (3) edge[swap]  node{0} (6)
- (3) edge  node{1}(7)
-            
- (4) edge[swap]  node{0} (8)
- (4) edge  node{1}(9)
+            (3) edge[swap]  node{0} (6)
+            (3) edge  node{1}(7)
+                        
+            (4) edge[swap]  node{0} (8)
+            (4) edge  node{1}(9)
 
- (5) edge[swap]  node{0} (10)
- (5) edge[color=Green]  node{1}(11)
+            (5) edge[swap]  node{0} (10)
+            (5) edge[color=Green]  node{1}(11)
 
- (6) edge[swap]  node{0} (12)
- (6) edge  node{1}(13)
- ;
+            (6) edge[swap]  node{0} (12)
+            (6) edge  node{1}(13)
+            ;
     \end{tikzpicture}
 
-    \caption{An example of a decision tree of size 13 and depth 3. The green path shows the computation made for the input $x = 011$.}
+    \caption{An example of a parity decision tree of size 13 and depth 3.}
 \end{figure}
 
-Decision trees give an easier way to describe the computation of an oracle Turing machine: if $M^B$ solves (or verifies) a problem $A$ then the $i$-th query made by the procedure corresponds to a variable $x_i$ for the decision tree where $x_i = 1$ if the query returns a positive result and 0 otherwise. In other words, the computation tree of an oracle Turing machine is a decision tree.
+In the above example, the green path defines the following system of linear forms:
+\[\left \{ \begin{array}{l}
+ x_1 + x_2 + x_3 = 0 \\
+ x_1 + x_2 = 1 \\
+ x_2 = 1
+\end{array}\right .\]
 
-\begin{proposition}
- Given a search problem $A \in \mathsf{TFNP}$, there is an oracle Turing machine $M^B$ that solves (or verifies) $A$ if and only if there is a decision tree that solves (or verifies) $A$.
-\end{proposition}
-
-The above proposition gives a strong result that allows us to characterize black-box \TFNP through decision trees instead of oracles: \textit{any decision tree separation implies a relativized separation} \cite{proofs_circuits_communication, tfnp_characterization}. As in the communication complexity formulation, given a \TFNP problem $R$, we denote with $R^{dt}$ the equivalent $\TFNP^{dt}$ problem, where \textit{dt} stands for \textit{decision tree}. We will omit this notation when the context makes it clear.
-
-\begin{definition}
- We define $\mathsf{FP}^{dt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth decision tree $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}^{dt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth decision tree $T_y$ such that $T_y(x) = 1$ if and only if $(x,y) \in R_n$.
-\end{definition}
-
-Like protocols, in query search problems the certificate is the verifying decision tree itself. Decision tree reductions are based on a more fine-grained definition, where the function that maps inputs of the first problem to inputs of the second problem is computed by many decision trees with output $\{0,1\}$.
+which once simplified corresponds to the assignment $x_0 = 0, x_2 = 1, x_3 = 1$. We define the class $\mathsf{FP}^{pdt}$ as the set of $\mathsf{TFNP}^{dt}$ problems that are efficiently solvable by a PDT, where the complexity measures are defined as in normal decision trees.
 
 \begin{definition}
- A query search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a query search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is sequence $T = (T_i)_{i \in [n]}$ of decision trees $T_i : \{0,1\}^m \to \{0,1\}$ and a decision tree $T_y^o : \{0,1\}^m \to O_m$ for each $y \in O_n'$ such that:
-    \[\forall x \in \{0,1\}^m \;\; (T(x), y) \in S \implies (x, T_y^o(x)) \in R\]
- where $T(x) := (T_1(x), \ldots, T_n(x))$.
+ We define $\mathsf{FP}^{pdt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth PDT $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$.
 \end{definition}
 
-The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter returns an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, meaning that
-\[d = \max (\{\mathrm{depth}(T_i) : i \in [n]\} \cup \{\mathrm{depth}(T_y^o) : o \in O_m\})\]
-
-The complexity of a reduction from $R$ to $S$, written as $S(R)$, is equal to the sum of the size and the minimal depth of a decision tree reduction from $R$ to $S$.
-\[S(R) := \min(\{\log m + \mathrm{depth}(T) : T\})\]
-
-\begin{definition}
- Given $S \in \mathsf{TFNP}^{dt}$, we define the class $S^{dt}$ as the subset of \textsf{TFNP}$^{dt}$ problems efficiently reducible through decision trees to the problem $S$, formally $S^{dt} = \{R \in \mathsf{TFNP} \mid S(R) = O(\log^k n)\}$
-\end{definition}
-
-\section{Connections to Proof Complexity}
-
-Like the white-box model, black-box total search problems can be studied under multiple lenses, such as \textbf{proof complexity}. This branch of complexity theory studies the complexity measures needed for a propositional formula to be proved by propositional proof systems, that being any system of rules that can prove the truthfulness of a propositional formula, i.e. a string made of logical operators applied on a set of $n$ variables, such as $F = x_1 \land (x_1 \to \lnot x_2 \lor x_3)$.
-
-Any statement can be encoded by propositional formulas, which is either a \textit{tautology} (a statement that is always true), a \textit{satisfiable} formula (a statement that can be true or false based on the assignment) or an \textit{unsatisfiable} formula (a statement that is always false). Proving that a formula $F$ is a tautology is equivalent to proving that $\lnot F$ is unsatisfiable.
-
-Proof systems can be viewed as an algorithm that manipulates propositional formulas, producing a new formula. When a formula $G$ is derived by the formula $F$ in the proof system $S$, we write $F \stackrel{S}{\vdash} G$. Proof systems must be \textit{sound}: if $F \stackrel{S}{\vdash} G$ then $G$ is a \textit{logical consequence} of $F$, which means that $F \to G$ is a tautology. In 1979, Cook and Reckhow gave the following formal definition of propositional proof system - often called Cook-Reckhow proof systems.
-
-\begin{definition}
- A propositional proof system (or pps) is a polynomial time computable surjective function $f : \Sigma^* \to \mathrm{TAUT}$, where $\mathrm{TAUT}$ is the set of logical tautologies.
-\end{definition}
-
-Given a formula $F \in \mathrm{TAUT}$ a string $s \in \Sigma^*$ and a proof system $f$, we say that $s$ encodes $F$ for the pps $f$ if it holds that $f(s) = F$. This idea justifies why we want proof systems to be surjective: any true statement must have a valid encoding in the proof system. This property is called \textit{completeness} of the proof system.
-
-The most studied proof system is \textit{Resolution} (or \textsf{Res}). Given a formula $F \in \mathrm{TAUT}$, this proof system can prove that it is a tautology by proving that $\lnot F \in \mathrm{UNSAT}$.
-
-A \textit{conjunctive normal form} (CNF) formula $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal form:
-\[F = (x_1 \lor x_2 \lor \lnot{x_3} \lor x_4) \land (x_1 \lor \lnot{x_2}) \land x_3\]
-
-Any formula can be expressed as an equivalent CNF formula, making Resolution a \textit{complete} and \textit{sound} proof system. Resolution proofs are based on repeated applications of the following simple rule called the \textit{resolution rule}:
-\[\dfrac{C \lor x \qquad D \lor \lnot x}{C \lor D}\]
-
-Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}.
-
-Given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
-\[\begin{array}{lcl}
- D_1 :& \lnot{z} & \text{Axiom} \\
- D_2 :& y \lor z & \text{Axiom} \\
- D_3 :& y & \text{Res. on $D_1, D_2$} \\
- D_4 :& x \lor \lnot{y} \lor z  & \text{Axiom} \\
- D_5 :& x \lor \lnot{y} & \text{Res. on $D_1, D_4$} \\
- D_6 :& \lnot{x} \lor z & \text{Axiom} \\
- D_7 :& \lnot{x} & \text{Res. on $D_1, D_6$} \\
- D_8 :& \lnot{y} & \text{Res. on $D_5, D_7$} \\
- D_9 :& \bot & \text{Res. on $D_3, D_8$} \\
-\end{array}\]
+It's easy to see that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$ since any decision tree is just a PDT with all the queries defined only on one variable. Any PDT can be converted into a normal decision tree simply by "splitting" each linear query. Given a node $v$ labeled with the linear form $f + x_i$, let $u$ and $w$ be the children of $v$ respectively given by $f + x_i = 0$ and $f+x_i = 1$. Let $T_u$ and $T_w$ be the two subtrees with root $u$ and $w$.
 
 \newpage
 
-which can also be graphically represented as:
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[ellipse, draw] (1)[] {$f + x_i$};
+
+        \node[circle, draw] (2) [below left of=1, xshift=-50, ]{};
+        \node[circle, draw] (3) [below right of=1, xshift=50, ]{};
+
+        \node[] (2a) [below left of=2, yshift=-40]{};
+        \node[] (2b) [below right of=2, yshift=-40]{};
+        \node[] (2c) [below of=2]{$T_u$};
+
+        \node[] (3a) [below left of=3, yshift=-40]{};
+        \node[] (3b) [below right of=3, yshift=-40]{};
+        \node[] (3c) [below of=3]{$T_w$};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (1) edge[swap]  node{0} (2)
+            (1) edge node{1}(3)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (2) edge (2a.center)
+            (2) edge (2b.center)
+            (2a.center) edge (2b.center)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (3) edge (3a.center)
+            (3) edge (3b.center)
+            (3a.center) edge (3b.center)
+            ;
+    \end{tikzpicture}
+
+    \caption{The initial subtree of a parity decision tree}
+\end{figure}
+
+We replace $v$ with the node $v'$ labeled with the linear form $x_i$ and introduce two new nodes $u', w'$ such that $u'$ is the child of $v'$ when $x_i = 0$ and $w'$ is the child of $v'$ when $x_i = 1$. We label $u'$ with the linear form $f$ and let a copy of $T_u$ be the children of $u'$ when $f = 0$, while a copy of $T_w$ is the children of $u'$ when $f = 1$. Symmetrically, we label $w'$ with the linear form $f$ and let a copy of $T_w$ be the children of $w'$ when $f = 0$, while a copy of $T_u$ is the children of $w'$ when $f = 1$. 
 
 \begin{figure}[H]
     \centering
-    
-    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-        \node (1) []{$\bot$};
-        
-        \node (2) at ($(1)+(-2,1.75)$){};
-        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
-    
-        \node (4) [above left of=2]{};
-        \node (5) [above right of=2]{};
-    
-        \node (6) [above of=3]{$\lnot{y} \lor x$};
-        \node (7) [right of=6]{$\lnot{x}$};
-        
-        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
-        \node (9) [above right of=6]{$\lnot{x} \lor z$};
-    
-        \node (11) [right of=9]{$\lnot{z}$};
-        \node (12) [above left of=2]{$y$};
-    
-        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
-        \node (15) [left of=14]{$y \lor z$};
-    
+
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[circle, draw] (1)[] {$x_i$};
+
+        \node[circle, draw] (2) [below left of=1, xshift=-50, ]{$f$};
+        \node[circle, draw] (3) [below right of=1, xshift=50, ]{$f$};
+
+        \node[circle, draw] (2x) [below left of=2, xshift=-5]{};
+        \node[circle, draw] (2y) [below right of=2, xshift=5]{};
+
+        \node[circle, draw] (3x) [below left of=3, xshift=-5]{};
+        \node[circle, draw] (3y) [below right of=3, xshift=5]{};
+
+        \node[] (2a) [below left of=2x, yshift=-40]{};
+        \node[] (2b) [below right of=2x, yshift=-40]{};
+        \node[] (2c) [below of=2x]{$T_u$};
+
+        \node[] (3a) [below left of=2y, yshift=-40]{};
+        \node[] (3b) [below right of=2y, yshift=-40]{};
+        \node[] (3c) [below of=2y]{$T_w$};
+
+        \node[] (4a) [below left of=3x, yshift=-40]{};
+        \node[] (4b) [below right of=3x, yshift=-40]{};
+        \node[] (4c) [below of=3x]{$T_w$};
+
+        \node[] (5a) [below left of=3y, yshift=-40]{};
+        \node[] (5b) [below right of=3y, yshift=-40]{};
+        \node[] (5c) [below of=3y]{$T_u$};
+
         \path[every node/.style={font=\sffamily\small}]
- (15) edge (12)
-            
- (6) edge (3)
- (7) edge (3)
-            
- (8) edge (6)
- (11) edge (6)
-            
- (9) edge (7)
- (11) edge (7)
-    
- (11) edge (12)
-    
- (12) edge (1)
- (3) edge (1)
- ;
+            (1) edge[swap]  node{0} (2)
+            (1) edge node{1}(3)
+
+            (2) edge[swap]  node{0} (2x)
+            (2) edge node{1}(2y)
+
+            (3) edge[swap]  node{0} (3x)
+            (3) edge node{1}(3y)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (2x) edge (2a.center)
+            (2x) edge (2b.center)
+            (2a.center) edge (2b.center)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (2y) edge (3a.center)
+            (2y) edge (3b.center)
+            (3a.center) edge (3b.center)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (3x) edge (4a.center)
+            (3x) edge (4b.center)
+            (4a.center) edge (4b.center)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (3y) edge (5a.center)
+            (3y) edge (5b.center)
+            (5a.center) edge (5b.center)
+            ;
     \end{tikzpicture}
-    
-    \caption{Dag-like refutation of the previous formula}
+
+    \caption{The subtree after the splitting process}
 \end{figure}
 
-Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutations. When each clause appears only once in a refutation, we say that it is a \textit{tree-like} refutation due to how the underlying graph is a tree.
+By repeating this process until all queries are defined on a single variable, we obtain a decision tree equivalent to the original PDT. This final decision tree has exponential size and polynomial depth, which \textit{may not} be the smallest possible decision tree that solves the search problem solved by the initial PDT. However, we can easily prove that parity decision trees are indeed much stronger than decision trees.
 
-\begin{figure}[H]
-    \centering
-    
-    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-    
-        \node (1) []{$\bot$};
-        
-        \node (2) at ($(1)+(-2,1.75)$){$y$};
-        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
-    
-        \node (4) [above left of=2]{};
-        \node (5) [above right of=2]{};
-    
-        \node (6) [above of=3]{$\lnot{y} \lor z$};
-        
-        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
-        \node (9) [above right of=6]{$\lnot{x} \lor z$};
-    
-        \node (11) [right of=9]{$\lnot{z}$};
-    
-        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
-        \node (15) [left of=14]{$y \lor z$};
-    
-        \path[every node/.style={font=\sffamily\small}]
- (14) edge (2)
- (15) edge (2)
-    
- (8) edge (6)
- (9) edge (6)
-    
- (6) edge (3)
- (11) edge (3)
-    
- (2) edge (1)
- (3) edge (1)
- ;
-    \end{tikzpicture}
-    
-    \caption{Tree-like refutation of the previous formula}
-    \label{treelike_res_proof}
-\end{figure}
+\begin{theorem}
+    \label{fp_pdt_not_inside_fp_dt}
+    $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$
+\end{theorem}
 
-This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+\begin{proof}
+ Consider the search problem of determining the parity of $n$ variables for a given assignment $\alpha$. This problem can be solved by a PDT that makes a single query on all $n$ variables. By applying the splitting process to this tree, we get a decision tree of size $2^n$ and depth $n$. It's easy to see that the resulting decision tree is the smallest possible tree that can solve this search problem.
+\end{proof}
 
 \newpage
 
-Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Resolution proof is the length of the longest path from an axiom to the empty clause. The \textit{width} of a Resolution proof is the maximum number of literals appearing in a clause of the proof. For example, the proof shown in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a Tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}$ nodes.
+Since a system of linear forms can have multiple solutions, many assignments could be mapped to the same output. However, some systems could also be unsatisfiable, meaning that the node is unreachable by any assignment. When this happens we say that the node is \textbf{degenerate}.
 
-But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. Showing that any of these problems is also in $\mathsf{NP}$ would answer the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
-
-Proof systems are essential to work on this question: given the encoding $\Pi$ of a proof of $F$ in a proof system, a verifier can follow the rules defined by the proof system to prove that $F$ is indeed a tautology. In this case, $\Pi$ serves as a certificate for $F$ while the pps defines the verifier. We give the following equivalent definition of a propositional proof system.
-
-\begin{definition}
- A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $\Pi \in \Sigma^*$ such that $V(F,\Pi) = 1$.
-\end{definition}
-
-At first glance, one could think that this definition implies that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the length of such proofs: to be an efficient verifier, the length of the certificates must be polynomially bounded by the length of $F$. In other words, it must hold that $\abs{\Pi} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$ (which is equivalent to proving that $\mathrm{TAUT} \in \mathsf{NP}$) we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded proofs for all tautologies.
-
-\begin{proposition}
- There is a polynomially bounded proof system if and only if $\mathsf{NP} \neq \mathsf{coNP}$.
-\end{proposition}
-
-We already discussed how researchers believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. To prove this, we have to prove that there cannot be a polynomially bounded pps. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential length encoding for every discovered and undiscovered proof system.
-
-Even though this result seems out of reach, proof complexity is highly related to other branches of complexity theory, including our case! In order to get to this relation between proof complexity and $\mathsf{TFNP}^{dt}$, we will restrict our focus to CNF formulas: by construction, a CNF formula can be unsatisfiable if and only if for all assignments $\alpha(x_1, \ldots, x_n)$ there is a clause $C_i$ that is false. It's easy to see this fact implies that any CNF formula gives rise to an associated search problem: finding a falsified clause inside the formula (if there is any) for each possible assignment.
-
-\begin{definition}
- Given a CNF $F = C_1 \land \ldots \land C_m$ over $n$ variables, we define $\mathrm{Search}(F)$ as the following search problem: given an input assignment $\alpha(x_1, \ldots, x_n)$, return an index $i$ such that the assignment falsifies $C_i$.
-\end{definition}
-
-This problem is usually referred to as the \textit{false clause search problem}. 
-When $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is a total search problem since for any input assignment there will always be an unsatisfied clause. Moreover, the search problem of any unsatisfiable formula can easily be solved (or verified) by a decision tree for any formula $F$: if the assignment $\alpha(x_1 = b_1, \ldots, x_n = b_2)$ falsifies the clause $C_i$, define a path $x_1 = b_1, \ldots, x_n = b_n$ on the decision tree and let $C_i$ be the output of such path. In other words, for all $\lnot F \in \mathrm{TAUT}$ it holds that $\mathrm{Search}(F) \in \mathsf{TFNP}^{dt}$. 
+Like normal decision trees, PDTs can be used to solve the false clause search problem associated with any unsatisfiable CNF. A parity decision tree for a CNF formula $F$ is a PDT defined on the same variables of $F$ where for each leaf $v$ one of the following conditions holds:
+\begin{enumerate}[itemsep=0em]
+    \item The leaf is \textit{degenerate}
+    \item The leaf \textit{refutes} a clause $C$ of $F$, meaning that the system $\Phi_v^T$ is satisfiable and every one of its solutions falsifies $C$
+    \item The leaf \textit{satisfies} a clause $C$ of $F$, meaning that the system $\Phi_v^T$ has only one solution and it also satisfies $C$
+\end{enumerate}
 
 \begin{figure}[H]
     \centering
-    
-    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-    
-        \node (1)[circle, draw]{$y$};
-        
-        \node (2) at ($(1)+(-2,-1.75)$) [circle, draw]{$z$};
-        \node (3) at ($(1)+(2,-1.75)$) [circle, draw]{$z$};
-    
-        \node (4) [below left of=2]{};
-        \node (5) [below right of=2]{};
-    
-        \node (6) [below of=3, circle, draw]{$x$};
-        
-        \node (8) [below left of=6, rectangle, draw]{$x \lor \lnot{y} \lor z$};
-        \node (9) [below right of=6, rectangle, draw]{$z \lor \lnot{x}$};
-    
-        \node (11) [right of=9, rectangle, draw]{$\lnot{z}$};
-    
-        \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \lnot{z}$};
-        \node (15) [left of=14, rectangle, draw]{$y \lor z$};
-    
+
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[ellipse, draw] (1)[] {$x + y$};
+
+        \node[ellipse, draw] (2) [below left of=1, xshift=-20, ]{$x$};
+        \node[ellipse, draw] (3) [below right of=1, xshift=20, ]{$x$};
+
+        \node[rectangle, draw] (4) [below left of=2, xshift=10, yshift=-10]{$x \lor y$};
+        \node[rectangle, draw] (5) [below right of=2, xshift=-10, yshift=-10]{$\lnot x \lor \lnot y$};
+        \node[rectangle, draw] (6) [below left of=3, xshift=10, yshift=-10]{$x \lor \lnot y$};
+        \node[rectangle, draw] (7) [below right of=3, xshift=-10, yshift=-10]{$\lnot x \lor y$};
+
         \path[every node/.style={font=\sffamily\small}]
- (14) edge [swap] node{1} (2)
- (15) edge node{0} (2)
-    
- (8) edge node{0}(6)
- (9) edge node[swap]{1}(6)
-    
- (6) edge node{0}(3)
- (11) edge [swap] node{1}(3)
-    
- (2) edge node {0} (1)
- (3) edge node [swap] {1} (1)
- ;
+            (1) edge[swap]  node{0} (2)
+            (1) edge node{1}(3)
+
+            (2) edge[swap]  node{0} (4)
+            (2) edge[]  node{1}(5)
+
+            (3) edge[swap]  node{0} (6)
+            (3) edge  node{1}(7)
+                        
+            ;
     \end{tikzpicture}
-    
-    \caption{Decision tree for the previous unsatisfiable formula}
-    \end{figure}
 
- Similarly, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$.
+    \caption{A parity decision tree for $(x \lor y) \land (\lnot x \lor \lnot y) \land (\lnot x \lor y) \land (x \lor \lnot y)$}
+\end{figure}
 
-Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, written as $D(T)$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. By De Morgan's theorem, $\lnot{D(T)}$ is a CNF.
+We observe that if a node doesn't meet any of the previous conditions then it cannot be a leaf node. Moreover, we also observe that the system associated with the root of any PDT is always satisfiable due to it containing no linear forms. Since we are interested in studying PDTs for refusing unsatisfiable CNF formulas, the third case will never be true for any leaf. However, we still need a way to exclude the first case since an unsatisfiable system cannot be associated with any assignment. Luckily, each degenerate PDT can be conveniently converted into a non-degenerate one through a very simple process \cite{res_lin_2}.
 
 \begin{proposition}
-    \label{Rdt = Search(F)}
- Given a total query search problem $R \subseteq \{0,1\}^n \times O$, for each $n \in \N$ there exists an unsatisfiable CNF formula $F_n$ defined over $\abs{O}$-many variables such that $R_n = \mathrm{Search}(F_n)$. This formula is called canonical CNF encoding of $R_n$.
+    \label{degenerate}
+ Let $F$ be an unsatisfiable CNF formula. If $S_F$ can be solved with a degenerate PDT of size $s$ and depth $d$, it can also be solved with a non-degenerate PDT of size at most $s$ and depth at most $d$.
 \end{proposition}
 
 \begin{proof}
- Since $R = (R_n)_{n \in \N} \in \TFNP^{dt}$, for each $y \in O_n$ there is a $\mathrm{polylog}(n)$-depth decision tree $T_y$ that verifies $R_n$. Consider the CNF $F_n := \bigwedge\limits_{y \in O_n} \lnot{D(T_y)}$. Since $R$ is a total search problem, for each input $x$ there is a valid output, implying that at least one tree $T_y$ will have an accepting path, meaning that $D(T_y)$ with input $x$ accepts and therefore $\lnot{D(T_y)}$ with input $x$ rejects, concluding that $F_n$ is unsatisfiable. Moreover, this formulation also concludes that:
-    \[(x,y) \in R_n \iff (x,y) \in \mathrm{Search}(F_n)\]
- and thus that $R_n = \mathrm{Search}(F_n)$.
+    
+ Let $T$ be a degenerate PDT of size $s$ and depth $d$ that solves $S_F$. Let $U$ be the set of degenerate nodes of $T$. Notice that since $\Phi_r^T$ is empty, thus always satisfiable, we know that $r \notin U$. Consider the node $u \in U$ with the minimal distance from the root $r$. Since $u$ is not the root of $T$, there must be two vertices $p$ and $s$ such that $p$ is the parent of $u$ and $s$ is the sibling of $u$.
+
+ We notice that $\Phi_s^T$ must be satisfiable: if we assume that this is not true then both $\Phi_s^T$ and $\Phi_u^T$ would be unsatisfiable, which can be true only if $\Phi_p^T$ is also unsatisfiable, but we chose $w$ as the node in $U$ with minimal distance. Since $\Phi_s^T$ is satisfiable, the label $f = \alpha$ on the edge $(p,s)$ must be already contained inside the system $\Phi_p^T$, meaning that each assignment that satisfies $\Phi_p^T$ also satisfies $\Phi_s^T$.
+
+ We construct a new PDT $T'$ by removing the subtree $T_u$ with root $u$ from the initial PDT $T$ and by contracting the edge $(p,s)$, merging the two nodes $p$ and $s$ into a single node $v$. In other words, the subtree $T_u$ gets removed and the children of $s$ become the new children of $p$. Each assignment that satisfies $\Phi_p^T$ also satisfies $\Phi_v^{T'}$, concluding that $T'$ also solves $S_F$. By repeating the process until $U$ is empty, we get a non-degenerate PDT that solves $S_F$ of size at most $s$ and depth at most $d$.
+\end{proof}
+
+\section{Linear Resolution over $\F_2$}
+
+Once we have defined the class $\mathsf{FP}^{pdt}$, we are interested in finding a proof system that characterizes it. Consider a system $\Phi$ of linear forms defined on $\F_2$. This system can be viewed as the conjunction of the linear forms that it describes:
+\[\left \{ \begin{array}{c}
+ f_1 = \alpha_1 \\
+ f_2 = \alpha_2 \\
+    \vdots \\
+ f_k = \alpha_k
+\end{array}\right . \iff (f_1 = \alpha_1) \land (f_2 = \alpha_2) \land \ldots \land (f_k = \alpha_k)\]
+
+We can rewrite these conjunctions as a negation of a disjunction:
+\[\bigwedge_{i = 1}^k (f_i = \alpha_i) \iff \lnot \bigvee_{i = 1}^k \lnot (f_i = \alpha_i) \iff \lnot \bigvee_{i = 1}^k (f_i = 1 + \alpha_i)\]
+
+which implies that the negation of the system is equivalent to a set of disjunctions:
+\[\lnot \bigwedge_{i = 0}^k (f_1 = \alpha_1) \iff \bigvee_{i = 0}^k (f_1 = 1 + \alpha_1)\]
+
+We define such a set of disjunctions as a \textbf{linear clause}. More generally, a \textit{linear CNF formula} over $\F_n$ is a conjunction of linear clauses defined on $\F_n$.
+
+\begin{definition}
+ A linear CNF formula is a conjunction of $m$ disjunctions of linear equations over $\F_n$.
+    \[\bigwedge_{i = 1}^m \bigvee_{j = 1}^{k_i} (f_j = \alpha_j)\]
+\end{definition}
+
+Linear CNF formulas can assume a complex structure such as the following:
+\[((x_1+x_2 = 0) \lor (x_1 = 1)) \land ((x_2 + x_3 + x_4 = 3) \lor (x_2 + x_4 = 0))\]
+
+\newpage
+
+We define \textbf{Linear Resolution over $\F_n$} (or $\mathsf{ResLin(\F_n)}$), an extension of standard Resolution (see \Cref{chap:bb-tfnp}) based on the following two rules:
+\begin{enumerate}
+    \item \textit{Resolution rule}: given two linear clauses $(f = 0) \lor C$ and $(f = 1) \lor D$ defined on $\F_n$, we can derive the linear clause $C \lor D$
+    \item \textit{Weakening rule}: given a linear clause $C$, we can derive any linear clause $D$ such that $C \implies D$.
+\end{enumerate}
+
+Like in normal Resolution, in $\mathsf{ResLin(\F_n)}$ any derivation of a linear clause $C$ from a linear CNF $F$ is a sequence of linear clauses that ends with $C$, where every clause is either an axiom of $F$ or it can be derived from previous clauses through one of the two derivation rules. A linear CNF is unsatisfiable if and only if the empty linear clause can be derived from it. 
+
+Any standard CNF formula can be described as a linear CNF formula over $\F_2$ simply by treating each clause as a disjunction of linear forms made of a single term. For example, the CNF $(x_1 \lor \lnot{x_2}) \land (\lnot{x_3} + x_1)$ can be written as the following linear CNF formula:
+\[((x_1 = 1) \lor (x_2 = 0)) \land ((x_3 = 0) \lor (x_1 = 1))\]
+
+We call this the \textit{linear encoding} of a CNF. From now on, we will restrict our interests to Linear Resolution over $\F_2$, also called \textit{parity Resolution} (or $\mathsf{Res}_\oplus$).
+
+The weakening rule makes this proof system powerful thanks to how semantical implications can be used as "shortcuts". For example, consider the following linear CNF:
+\[(x = 1) \land (x+y = 1) \land ((x = 0) \lor (y = 1))\]
+
+By rewriting the last linear clause as a negation of a conjunction, we notice that:
+\[(x = 0) \lor (y = 1) \equiv \lnot ((x = 1) \land (y = 0))\]
+
+By simple substitution, we get that:
+\[\lnot ((x = 1) \land (y = 0)) \implies  \lnot ((x = 1) \land (x+y = 1))\]
+
+which is equivalent to:
+\[\lnot ((x = 1) \land (x+y = 1)) \equiv (x = 0) \lor (x+y = 0)\]
+
+concluding that $(x = 0) \lor (y = 1) \models (x = 0) \lor (x+y = 0)$. Proceeding with the resolution rule, we get the following Tree-like refutation.
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (1) []{$\bot$};
+        
+        \node (3) [above right of=1]{$(x = 0)$};
+    
+        \node (6) [above right of=3]{$(x=0) \lor (x+y = 0)$};
+        
+        \node (8) [above of=6]{$(x = 0) \lor (y = 1)$};
+    
+        \node (14) at ($(8)+(-4,0)$){$(x+y=1)$};
+        \node (15) [left of=14]{$(x=1)$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (14) edge (3)
+            (15) edge (1)
+               
+            (8) edge (6)
+               
+            (6) edge (3)
+               
+            (3) edge (1)
+            ;
+    \end{tikzpicture}
+
+    \caption{$\mathsf{TreeRes}_\oplus$-proof of the previous linear CNF formula}
+    \label{treelike_proof}
+\end{figure}
+
+It was shown that the weakening rule can be simulated through these simple three rules \cite{res_lin_2}:
+\begin{enumerate}
+    \item \textit{Simplification rule}: given a linear clause $C \lor (0 = 1)$, we can derive the linear clause $C$
+    \item \textit{Syntactic weakening}: given a linear clause $C$, we can derive the linear clause $C \lor (f = \alpha)$
+    \item \textit{Addition rule}: given a linear clause $C \lor (f = \alpha) \lor (g = \beta)$, we can derive the linear clause $C \lor (f = \alpha) \lor (g = \beta)$
+\end{enumerate}
+
+\begin{proposition}
+ Any clause obtainable through the weakening rule can also be obtained through a sequence of applications of the previous three rules and vice versa.
+\end{proposition}
+
+This result makes working with the weakening rule easier: any clause $D$ derived through $k$ applications of these three rules starting from a clause $C$ is automatically a weakening of $C$, implying that we can replace those $k$ applications with one single use of the weakening rule.
+
+\section{Characterization of $\textsf{FP}^{pdt}$ through $\mathsf{TreeRes}_\oplus$}
+
+$\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two sides of the same coin. Any tree-like $\ResP$ refutation of a linear CNF $F$ can be used to construct an (almost) equivalent PDT that solves $S_F$ and vice versa \cite{res_lin_2}.
+
+\begin{lemma}
+    \label{resp_to_pdt}
+ Let $F$ be a linear CNF formula. If there is a $\mathsf{TreeRes}_\oplus$ refutation of $F$ with size $s$ and depth $d$, there also is a PDT of size at most $s$ and depth at most $d$ that solves $S_F$.
+\end{lemma}
+
+\begin{proof}
+ Let $T$ be the proof tree that refutes $F$. We label each edge of $T$ whose associated clauses involve a resolution rule, while all the other weakening edges remain unlabeled. In particular, if a resolution rule is applied to the clauses $(f = 0) \lor D_1$ and $(f = 1) \lor D_2$ obtaining the clause $D_1 \lor D_2$, we label the edge from the first to the third with $f = 1$, while the other edge is labeled with $f = 0$.
+
+ By induction on the depth of a vertex of $T$, we show that the clause written in $v$ contradicts the system $\Phi_v^T$. The root node contains the empty clause and is labeled by an empty system, making the statement trivially true. Assume now that the statement holds for a generic node $v$. We have to show that the hypothesis also holds for its children $u$ and $w$.
+
+ Suppose that $v$ is the result of a resolution rule application, where $D_1 \lor D_2$ is the clause inside $v$. Assume that $u$ is the node that contains $(f = 0) \lor D_1$ while $w$ contains $(f = 1) \lor D_2$. By inductive hypothesis, we know that $D_1 \lor D_2$ contradicts the system $\Phi_v^T$ and equivalently that the system $\lnot (\lnot D_1 \land \lnot D_2)$ contradicts $\Phi_v^T$. This means that se of equalities in $D_1$ contradict $\Phi_v^T$. Moreover, we know that $\Phi_u^T = \Phi_v^T \land (f = 1)$, concluding that $(f = 0) \lor D_1$ contradicts $\Phi_u^T$. Likewise, we can show that $(f = 1) \lor D_2$ contradicts $\Phi_w^T$.
+    
+ Suppose now that $v$ is the result of a weakening rule, where $u$ is the only child. Since $(v,u)$ is unlabeled, we get that $\Phi_v^T = \Phi_u^T$. Furthermore, since $v$ is the result of a weakening applied to $u$, we know that the clause in $u$ semantically implies the clause in $v$, but by inductive hypothesis we know that the clause in $v$ contradicts the system $\Phi_v^T$, meaning that $u$ must also contradict the system $\Phi_v^T = \Phi_u^T$. Finally, if $v$ is a leaf then the statement is trivially true since it refutes a clause of $F$.
+
+ By contracting all the unlabeled edges given by the weakening rules, we get a parity decision tree that solves $S_F$. Due to this final step, the size of the PDT is at most $s$ and its depth is at most $d$. 
+\end{proof}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[circle, draw] (1)[] {$x$};
+
+        \node[rectangle, draw] (2) [below left of=1, xshift=-20, ]{$x = 1$};
+        \node[ellipse, draw] (3) [below right of=1, xshift=20, ]{$x+y$};
+
+        \node[rectangle, draw] (4) [below left of=3, xshift=-20, yshift=-10]{$x+y = 1$};
+        \node[rectangle, draw] (5) [below right of=3, xshift=20, yshift=-10]{$(x = 0) \lor (y = 1)$};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (1) edge[swap]  node{0} (2)
+            (1) edge node{1}(3)
+
+            (3) edge[swap]  node{0} (4)
+            (3) edge[]  node{1}(5)            
+            ;
+    \end{tikzpicture}
+
+    \caption{The PDT obtained from the proof shown in \Cref{treelike_proof}}
+    \label{pdt_cnf}
+\end{figure}
+
+\begin{lemma}
+    \label{pdt_to_resp}
+ Let $F$ be a linear CNF formula. If there is a PDT of size $s$ and depth $d$ that solves $S_F$, there also is a $\mathsf{TreeRes}_\oplus$ refutation of $F$ with size at most $2s$, depth at most $d+1$ and the weakening rule applied only to the axioms.
+\end{lemma}
+
+\begin{proof}
+ Let $T$ be a PDT of size $s$ and depth $d$ that solved $S_F$. By \Cref{degenerate}, we assume that $T$ is non-degenerate. We label every node $v$ of $T$ with the negation of its associated linear system. In other words, every node $v$ is labeled with the linear clause $\lnot \Phi_v^T$. Every node is the result of the resolution rule being applied to its children, where the root node is the empty clause.
+
+ Since $T$ is a PDT that solves $S_F$, each leaf refutes a linear clause of $F$. Hence, for each leaf $u$ we have that $\Phi_{u}^T \implies \lnot C$ for some linear clause $C$ of $F$, which equivalently means that $C \implies \lnot \Phi_u^T$, concluding that the linear clause of each leaf is actually the weakening of a clause of $F$. Then, for each leaf $u$ we can add a new neighbor node $w$ and label it with the clause $C$, where the edge $(w,u)$ becomes an application of the weakening rule. This process increases the depth of the tree by 1 and increases the size by at most $s$.
+\end{proof}
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (1) []{$\bot$};
+        
+        \node (3) [above right of=1, xshift = 50]{$(x = 0)$};
+    
+        \node (4) [above left of=3, xshift = -20]{$(x=0) \lor (x+y = 1)$};
+
+        \node (6) [above right of=3, xshift = 20]{$(x=0) \lor (x+y = 0)$};
+
+        
+        \node (8) [above of=6]{$(x = 0) \lor (y = 1)$};
+    
+        \node (14) [above of = 4]{$(x+y=1)$};
+        \node (15) [left of=14, xshift = -50]{$(x=1)$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (14) edge (4)
+            (15) edge (1)
+               
+            (8) edge (6)
+               
+            (4) edge (3)
+            (6) edge (3)
+               
+            (3) edge (1)
+            ;
+    \end{tikzpicture}
+
+    \caption{$\mathsf{TreeRes}_\oplus$-proof obtained from the PDT shown in \Cref{pdt_cnf}}
+\end{figure}
+
+We conclude that problems efficiently solvable parity decision trees are indeed characterized by Tree-like Linear Resolution over $\F_2$.
+
+\begin{theorem}
+    \label{fp_dt_inside_fp_pdt}
+    $\mathsf{FP}^{pdt}(S_F) = \Theta(\mathsf{TreeRes}_\oplus(F))$
+\end{theorem}
+
+After defining the class $\mathsf{FP}^{pdt}$ and proving that $\mathsf{TreeRes}_\oplus$ characterizes it, we're interested in studying where this class lies in the \textsf{TFNP}$^{dt}$ hierarchy. It's a well-known fact that was shown that $\mathsf{TreeRes}_\oplus$ can efficiently simulate $\mathsf{TreeRes}$ but the reverse doesn't hold due to the hardness of simulating weakening rules. This result also follows more naturally from our results since $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$. Parity makes PDTs stronger than decision trees, but how much stronger?
+
+We know that Tree-like Linear Resolution over $\F_2$ is based on linear forms defined on $\F_2$. Since Nullstellensatz over $\F_2$ also works with polynomials over $\F_2$, our intuition was to show that these two proof systems are somehow related to one another.
+
+Initially, our first hypothesis was that $\mathsf{TreeRes}_\oplus$ is a very powerful tool even capable of efficiently simulating $\mathrm{\F_2\text{-}NS}$. We tried to prove this result by showing that $\mathsf{PPA}^{dt} \subseteq \mathsf{FP}^{pdt}$, which appeared to be out of reach. In a seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate regular Resolution (or $\mathsf{RegRes}$), a restricted proof system derived from Resolution. Due to any regular Resolution proof also being a Resolution proof, this result also implies that $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate $\mathsf{Res}$. Thanks to \Cref{equiv_proof} and the fact that $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$, we conclude the following black-box separation.
+
+\begin{corollary}
+    \label{pls_not_inside_fp_pdt}
+    $\mathsf{PLS}^{dt} \not\subseteq \mathsf{FP}^{pdt}$
+\end{corollary}
+
+This rings a bell: looks like PDTs aren't actually that strong. We quickly shifted our perspective on our previous study on relationships with Nullstellensatz, trying to show that the simulation holds in the other direction. Indeed, we were capable of proving that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}Nullstellensatz}$ proof, providing us a \textbf{black-box inclusion} for our new class.
+
+\section{Nullstellensatz}
+
+In 1893, the mathematician Hilbert proved a theorem that established the basis of algebraic geometry, a field that studies the relations between algebra and geometry. This theorem is now known as Hilbert's \textbf{Nullstellensatz} (german for \textit{zero-locus theorem}).
+
+The \textit{weak Nullstellensatz}, a corollary of the stronger theorem, states that given $m$ polynomials $p_1, \ldots, p_m$ defined on $F[x_1, \ldots, x_n]$, where $\F$ is a generic algebraic field, the system $p_1(x) = p_2(x) = \ldots = p_m(x) = 0$ is unsolvable if and only if there are $m$ polynomials $g_1, \ldots, g_m$ defined on $F[x_1, \ldots, x_n]$ such that $\sum_{i=1}^m g_ip_i = 1$.
+
+This weaker version of the theorem has been used to define an \textit{algebraic} proof system, that being a proof system based on polynomial algebra. Intuitively, these proof systems are based on the idea of showing that a set of polynomials $p_1, \ldots, p_m$, called \textit{axioms}, doesn't share a common root, which serves as a proof for the polynomials. In this case, a Nullstellensatz proof is given by the set of polynomials $g_1, \ldots, g_m$ through which we get that $\sum_{i=1}^m g_ip_i = 1$  \cite{ns_definitions}. 
+
+Any CNF formula can be translated to an \textit{algebraic encoding}, a set of polynomials $p_1, \ldots, p_m$ for which the CNF formula is unsatisfiable if and only if there is a Nullstellensatz proof for $p_1, \ldots, p_m$. Given the clause $C = \bigvee_{i = 1}^k x_i \lor \bigvee_{j = 1}^h \lnot y_j$, the algebraic encoding of $C$, written as $p_C$, is given by $p_C := \prod_{i = 1}^{k} x_i \cdot \prod_{j = 1}^h (1- y_j)$.
+
+The algebraic encoding of a CNF formula $F = C_1 \land \ldots \land C_m$ is given by the set of polynomial equations $p_F = \{p_{C_1} = 0, \ldots, p_{C_m} = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$. These last polynomials are necessary to impose that the values of $x_1, \ldots, x_n$ are either a 0 or a 1. A Nullstellensatz \textit{refutation} for $F$ is given by the polynomials $g_1, \ldots, g_m, h_1, \ldots, h_n$ such that:
+\[\sum_{i = 1}^m g_ip_{C_i} + \sum_{j = 1}^m h_j(x_j^2-x_j) = 1\]
+
+To clear things up, we notice that through this formulation the concept of truthfulness is \textbf{inverted}: the boolean values $0$ and $1$ respectively correspond to the algebraic values $1$ and $0$. For example, the boolean clause $C$ evaluates to 1 when at least a literal inside it evaluates to 1, while an algebraic clause evaluates to 0 when at least a literal inside it evaluates to 0. Likewise, in order for the CNF $F$ to be satisfied by an assignment $x$ each clause must evaluate to 1, while in Nullstellensatz the polynomials inside $p_F$ must all evaluate to 0. 
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{r c l}
+ 0 & $\longleftrightarrow$ & 1 \\
+ 1 & $\longleftrightarrow$ & 0 \\
+        $x_i$ & $\longleftrightarrow$ & $x_i$ \\
+        $\lnot x_i$ & $\longleftrightarrow$ & $1-x_i$ \\
+        $C \lor D$ & $\longleftrightarrow$ & $C \cdot D$ \\
+        $C \land D$ & $\longleftrightarrow$ & $C + D$ \\
+    \end{tabular}
+
+    \caption{Mappings from boolean encoding to algebraic encoding}
+\end{figure}
+
+When a polynomial $q$ can be derived from a set of axioms $P$, we write $P \stackrel{\mathsf{NS}}{\vdash} q$. If $F$ is a CNF formula and $P \stackrel{\mathsf{NS}}{\vdash} 1$ then we get a Nullstellensatz refutation.
+
+Consider the following CNF formula:
+\[x_1 \land (\lnot x_1 \lor x_2) \land (\lnot x_2 \lor x_3) \land (\lnot x_3 \lor x_4)\land x_4\]
+The algebraic encoding is given by $p_1 = x_1$, $p_i = (1-x_{i-1})x_i$ when $2 \leq i \leq 4$ and $p_5 = 1-x_4$. To refute this CNF, we must find the polynomials $g_1, \ldots, g_5, h_1, \ldots, h_4$ through which
+\[\sum_{i = 1}^5 g_ip_{i} + \sum_{j = 1}^4 h_j(x_j^2-x_j) = 1\]
+
+To simplify things, we let $h_1, \ldots, h_4 = 0$ in order to have $\sum_{j = 1}^4 h_j(x_j^2-x_j) = 0$.
+
+Let $g_1, \ldots, g_5$ be equal to:
+\[\begin{split}
+ g_1 &= x_2x_3x_4 \\
+ g_2 &= x_3x_4 \\
+ g_3 &= x_4 \\
+ g_4 &= 1 \\
+ g_5 &= 1 \\
+\end{split}\]
+
+We easily get that:
+\[\begin{split}
+    \sum_{i = 1}^5 g_ip_{i}&= x_1x_2x_3x_4 + (1-x_1)x_2x_3x_4 + (1-x_2)x_3x_4 + (1-x_3)x_4 + (1-x_4)\\
+    &= x_2x_3x_4 + (1-x_2)x_3x_4 + (1-x_3)x_4 + (1-x_4)\\
+    &= x_3x_4 + (1-x_3)x_4 + (1-x_4)\\
+    &= x_4 + (1-x_4)\\
+    &= 1\\
+\end{split}\]
+
+concluding that $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ and thus proving that the CNF is unsatisfiable. In Nullstellensatz, the \textit{size} of a proof is the total number of monomials of the polynomials that make the proof, i.e. the total number of terms in the sum once fully expanded without simplifying any addition (or subtraction). The \textit{degree} of the proof is the maximum degree of any polynomial $g_ip_i$ or $h_j(x^j+x_j)$. For example, the polynomial $(1-x_1)(1-x_2)x_2x_3$ has size 4 and degree 4 since $(1-x_1)(1-x_2)x_2x_3 = x_2x_3 - x_2^2x_3 - x_1x_2x_3 + x_1x_2^2x_3$. The previous proof example has size $1+2+2+2+2 = 9$ and degree $4$.
+
+Nullstellensatz's degree measure vaguely resembles Resolution's width measure. For example, the algebraic encoding of a CNF clause $C$ of width $w$ clearly has degree $w$. Moreover, it's easy to see that a degree upper bound $d$ for the Nullstellensatz refutation of a CNF formula defined on $n$ variables implies a size upper bound of $O(n^{O(d)})$. This result enables us to restrict our interest to the degree of the proof.
+
+\begin{proposition}
+ Given a CNF formula $F$ defined on $n$ variables, if $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ with degree $O(d)$ then the size of the proof is $n^{O(d)}$.
+\end{proposition}
+
+A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the degree of the proof only by a constant factor, which is negligible, allowing us to work easier.
+
+
+\unsure{Maybe add a small part on how $\F_2$-$\mathsf{NS}$ equals $\mathsf{PPA}^{dt}$}
+
+
+\section{From $\mathrm{TreeRes}_\oplus$ to $\F_2$-Nullstellensatz}
+
+We prove that Nullstellensatz over $\F_2$ is capable of efficiently simulating $\mathrm{TreeRes}_\oplus$. Given the linear clause $C = \bigvee_{i = 1}^k (f_i = \alpha_i)$, the algebraic encoding of $C$, written as $p_C$, is given by $p_C := \prod_{i = 1}^{k} (f_i + a_i)$. The algebraic encoding of a linear CNF formula $F = C_1 \land \ldots \land C_m$ is given by the set of polynomial equations $p_F = \{p_{C_1} = 0, \ldots, p_{C_m} = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$.
+
+To achieve our result, we first convert the $\mathrm{TreeRes}_\oplus$ proof into an (almost) equivalent proof through the method shown in \Cref{chap:parity-tfnp} and then balance the degree of the $\mathsf{\F_2-NS}$ proof obtained from the tree-like proof. The following result follows from \Cref{resp_to_pdt} and \Cref{pdt_to_resp}.
+
+\begin{corollary}
+    \label{leaf_weakening}
+ Every $\mathsf{TreeRes}_{\oplus}$ proof of size $s$ and depth $d$ can be converted to a $\mathsf{TreeRes}_{\oplus}$ proof of size $O(s)$, degree $O(d)$ and with the weakening rule applied only to the axioms.
+\end{corollary}
+
+The balancing process is obtained through a well-known result called $\frac{1}{2}, \frac{2}{3}$ lemma \cite{13_23_lemma} which is commonly used to show that protocols and tree-like circuits (or \textit{formulas}) can be balanced, meaning that for any tree of size $s$ there is an equivalent tree of size $s^{O(1)}$ and degree $O(\log s)$.
+
+\newpage
+
+\begin{lemma}
+    \label{13_23_lewis}
+ If $T$ is a binary tree of size $s > 1$ then there is a node $v$ such that the subtree $T_v$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$.
+\end{lemma}
+
+\begin{proof}
+    Let $r$ be the radix of $T$ and let $\ell$ be a leaf of $T$ with the longest possible path $r \to \ell$. Let $v_1, \ldots, v_k$ be the nodes of such path, where $r = v_1$ and $\ell = v_k$. For each index $i$ such that $1 \leq i \leq k$, let $a_i b_i$ be the two children of $v_i$.
+
+    \begin{claimlemma}
+        For any index $i$, if $T_{v_i}$ has size at least $\floor{\frac{1}{3} s}$ then for some index $j$, where $i \leq j \leq k$, it holds that $T_{v_j}$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$.
+    \end{claimlemma}
+
+    \begin{proof}[Proof of the claim]
+        If $T_{v_i}$ has size less than $\ceil{\frac{2}{3} s}$ then we are done. Otherwise, since $T_{v_i} = \{v_i\} \cup T_{a_i} \cup T_{b_i}$, one between the subtrees $T_{a_i}, T_{b_i}$ must have size at least $\frac{1}{2} \ceil{2}{3} s - 1$, meaning that it has size at least $\floor{\frac{1}{3} s}$. If this subtree has also a size at most $\ceil{\frac{2}{3} s}$ then we are done. Instead, if this doesn't hold for both subtrees, we can repeat the process (assuming that $v_{i+1} := a_i$ without loss of generality) since we know that $T_{v_{i+1}}$ has size greater than $\floor{\frac{1}{3} s}$.
+
+        By way of contradiction, suppose that this process never finds a subtree with size at most $\ceil{\frac{2}{3} s}$. Then, this would mean that it also holds for $v_k = \ell$. However, since $\ell$ is a leaf, we know that $T_{v_\ell}$ must have size 1, which is definitely at most $\ceil{\frac{2}{3} s}$ for any value of $s$, giving a contradiction. Thus, there must be a node that terminates the process.
+    \end{proof}
+        
+    Since $T_{v_1} = \{r\} \cup T_{a_1} \cup T_{b_1}$, we know that both of these subtrees must have at least $\floor{\frac{1}{3} s}$. By assuming that $a_1 = v_{2}$, the claim concludes the proof of the lemma.
+\end{proof}
+
+We'll now show a way to simulate the resolution rule through $\F_2$-Nullstellensatz by converting two \textsf{NS} refutations $P_1 \stackrel{}{\vdash} 1$ and $P_2 \stackrel{}{\vdash} 1$, where $P_1$ and $P_2$ are disjoint, into a refutation  $P_1, P_2 \stackrel{}{\vdash} 1$ with degree equal to the degree of the two initial refutations.
+
+\begin{lemma}
+    \label{union_ref}
+ Given two disjoint axiom sets $P_1, P_2$, if $P_1, p \stackrel{\mathsf{NS}}{\vdash} r$ with degree $d_1$ and $P_2, 1-p \stackrel{\mathsf{NS}}{\vdash} t$ with degree $d_2$ then $P_1, P_2 \stackrel{\mathsf{NS}}{\vdash} rt$ with degree $O(d_1 + d_2)$.
+\end{lemma}
+
+\begin{proof}
+ Assume that $P_1 = \{p_1, \ldots, p_m\}$ and $P_2 = \{q_1, \ldots, q_k\}$ and let $p_{m+1} = p$ and $q_{k+1} = 1-p$. By hypothesis, we know that
+    \[\sum_{i = 1}^{m+1} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) = r\]
+ for some $g_1, \ldots, g_{m+1}, a_1, \ldots, a_n$, implying that:
+    \[\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) = r - g_{m+1} p_{m+1} = r-g_{m+1} p\]
+    
+ Likewise, we know that:
+    \[\sum_{i = 1}^{k+1} h_i q_i + \sum_{j = 1}^n b_j (x_j^2-x_j) = t\]
+ for some $h_1, \ldots, h_{k+1}, b_1, \ldots, b_n$, implying that:
+    \[\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j) = t-h_{k+1}q_{k+1} = t-h_{k+1}(1-p)\]
+
+ We notice that:
+    \[\begin{split}
+ t(1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) &= t(1-p)(r-g_{m+1} p) \\
+        &= rt-g_{m+1} tp - prt + g_{m+1} p^2t \\
+        &= rt-rtp
+    \end{split}\]
+
+ with degree $d_1+2d_1$. In the last step, we used the fact that due to multilinearity it holds that $p^2 = p$. Similarly, we get that:
+    \[\begin{split}
+ rp\, \left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j)  \right ) &= rtp 
+    \end{split}\]
+ with degree $2d_1+d_1$. Let $f_1, \ldots, f_{mk}, s_1, \ldots, s_{m+k}$ be defined as:
+    \[f_i = \left \{ \begin{array}{ll}
+ p_i & \text{if } 1 \leq i \leq m \\
+ q_i & \text{if } m+1 \leq i \leq k \\
+    \end{array} \right .
+ \qquad\qquad
+ s_i = \left \{ \begin{array}{ll}
+ g_i t(1-p) & \text{if } 1 \leq i \leq m \\
+ h_irp & \text{if } m+1 \leq i \leq k \\
+    \end{array} \right .\]
+    
+ while $c_1, \ldots, c_n$ are defined as $c_j = a_jt(1-p) + b_jrp$. Through simple algebra, we get that:
+    \[\sum_{i = 1}^{m+k} s_i f_i + \sum_{j = 1}^n c_j (x_j^2-x_j) =\]
+    \[t(1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) + rp \left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j) \right )= rt\]
+
+ concluding that $\Pi := \{s_1, \ldots, s_{m+k}, c_1, \ldots, c_n\}$ is a proof of $P_1 \cup P_2$ with degree $O(d_1 + d_2)$.
 
 \end{proof}
 
-This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in \N}$, where $F_1, F_2, \ldots$ is a family of CNF formulas, and by extension that black-box \TFNP is exactly \textit{the study of the false clause search problem}. Like in the white-box case, the upshot is that it is sufficient to restrict our interests to the study of search problems associated with unsatisfiable CNF formulas.
+\newpage
 
-Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
-\[P(F) := \min\{\log \mathrm{size}(\Pi) + \mathrm{deg}(\Pi) : \Pi \text{ is a $P$-proof of } F\}\]
-where $\mathrm{size}(\Pi)$ is the the total number of symbols in $\Pi$ and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. For example, in Tree-like Resolution the degree is the \textit{depth} of the proof, while in Resolution the degree is the \textit{width} of the proof. This degree measure will be specified for the proof systems analyzed in the following sections.
+The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz. However, if $D$ is derived through weakening from an axiom clause $C_i$ of a CNF formula $F$, it is indeed easy to simulate this rule. This result is enough for our purposes but it can also be extended to derivations from a non-axiom clause with a little blow-up in degree. 
 
-To make things more readable, we will refer to $\mathrm{Search}(F)$ as $S_F$. Since each $\TFNPdt$ problem is equivalent to $S_F$ for some formula $F$, the complexity parameter defined above can be used to give another characterization of $\TFNPdt$ problems.
+\begin{lemma}
+    \label{weakening_ns}
 
-\begin{definition}
- We say that a proof system $P$ \textbf{characterizes} a $\TFNPdt$ problem $R$ (and reflexively that $R$ characterizes $P$) if it holds that \[R^{dt} = \{S_F : P(F) = \mathrm{polylog}(n)\}\]
- where $F = (F_i)_{i \in \N}$ is a family of formulas. In a stronger sense, it must hold that $R^{dt}(S_F) = \Theta(P(F))$. 
-\end{definition}
+ Let $F = C_1 \land \ldots \land C_m$ be a CNF formula and let $D$ be a linear clause. If $C_i \implies D$ then $p_{C_i} \vdash p_D$ with degree $d+k$, where $d$ is the width of $D$ and $k$ is the width of $C_i$.
+\end{lemma}
 
-Most of the \TFNP subclasses discussed in previous sections have been shown to have a characterizing proof system:
-\begin{itemize}
-    \item $\mathrm{FP}^{dt}(S_F) = \Theta(\mathsf{TreeRes}(F))$ \cite{search_problems_dt_model}
-    \item $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$  \cite{approx_counting}
-    \item $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\textsf{-NS}(F))$ \cite{adventures_monotone_tfnp}
-    \item $\mathrm{PPADS}^{dt}(S_F) = \Theta(\textsf{unary-NS}(F))$ \cite{separations_proof_complexity}
-    \item $\mathrm{PPAD}^{dt}(S_F) = \Theta(\textsf{unary-SA}(F))$ \cite{separations_proof_complexity}
-    \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathsf{RevRes}(F))$ \cite{separations_proof_complexity}
-    \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathsf{RevResT}(F))$ \cite{separations_proof_complexity}
-\end{itemize}
+\begin{proof}
+ Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $1(1+q)$ can be derived with degree 2 from axioms. 
+    \[(y_1 + \ldots + y_t)(y_1 + \ldots y_t + 1) = \sum_{i = 1}^t y_i^2 + \sum_{i = 1}^t y_i + 2 \sum_{i \neq j} y_i y_j = \sum_{i = 1}^t y_i^2 + y_i\]
+ since $2 = 0$ in $\F_2$. This implies that for each $j \in [d]$ we can derive $p(f_j+\beta_j+1)$ with degree $d+1$.
+
+ Since $C \implies D$, this can only happen if each $x_i + \alpha_i$ is a linear combination of $(f_1 + \beta_1 + 1), \ldots, (f_d + \beta_d + 1)$, concluding that each $p_D(x_i+\alpha_i)$ is derivable in $\F_2$-Nullstellensatz with degree $d+1$.
+
+ Finally, we notice that:
+    \[p_D = p_C + p_D(x_1+\alpha_1+1) + p_D(x_2+\alpha_2+1)(x_1+\alpha_1)+ \ldots + p_D(x_d+\alpha_d+1)\prod_{i = 0}^{d-1} (x_i+\alpha_i)\]
+ which is a derivation of $p_D$ from $p_{C}$ with degree $d + k$.
+    
+\end{proof}
+
+\begin{lemma}
+    \label{refutation_with_negation}
+ Given a set of axioms $P$, if $P \stackrel{\mathsf{NS}}{\vdash} q$ with degree $d$ then $P, 1-q \stackrel{\mathsf{NS}}{\vdash} 1$ with the same degree. 
+\end{lemma}
+
+\begin{proof}
+    
+ Since $P \vdash^\NS_d q$, we know that $\exists g_1, \ldots, g_m, h_1, \ldots, h_n \in \F[x_1, \ldots, x_n]$ such that:
+    \[\sum_{i = 1}^m g_i p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = q\]
+ where $\deg(q) \leq d$. We define $g_1', \ldots, g_m', g_{m+1}'$ as:
+    \[g_i' = \left \{ \begin{array}{ll}
+        1 & \text{if } i = m+1 \\
+ g_i & \text{otherwise}  \\
+    \end{array}\right .\]
+    
+ With simple algebra, we get that:
+    \[\sum_{i = 1}^{m+1} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = g_{m+1}'p_{m+1} + \sum_{i = 1}^{m} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = (1-q) + q = 1\]
+    
+ thus $\Pi = \{g_1', \ldots, g_{m+1}', h_1, \ldots, h_n\}$ is a proof of $P$ with degree $d$.
+
+\end{proof}
+
+\begin{theorem}
+    \label{main_thm}
+ Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ then there is $\NS$ refutation of $F$ of degree $O(\log(s)+w)$.
+\end{theorem}
+
+\begin{proof}
+ Let $F = C_1 \land \cdots \land C_m$ and let $T$ be a $\mathsf{TreeRes}_\oplus$-proof of $F$ with size $s$ and width $w$. Through \Cref{leaf_weakening} we know that there must also be a $\mathsf{TreeRes}_\oplus$-proof of size $O(s)$ with the weakening rule applied only to the leaves. Let $\widehat{C_1}, \ldots, \widehat{C_m}$ be the linear clauses obtained through such weakening rules.
+    
+    \begin{claimtheorem}
+ If $T'$ is a subtree of $T$ with root $C$, leaves $D_1, \ldots, D_k$ and without nodes derived through the weakening rule then $p_{D_1}, \ldots, p_{D_k} \vdash p_C$ with degree $O(\log (s) + w)$
+    \end{claimtheorem}
+
+    \begin{proof}[Proof of the claim]
+ We proceed by strong induction on the size $u$ of $T'$. If $u = 1$ then the root $C$ is the only clause in $T'$, which means that it must be the only leaf in $T'$. We trivially get that $C \vdash C$ with degree $w$.
+        
+ Suppose that $u > 1$. Let $\mathcal{L} = \{D_1, \ldots, D_k\}$. Since $T'$ is a binary tree, by \Cref{13_23_lewis} we know that there is a clause $Q$ (a node) inside $T'$ such that $T'_{Q}$ has size between $\floor{\frac{1}{3} u}$ and $\ceil{\frac{2}{3} s}$. Let $\overline{T_Q} = (T - T_{Q}) \cup \{Q\}$. Due to the size of $T_{Q}$, we get that $\overline{T_{Q}}$ has size between $\floor{\frac{1}{3} s}+1$ and $\ceil{\frac{2}{3} s}+1$. 
+    
+ Since the proof is tree-like, $T_{Q}$ and $\overline{T_Q}$ work with different clauses (except $Q$), thus their leaves must partition $\mathcal{L}$ into two sets $\mathcal{L}_1, \mathcal{L}_2$, respectively used by $T_{Q}$ and $\overline{T_Q}$. By inductive hypothesis we get that $p_{\mathcal{L}_1} \vdash p_Q$ with degree at most $c_1(\log(s) + w)$ and that $p_{\mathcal{L}_2}, p_Q \vdash p_C$ with degree at most $c_2(\log(s) + w)$, for two constants $c_1, c_2$.
+        
+ Through \Cref{refutation_with_negation} we easily conclude that $p_{\mathcal{L}_1}, (1-p_{Q})\vdash 1$ with degree at most $c_1(\log(s) + w)$. Then, by \Cref{union_ref} we get that $p_{\mathcal{L}_1}, p_{\mathcal{L}_2} \vdash p_C$, thus $p_\mathcal{L} \vdash p_C$, with degree $O(\log s + w)$.
+    \end{proof}
+
+ Let $T'$ be the subtree of $T$ with root $\bot$ and leaves $\widehat{C_1}, \ldots, \widehat{C_m}$. Since $T'$ only uses the resolution rule, through the claim we conclude that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. Clearly, this also implies that $\mathrm{deg}(p_{\widehat{C_i}}) = O(\log(s)+w)$ for all $i$.
+    
+ Since each $\widehat{C_i}$ is a weakening of $C_i$, by \cref{weakening_ns} we know that $p_{C_i} \vdash p_{\widehat{C_i}}$ with degree $O(\log(s)+ w)$. Again, by \Cref{refutation_with_negation} we get that $p_{C_i}, (1-p_{\widehat{C_i}}) \vdash 1$ with degree $O(\log(s)+ w)$ which together with the fact that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$ allows us to conclude, by \Cref{union_ref}, that $p_{C_1}, p_{\widehat{C_2}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. After repeating this process for each weakening clause, we finally conclude that $p_{C_1}, \ldots, p_{C_m} \vdash 1$ with degree $O(\log(s)+w)$.
+
+\end{proof}
 
 \newpage
 
 \begin{figure}[H]
     \centering
-    
-    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-    
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (2) []{\textsf{TFNP}$^{dt}$};
 
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (3) [below of = 2]{\textsf{PPP}$^{dt}$};
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
 
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (4) [left of = 3, xshift=-40]{\textsf{PLS}$^{dt}$};
+        \node[] (2) []{};
 
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (5) [right of = 3, xshift=40]{\textsf{PPA}$^{dt}$};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (6) [below of = 3]{\textsf{PPADS}$^{dt}$};
-
-        \node (7) [below of = 6]{};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (8) [left of = 7, xshift=-40]{\textsf{SOPL}$^{dt}$};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (9) [right of = 7, xshift=40]{\textsf{PPAD}$^{dt}$};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (10) [below of = 7]{\textsf{CLS}$^{dt}$};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (11) [below of = 10]{\textsf{FP}$^{dt}$};
-
-        \node (12) [left of = 4, xshift = 15]{\textsf{Res} $=$};
-
-        \node (13) [left of = 6, yshift = -1]{\textsf{unary-SA} $=$};
+        \node[] (2a) [above left of=2, xshift=-50, yshift=100]{};
+        \node[] (2b) [above right of=2, xshift=50, yshift=100]{};
+        \node[] (2c) [below of=2, yshift=40]{$\bot$};
+        \node[] (2d) [above of=2]{};
         
-        \node (14) [left of = 8, xshift = 7.5, yshift = -1]{\textsf{RevRes} $=$};
-        
-        \node (15) [left of = 10, xshift = 5]{\textsf{RevResT} $=$};
+        \node[] (3a) [right of=2a, xshift=15]{};
+        \node[] (3) [below right of=3a, yshift=-20]{};
+        \node[] (3b) [above right of=3, yshift=20]{};
+        \node[] (3c) [above of=3, yshift=-15]{$T_Q$};
+        \node[] (3c) [below of=3, yshift=42.5]{$Q$};
 
-        \node (16) [right of = 5, xshift = -10.5, yshift = -1]{$=$ \textsf{$\F_2$-NS}};
 
-        \node (17) [right of = 9, xshift = -4.5, yshift = -1]{$=$ \textsf{unary-NS}};
+        \node[] (4) [above of = 2a, yshift = -37.5]{$\widehat{C_1}$};
+        \node[] (5) [above of = 2a, yshift = -37.5, xshift=30]{$\widehat{C_2}$};
+        \node[] (6) [above of = 2a, yshift = -37.5, xshift=60]{$\cdots$};
+        \node[] (7) [above of = 2a, yshift = -37.5, xshift=85]{$\cdots$};
+        \node[] (8) [above of = 2b, yshift = -37.5]{$\widehat{C_m}$};
+        \node[] (9) [above of = 2b, yshift = -37.5, xshift=-30]{$\widehat{C_{m-1}}$};
+        \node[] (10) [above of = 2b, yshift = -37.5, xshift=-60]{$\cdots$};
 
-        \node (18) [left of = 11, xshift = 5]{\textsf{TreeRes} $=$};
-    
-        \path[every node/.style={font=\sffamily\small}]
- (3) edge (2)
- (4) edge (2)
- (5) edge (2)
- (6) edge (3)
- (8) edge (4)
- (8) edge (6)
- (9) edge (5)
- (9) edge (6)
- (10) edge (8)
- (10) edge (9)
- (11) edge (10)
- ;
+
+        \node[] (11) [above of = 2a]{${C_1}$};
+        \node[] (12) [above of = 2a, xshift=30]{${C_2}$};
+        \node[] (13) [above of = 2a, xshift=60]{$\cdots$};
+        \node[] (14) [above of = 2a, xshift=85]{$\cdots$};
+        \node[] (15) [above of = 2b]{${C_m}$};
+        \node[] (16) [above of = 2b, xshift=-30]{${C_{m-1}}$};
+        \node[] (17) [above of = 2b, xshift=-60]{$\cdots$};
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (4) edge (11)
+            (5) edge (12)
+            (8) edge (15)
+            (9) edge (16)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (2.center) edge (2a.center)
+            (2.center) edge (2b.center)
+            (2a.center) edge (2b.center)
+            ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+            (3.center) edge (3a.center)
+            (3.center) edge (3b.center)
+            (3a.center) edge (3b.center)
+            ;
     \end{tikzpicture}
-    
-    \caption{Black-box \textsf{TFNP} classes and their characterizing proof systems}
+
+    \caption{Representation of the idea behind \Cref{main_thm}}
 \end{figure}
 
 \quad
 
-\section{Reductions through CNF formulas}
-
-Intuitively, the characterization given in the previous section shows that any $\TFNPdt$ problem can be transformed into a proof system for refuting unsatisfiable CNF formulas of polylogarithmic width: since any $\TFNPdt$ is equivalent to the search problem for some unsatisfiable CNF formula, any efficient decision tree reduction between problems is nothing more than an efficient proof in the characterizing proof system and vice versa. To formalize this idea, we introduce the concept of \textbf{reductions between CNF formulas} \cite{tfnp_characterization}.
-
-Suppose that $C$ is a clause over $n$ variables and that $T = (T_i)_{i \in [n]}$ is a sequence of depth-$d$ decision trees, where $T_i : \{0,1\}^{m} \to \{0,1\}$. We refer to $C(T)$ as the CNF formula obtained by substituting each variable $x_i$ in $C$ with $D(T_i)$ and rewriting the result as a CNF, or more conveniently:
-\[C(T) := \bigwedge_{i \in [n]} \, \bigwedge_{\substack{r \,:\, \text{rejecting} \\ \text{path of $T_i$}}} \lnot{r}\]
-
-\newpage
-
-\begin{definition}
- Let $F = C_1 \land \ldots \land C_{m_F}$ be an unsatisfiable CNF over $n_F$ variables. We say that a CNF formula $H$ made of $m_H$ clauses over $n_H$ variables reduces to $F$ via depth-$d$ decision trees if there exist two sequences of depth-$d$ decision trees $T = (T_i)_{i \in [n_F]}$ and $T^o = (T_j^o)_{j \in [m_F]}$, where $T_i : \{0,1\}^{n_H} \to \{0,1\}$ and $T_j^o : \{0,1\}^{n_H} \to [m_H]$, such that given the following formula:
-    \[F_H := \bigwedge_{j \in [m_F]} \,\bigwedge_{\substack{p \,:\; \text{path} \\ \text{in } T_j^o}} C_i(T) \lor \lnot{p}\]
- it holds that if $F$ is unsatisfiable then $F_H$ is unsatisfiable and by consequence that $H$ is unsatisfiable. 
-\end{definition}
-
-In particular, we notice that $F_H$ can also be written as a CNF by simply distributing each $\lnot{p}$ inside $C_i(T)$. Each clause $C_i(T) \lor \lnot{p}$ must be either tautological (since it could contain a variable and its negation) or a weakening of the corresponding clause of $H$ - meaning that it is a formula $Q$ such that $H \to Q$ - indexed by the label at the end of the path $p$. Moreover, we notice that through this formulation any depth-$d$ decision tree reduction from $S_H$ to $S_F$ induces the search problem $S_{F_H}$. By construction, reductions between CNF formulas are just a formal way to say that reductions between search problems reduction are actually proof systems.
-
-\begin{definition}
- Given a problem $S_F \in \TFNPdt$ the \textbf{canonical proof system} of such problem, written as $P_F$, is a proof system that refutes an unsatisfiable formula $H$ over $n_H$ variables if $H$ is reducible to an instance of $F$ over $n_F$ variables. 
-\end{definition} 
-
-A $P_F$-proof of $H$ consists of the decision trees that make such reduction possible. The \textit{size} of such proof is given by $n_F$, while the \textit{degree} is given by the maximum depth among the involved decision trees. Hence, the $P_F$ complexity of $H$ is given by:
-    \[P_F(H) := \min\{\log \mathrm{size(\Pi)}+ \mathrm{depth}(\Pi) : \Pi \text{ is a $P_F$-proof of } H\}\]
-
-This definition directly implies that given $S_F \in \TFNPdt$, the \textbf{characterizing proof system} of $S_F^{dt}$ is equivalent to the canonical proof system $P_F$. Canonical proof systems are \textit{sound}, since by construction any valid substitution of an unsatisfiable CNF formula is also unsatisfiable, and also \textit{efficiently verifiable}, since it suffices to check that each of the clauses of $F_H$ is either tautological or a weakening of a clause in $H$, which can both be done in polynomial time compared to the size of the proof.
-
-The following theorem plays a crucial role in $\TFNPdt$ characterization through proof complexity, stating that the proof system $P_F$ has a short proof of $H$ if and only if $S_H$ efficiently reduces to $S_F$. In other words, an efficient proof of a formula in a characterizing proof system automatically gives an efficient reduction to the corresponding complete search problem.
-
-\newpage
+Again, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\text{-}\mathsf{NS}(F))$, the last theorem proves that our new class is indeed contained inside $\mathsf{PPA}^{dt}$, meaning that any total search problem efficiently solvable by a parity decision tree can be reduced to an instance of the parity argument problem.  
 
 \begin{theorem}
-    \label{equiv_proof}
- Let $S_F \in \TFNPdt$ and let $H$ be an unsatisfiable CNF formula. The two following results hold:
-    \begin{enumerate}
-        \item If $H$ has a size $s$ and depth $d$ proof in $P_F$ then $S_H$ has a size $O(s)$ and depth $d$ reduction to $S_F$
-        \item If $S_H$ has a size $s$ and depth $d$ decision tree reduction to $S_F$ then $H$ has a size $s2^{O(d)}$ and depth $d$ proof in $P_F$
-    \end{enumerate}
- In particular, this implies that $S_F^{dt}(S_H) = \Theta(P_F(H))$.
+    $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$
 \end{theorem}
 
-
 \begin{proof}
- Suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a $P_F$ proof of $H$ of size $s$ and depth $d$. Given any assignment $\alpha$ such that $(\alpha, i) \in S_F$, let $C_i$ be the clause of $F$ falsified by $T_1(\alpha), \ldots, T_{n_F}(\alpha)$ and let $p$ be the path followed by $T_i^o(\alpha)$. It's easy to see that a clause of the formula $C_i(T) \lor \lnot{p}$ must be falsified by $\alpha$. In particular, such clause is also the weakening of the $T_i^o(\alpha)$-th clause of $H$, concluding that $(\alpha, T_i^o(\alpha)) \in S_H$. In other words, the $P_F$ proof of $H$ corresponds to a reduction from $S_H$ to $S_F$ of size $n_F = O(s)$ and depth $d$.
-
- Vice versa, suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a decision tree reduction from $S_H$ to $S_F$ of size $s$ and depth $d$. Then, we can construct $F_H$ as previously described through the use of these decision trees. Let $L$ be a clause of $C_i(T)$ for some $i \in [m_F]$ and let $p$ be any path in $T_i^o$. If the formula $C_i(T) \lor \lnot{p}$ is tautological, then it can be ignored since $F_H$ is a CNF. Otherwise, let $\alpha$ be an assignment that falsifies $L \lor \lnot{p}$. Then, it holds that $T_1(\alpha), \ldots, T_{n_F}(\alpha)$ falsifies $C_i(T)$ and that $T_i^o(\alpha)$ follows path $p$. Thus, the $T_i(\alpha)$-th clause of $\lnot{H}$ must also be false, implying that $L \lor \lnot{p}$ is a weakening of such clause. This concludes that $F_H$ is a $P_F$-proof of $H$ of depth at most $d$ (due to how $F_H$ is constructed) and thus that the size is at most $s2^{O(d)}$.
+ Suppose that $R \in \mathsf{FP}^{pdt}$. By definition, there is a PDT with size $s$ and depth $d$, where $d+\log s = O(\log^k n)$ for some $k \in \N$,that solves $R$. We know that each total search problem is equivalent to the false clause search problem of some CNF formula $F$, thus $R = S_F$.
+    
+ By \Cref{pdt_to_resp}, we know that there is a \textsf{TreeRes}$_{\oplus}$ proof of $F$ with size $O(s)$. Then, by theorem \Cref{main_thm}, we know that there must be a $\F_2$-Nullstellensatz refutation for $F$ with degree $O(\log(s) + w)$, where $w$ is the width of the proof. 
+    
+ Since $F$ has a $\F_2$-\textsf{NS} refutation of degree $O(\log s + w)$ and since $\mathsf{PPA}^{pdt} = \Theta(\F_2$-\textsf{NS}), by \Cref{equiv_proof} we know that there is an efficient reduction $S_F \leq_m \mathsf{PPA}^{dt}$, concluding that $R \in \mathsf{PPA}^{pdt}$
 
 \end{proof}
+
+\newpage
+
+
 
 \cleardoublepage

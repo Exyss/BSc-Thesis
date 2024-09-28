@@ -1,268 +1,55 @@
 
-\chapter{Search problems} \label{chap:search_problems}
+\chapter{Black-box TFNP} \label{chap:bb-tfnp}
 
-\section{Decision vs. Search}
+\section{Oracles and decision trees}
 
-For many years, the study of \textbf{decision problems} has been the main focus of computability theory. These problems can be described as simple questions with a \say{yes} or \say{no} answer, such as asking if some input object has some property or not. Each decision problem can be described as a subset of a given language $\Sigma^*$, where a string $\abk{o}$ that encodes an object $o$ is in the subset if and only if the answer to the problem for that object is positive. Usually, a positive \say{yes} answer is represented by a 1, while a negative \say{no} answer is represented by a 0. For example, given the language $\N$, the question \say{is $n$ a prime number?} is modeled by the decision problem $\mathrm{PRIMES} = \{n \in \N \mid n \text{ is prime}\}$.
+In the previous chapter, we have briefly shown how \TFNP subclasses are defined in terms of basic existence principles that capture white-box total search problems solvable by protocols reducible to Karchmer-Widgerson games. From now on, we will shift our focus to the black-box model.
 
-\begin{definition}
- A decision problem for a property $P$ is a subset $L$ of a language $\Sigma^*$ such that $L = \{x \in \Sigma^* \mid P(x) = 1\}$.
-\end{definition}
-
-Any decidable problem can be \textit{decided} by a Turing machine, meaning that for any input $x$ of the language $\Sigma^*$ the \TM is capable of returning the answer 0 or 1. Decidability theory plays a core role in math and computer science since most problems can be modeled through it. However, by their nature, decision problems are limited. Some problems require a more complex result than a simple yes-or-no answer. Instead of asking the question \say{does this object have the required property?}, we may be more interested in the question \say{what gives this object the following property?}. These kinds of questions are modeled by \textbf{functional problems}, i.e. any problem where an output that is more complex than a yes-or-no answer is expected for a given input. Functional problems are "harder" types of problems, describing any possible type of computation achievable through the concept of computable function, even decidability itself (any decision problem is just a functional problem with only two possible outputs).
-
-Formally, functional problems are described through the concept of relation: given a set of inputs $X$ and a set of possible outputs $Y$, a functional problem is as a relation $R \subseteq X \times Y$ such that the pair $(x,y)$ is in $R$ if and only if $y$ is the output to the input $x$ for the given question.
-
-For example, the question \say{what is the prime factorization of $n$?} is modeled by the functional problem $\mathrm{FACTORING} = \{(n, (p_1, \ldots, p_k)) \in \N \times \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
-
-We observe that questions like \say{is $y$ a valid output for the input $x$?} are still modeled by decision problems due to them requiring a simple yes-or-no answer, while a function problem would ask the question \say{what is the output for the input $x$?}. For example, the question \say{is $p_1, \ldots, p_k$ the prime factorization of $n$?} corresponds to the decision problem $\mathrm{FACTORIZATION}_n = \{(p_1, \ldots, p_k) \in \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
-
-Even though decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined differently. For example, the decision problem $\mathrm{PRIMES}$ can be converted into the functional problem $\{(n, b) \in \N \times \{0,1\} \mid b = 1 \text{ if } n \text{ is prime, } b = 0 \text{ otherwise}\}$, but they aren't effectively the same problem even though they answer the same question.
-
-Another important thing to notice is that even though the name implies a correlation to mathematical functions due to the concept of input-output being involved, the given definition also includes \textit{partial} and \textit{multivalued} functions, i.e. functions for which not all inputs have a corresponding output and functions for which one input can have more outputs. For these reasons, the term \textit{functional problem} is considered to be slightly abused. In recent years, this issue was solved by the introduction of the more general term \textbf{search problems}, describing the idea of finding a valid output for the given input, better suiting the previous formal definition.
-
-To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^k$ for some $k \in \N$, describing all inputs as a sequence of bits. Since each problem could have inputs of different lengths, researchers have defined search problems through the use of a sequence of relations rather than a single relation \cite{rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}. This also allows separation between different types of outputs based on the length of the inputs.
+Black boxes have been used by complexity theorists since the early days, mostly through the concept of \textbf{oracle}, a device capable of instantly solving an instance of a designated problem. In particular, these problems may even be uncomputable, an assumption that allows us to view oracles as magical devices. Turing machines can be allowed to query such oracles to an additional \textit{oracle tape}. The machine writes a string on such tape, asking the oracle to solve the problem for that input. The output of the oracle is then written on the same tape, which can then be read by the Turing machine. Any query made to the oracle requires $\Theta(1)$ time, meaning that they don't influence the cost of the computation.
 
 \begin{definition}
- A search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called outcome set.
+ An oracle for a problem $A$ is an external device that is capable of instantaneously solving an instance of $A$. An oracle Turing machine is a Turing machine provided with the ability to query an oracle. We write $M^A$ to describe a Turing machine provided with an oracle for the problem $A$.
 \end{definition}
 
-Since it includes partial functions, this definition allows search problems to be "undefined" for some inputs, meaning that there is no answer for some inputs. A search problem is said to be \textbf{total} if for each $R_n$ in the sequence it holds that $\forall x \in \{0,1\}^n$ there is an answer $y \in O_n$ such that $(x,y) \in R_n$. In other words, a total search problem has at least an output for all possible inputs, removing partial functions from the context, while multivalued functions are still allowed. For example, $\mathrm{FACTORING}$ is a total non-multivalued search problem due to each natural number having a guaranteed unique prime factorization by the Fundamental Theorem of Arithmetic.
+Given a class $\mathcal{C}$ and an oracle for a problem $A$, the \textit{relativized version} of the class $\mathcal{C}$, written $\mathcal{C}^A$ is the set of all problems of $\mathcal{C}$ solvable (or verifiable) with access to the oracle of $A$. For example, $\mathsf{P}^{\mathrm{SAT}}$ is the class of problems solvable in polynomial time by a Turing machine with an oracle for the $\mathrm{SAT}$ problem. More generally, given two classes $\mathcal{C}, \mathcal{B}$, we write $\mathcal{C}^{\mathcal{B}}$ to denote the set of all problems of $\mathcal{C}$ solvable (or verifiable) with access to an oracle for any problem that lies in $\mathcal{B}$. In other words, we have that $\mathcal{C}^{\mathcal{B}} = \bigcup_{A \in \mathcal{B}} \mathcal{C}^{A}$.
 
-\newpage
+Oracles proved to be surprisingly useful for studying the relationship between $\mathsf{P}$ and $\mathsf{NP}$ by considering the relationship between $\mathsf{P}^A$ and $\mathsf{NP}^A$ for an oracle $A$. In a celebrated result \cite{relativization_p_np}, Baker et al. showed that there are two problems $A$ and $B$ such that $\mathsf{P}^A = \mathsf{NP}^A$ and $\mathsf{P}^B \neq \mathsf{NP}^B$. This fact makes commonly used proof techniques useless, meaning that any answer to the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question will require unconventional techniques, thus the hardness of the question.
 
-\section{The complexity classes \textsf{FP}, \textsf{FNP} and \textsf{TFNP}}
+Oracles provide a simple yet effective way to generalize the concept of reduction through the so-called \textit{Turing reductions}: if a Turing machine provided with an oracle for the problem $B$ is capable of resolving a problem $A$ then the problem $A$ can be reduced to solving multiple instances of the problem $B$. When $A$ is Turing reducible to $B$, we write $A \leq_T B$. Clearly, if the oracle machine $M^B$ can solve $A$ then any query to the oracle can be replaced with a call to a subroutine that solves $B$. This conversion is often referred to as \textit{de-relativization}. Many-to-one reductions can be seen as a specific case of Turing reductions, where the machine makes exactly one query to the oracle and then returns the output of such query.
 
-In complexity theory, decision problems are grouped into numerous categories, each defining a subclass. One of the most important subclasses is made of problems that can be \textbf{efficiently solved}. This class is referred to as \textsf{P}, i.e. the class of problems solvable by a Turing machine in polynomial time (see \Cref{chap:preliminaries}). Not all decision problems are efficiently solvable. In fact, some of them have been proven to be outside of \textsf{P} (again, see chapter \Cref{chap:preliminaries}). However, several problems for which there is currently no answer regardless of whether or not they are efficiently solvable have been shown to be \textbf{efficiently verifiable}, meaning that there is a Turing machine called \textit{verifier} that given an additional input $c$, namely the \textit{certificate}, is capable of telling in polynomial time if the value $y$ is the output of an input $x$.
-
-\begin{definition}
- A verifier for a decision problem $L$ is a Turing machine $V$ such that for each input $x \in \Sigma^*$ there is a certificate $c \in \Sigma^*$ for which $V(x,c) = 1$ if and only if $x \in L$.
-\end{definition}
-
-The class of problems that are verifiable by a polynomial time verifier with certificates of polynomial length is referred to as \textsf{NP}. This class is equivalent to the class of problems efficiently solvable by a \textit{non-deterministic Turing machine}, a \TM that on each step of the computation can choose between a set of possible actions, branching the computation. Originally, the class \textsf{NP} was defined through this type of \TM \@ - hence the name of the class being an abbreviation for \textit{non-deterministic polynomial time} - but it quickly got replaced with the verifier definition due to \textsf{NTM}s being only a theoretical computational model that is physically unrealizable \cite{complexity_arora_barak}. For our purposes, we will consider the modern definition of \textsf{NP}.
-
-By definition of these two classes, it's easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every efficiently solvable problem can also be efficiently verified. However, it is currently not known whether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the assumption that $\mathsf{P} \neq \mathsf{NP}$. For example, cryptography assumes that it's easy to check that each encrypted string is the result of the encryption scheme being applied to the original message, which works as the certificate, and very hard to find this message only through the encrypted string. If $\mathsf{P} = \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
-
-In the context of search problems, we define the class \textsf{FP} - \textit{functional} \textsf{P} - as the class of search problems efficiently solvable by an algorithm and \textsf{FNP} - \textit{functional} \textsf{NP} - as the class of search problems whose solutions are efficiently verifiable by a verifier. 
-
-\newpage
-
-\begin{definition}
- We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ whereby $\forall n \in \N$ there is a polynomial time \TM $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$. We define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ whereby $\forall n \in \N$ there is a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{\mathrm{poly(n)}}$ for which $V_n(x,y,w) = 1$ if and only if $(x,y) \in R_n$. 
-\end{definition}
-
-An important remark to be made is that, even though any decision problem can be transformed into a search problem with only two possible outputs, since they are defined on two different types of problems it doesn't make sense to say that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, an important result shows that it can hold that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$ \cite{decision_vs_search, fp_vs_p}. This implies that, even though search problems are by definition more complex than decision problems, answering one of the two questions would answer both of them.
+In the particular case of total search problems, it was proven that the reducibility between search problems is strictly connected to the reducibility of their relativized versions up to all oracles \cite{rel_comp_np_search}.
 
 \begin{theorem}
-    $\textsf{P} = \textsf{NP}$ if and only if $\textsf{FP} = \textsf{FNP}$
+ Given two search problems $R,S \in \mathsf{TFNP}$ and their relative classes it holds that $R \leq_m S$ if and only if $R^A \leq_m S^A$ for all oracles $A$.
 \end{theorem}
 
-\begin{proof}
- Since each decision problem can be translated into a search problem with only two possible outcomes, we trivially get that if $\textsf{FP} = \textsf{FNP}$ then $\textsf{P} = \textsf{NP}$.
-    
- Suppose now that $\textsf{P} = \textsf{NP}$. We already know that $\textsf{FP} \subseteq \textsf{FNP}$, so we have to show that $\textsf{FP} \subseteq \textsf{FNP}$. Let $R = (R_n)_{n \in \N} \in \textsf{FNP}$ be a search problem verifiable in polynomial time.
-    
- For each $n \in \N$, let $L_n$ be the set of pairs $(x,z)$ such that $z$ is the prefix of an outcome $zw$ for the problem $R_n$ with input $x$, formally $L_n = \{(x,y) \mid \exists z \in \{0,1\}^{k}, k \leq n \text{ s.t. } (x,zw) \in R_n\}$. It's easy to see that $L_n \in \textsf{NP}$ since each pair $(x,z)$ is certified by the string $zw$ itself and the correctness of this certificate can be polynomially verified given that $R \in \textsf{FNP}$.
-    
- Since $L_n \in \textsf{NP} = \textsf{P}$, we know that there is a polynomial time algorithm $\mathrm{Partial}_n$ that decides $L_n$. Thus, for each $n \in \N$, we can construct the following polynomial time algorithm $\mathrm{Solve}_n$ which directly concludes that $R \in \textsf{FP}$ and thus that $\textsf{FNP} \subseteq \textsf{FP}$.
-
-    \begin{algorithmic}
-        \Function{$\mathrm{Solve}_n$}{$x$}
-            \State{$y$ = $\varepsilon$}
-            \Comment{$\varepsilon$ is the empty string}
-            \While{True}
-                \If{$\mathrm{Partial}_n(x,y0)$ = True}
-                    \State{$y$ = $y0$}
-                \ElsIf{$\mathrm{Partial}_n(x,y1)$ = True}
-                    \State{$y$ = $y1$}
-                \Else
-                    \State{return $y$}
-                \EndIf
-            \EndWhile
-        \EndFunction
-    \end{algorithmic}
-\end{proof}
-
-\newpage
-
-As discussed in the previous section, not all search problems are total, meaning that a solution could not exist for some inputs. A lot of real-world problems have a guaranteed solution for each input, ranging from simple number functions to harder problems, making total search problems more interesting than non-total ones.
+This result implies that proving any relativized separation is equivalent to proving a non-relativized separation, allowing us to use the intuitive nature of oracles to rule out possible collapses in \TFNP subclasses. Many \TFNP subclasses have been proven to be different through separations between the respective query search problems. \cite{proofs_circuits_communication, tfnp_characterization}
 
 \begin{definition}
- We define the class $\mathsf{TFNP}$ as the subset of \textsf{FNP} problems that are also total.
+ A query search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
 \end{definition}
 
-For simplicity, we assume that each search problem in \textsf{FP} is also total: since problems in \textsf{FP} are solvable in polynomial time, when a solution doesn't exist we can output a pre-chosen \say{doesn't exist} solution, making the problem total. This assumption easily implies that \textsf{FP} $\subseteq$ \textsf{TFNP} $\subseteq$ \textsf{FNP}, giving us a proper hierarchy. For natural reasons, this assumption wouldn't work for \textsf{FNP} problems: the only way to polynomially verify that a solution doesn't exist would be to solve the problem itself and find that there is no solution, implying that \textsf{FP} = \textsf{FNP} would be trivially true.
+A good eye will surely notice that the previous definition does not vary from the normal definition of search problems, unlike communication search problems. The only true difference resides in their computational models: query search problems are solved (or verified) through \textbf{decision trees}.
 
-Another way to view total search problems is through the lens of \textit{polynomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. Proving that a decision problem is in \textsf{coNP} is also equivalent to proving that for each input of that problem there is no string capable of certifying that the solution is correct. Researchers currently believe that $\mathsf{NP} \neq \mathsf{coNP}$, even though this is still an open question. If the answer to this question is proven negative, we would also have a direct answer to the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question: we know that if $\mathsf{NP} \neq \mathsf{coNP}$ then $\mathsf{P} \neq \mathsf{NP}$ \cite{complexity_arora_barak, sipser_computation}
-
-For search problems, we define the class \textsf{FcoNP} in the same way. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can be certified or disqualified in polynomial time \cite{tfnp_f_np_conp}.
-
-\begin{proposition}
-    \label{tfnp_f_np_conp}
-    $\mathsf{TFNP} = \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$
-\end{proposition}
-
-\begin{proof}
- If $R = (R_n)_{n \in \N} \in \textsf{TFNP}$ then we know that every input $x$ has an output $y$. However, this means that the complementary problem $\overline{R}$ is empty, meaning that each input is trivially verifiable in polynomial time and thus that $\overline{R} \in \textsf{FNP}$. Hence, we conclude that $R \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$.
-    
- Vice versa, if $S \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$ then trivially we have that $S \in \mathsf{FNP}$. Moreover, since $S \in \mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$ we know that each input $x$ can be easily certified or disqualified in polynomial time, meaning that each input must have a solution polynomially verifiable and thus that $S \in \mathsf{TFNP}$.
-
-\end{proof}
-
-\newpage
-
-\section{The \textsf{TFNP} hierarchy}
-
-One of the most interesting aspects of computable (and uncomputable) problems is the ability to be transformed into another problem in order to achieve a solution. Suppose that we have an instance $a$ of problem $A$ and that we know an algorithm that transforms $a$ into an instance $b$ of a problem $B$ such that $a$ is a \say{yes} answer if and only if $b$ is a \say{yes} answer. Then, by solving $b$ we would get an answer to $a$. In computer science, this concept is known as \textbf{reduction}: a problem $A$ is said to be reducible into a problem $B$, written as $A \leq B$, if any instance $a$ of $A$ can be mapped into an instance $b$ of $B$ whose solution gives a solution to the former.
-
-In decision problems, this concept is described through \textit{many-to-one mappings}, computable functions that map instances of the original problem to instances of the reduced problem.
-
-\begin{definition}
- A decision problem $A$ is many-to-one reducible to a decision problem $B$, written as $A \leq_m B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. 
+\begin{definition}[\cite{search_problems_dt_model}]
+ A decision tree is a rooted directed binary tree whose nodes are associated with either an output value or an input Boolean variable. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node is labeled by a variable and the two outgoing edges are labeled by the two possible values of that variable.
 \end{definition}
 
-When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$, implying that the complexity of $A$ is "as hard as" $B$, meaning that its complexity is in the order of the complexity of $B$. For example, if $B$ is in \textsf{P} and the reduction $A \leq_m B$ can be computed in polynomial time then $A$ also lies in \textsf{P}.
-
-Reductions between decision problems map any \say{yes} answers of problem $A$ to some \say{yes} answers of problem $B$ and the same goes for \say{no} answers. In search problems, however, there is no concept of a negative answer: even if a problem has only two possible outputs, both of them are still a solution. Some people could argue that an input for which there is no solution is a negative answer to the search problem. But how could we map inputs without solutions to other inputs without solutions? What if one of the two problems involved is total and the other isn't? This clearly doesn't make sense. Even if it did make sense, we are only interested in finding solutions. We give the following definition of search problem reduction:
-
-\begin{definition}
- A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, written as $R \leq_m S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a function $f : \{0,1\}^m \to \{0,1\}^n$ and a function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
-    \[\forall x \in \{0,1\}^m \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
- In other words, the function $f$ maps inputs of $R$ into inputs of $S$, while the function $g$ maps solutions of $S$ into solutions of $R$. 
-\end{definition}
-
-\newpage
-
-Reductions play a critical role in computer science. In particular, they allow us to define the concept of \textbf{completeness}, the property of an entire class of problems to be reduced into one specific problem from that very same class.
-
-\begin{definition}
- A problem $B$ is said to be complete for a class of problems $\mathcal{C}$ if $B \in \mathcal{C}$ and $\forall A \in \mathcal{C}$ it holds that $A \leq_m B$.
-\end{definition}
-
-Under some circumstances, if a complete problem is proven to have a specific property then that property gets automatically inherited by all the problems of the class. For example, if an \textsf{NP}-Complete problem is proven to be solvable in polynomial time, then every single problem inside \textsf{NP} would inherit this property, making the entire class collapse and giving an answer to the question $\mathsf{P} = \mathsf{NP}$. However, for this inheritance ability to hold, these reductions must still be efficient with respect to the complexity of the class. For example, for a problem $B$ to be \textsf{NP}-Complete then any \textsf{NP} problem $A$ must be reducible to $B$ in polynomial time since otherwise there would be no way of using the reduction to efficiently obtain solutions of $A$. The same reasoning also holds for the concept of completeness in the class \textsf{FNP}.
-
-The most famous \textsf{NP}-Complete problem is the $\mathrm{SAT}$ problem, which asks \say{does this formula have an assignment that satisfies it?}, first proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem, that being $\mathrm{FSAT}$, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
-
-\begin{proposition}
- The decisional problem $A$ is \textsf{NP}-Complete if and only if the functional problem $FA$ is \textsf{FNP}-Complete.
-\end{proposition}
-    
-However, it is not known if there is a \textsf{FNP}-Complete problem that is also \textit{total}. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus no output assignment satisfies them. Researchers believe that the existence of such a problem is very unlikely since this total problem would be able to give a solution to problems that aren't total. 
-
-For these reasons, in the \textsf{TFNP} world the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems that have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}.  
-
-\begin{definition}
- Given \textsf{TFNP} problem $S$, we define the class $S$ as the subset of \textsf{TFNP} problems efficiently reducible to the problem $S$ in polynomial time, formally $S = \{R \in \mathsf{TFNP} \mid R \leq_m S \text{ in } O(n^k)\}$
-\end{definition}
-
-The extensive study of \textsf{TFNP} classes has been successful in capturing the complexity of many branches of mathematics, such as problems from cryptography, game theory and economics that are reducible to TFNP complete problems. Unexpectedly, a vast majority of total search problems can be characterized with very few subclasses, which form the \textbf{\textsf{TFNP} hierarchy}. 
-
-\newpage
-
-Each of these subclasses is characterized by a complete total search problem that describes an elementary question, such as determining if a mapping doesn't have collision or not - or equivalently, if a function is injective or not \cite{proofs_circuits_communication,tfnp_characterization}. These complete problems are guaranteed to be total by the very \textit{combinatorial principles} that dictate them:
-
-\begin{itemize}
-    \item \textsf{PLS} (Polynomial Local Search): the class of search problems designed to model the process of finding the local optimum of a function or the class of problems whose solution is guaranteed by the \say{Every directed acyclic graph has a sink} principle. It is formally defined as the class of search problems that are polynomial-time reducible to the SINK-OF-DAG problem.
-    
-    \item \textsf{PPP} (Polynomial Pigeonhole Principle): the class of problems whose solution is guaranteed by the \say{Every mapping from a set of $n+1$ elements to a set of $n$ elements has a collision} principle. It is defined as the class of problems that are polynomial-time reducible to the PIGEON problem.
-    
-    \item \textsf{PPA} (Polynomial Parity Argument): the class of problems whose solution is guaranteed by the \say{Every undirected graph with an odd-degree node must have another odd-degree node} principle. It is defined as the class of problems that are polynomial-time reducible to the LEAF problem.
-    
-    \item \textsf{PPADS} (Polynomial Parity Argument - Directed with Sink): the class of problems whose solution is guaranteed the \say{Every directed graph with a positively unbalanced node (out-degree > in-degree) must
- have a negatively unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the SINK-OF-LINE problem.
-    
-    \item \textsf{SOPL} (Sink of Potential Line): the class of problems that are polynomial-time reducible to the SINK-OF-POTENTIAL-LINE problem. It has been proven that $\mathsf{SOPL} = \mathsf{PLS} \cap \mathsf{PPADS}$ \cite{Further_collapses_TFNP}
-    
-    \item \textsf{PPAD} (Polynomial Parity Argument - Directed): the class of problems whose solution is guaranteed the \say{Every directed graph with an unbalanced node must have another unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the END-OF-LINE problem.
-    
-    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the CONTINUOUS-LOCALPOINT problem. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the END-OF-POTENTIAL-LINE problem.
-\end{itemize}
-
-\newpage
-
-\begin{figure}[H]
-    \centering
-    
-    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-    
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (1) []{\textsf{FNP}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (2) [below of = 1]{\textsf{TFNP}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (3) [below of = 2]{\textsf{PPP}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (4) [left of = 3, xshift=-30]{\textsf{PLS}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (5) [right of = 3, xshift=30]{\textsf{PPA}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (6) [below of = 3]{\textsf{PPADS}};
-
-        \node (7) [below of = 6]{};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (8) [left of = 7, xshift=-30]{\textsf{SOPL}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (9) [right of = 7, xshift=30]{\textsf{PPAD}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (10) [below of = 7]{\textsf{CLS}};
-
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (11) [below of = 10]{\textsf{FP}};
-    
-        \path[every node/.style={font=\sffamily\small}]
-            (2) edge (1)
-            (3) edge (2)
-            (4) edge (2)
-            (5) edge (2)
-            (6) edge (3)
-            (8) edge (4)
-            (8) edge (6)
-            (9) edge (5)
-            (9) edge (6)
-            (10) edge (8)
-            (10) edge (9)
-            (11) edge (10)
-            ;
-    \end{tikzpicture}
-    
-    \caption{Hierarchy of the main total search problem subclasses. \\ An arrow from class $A$ to class $B$ means that $A \subseteq B$.}
-\end{figure}
-
-Interestingly, lots of complex problems have been proven to be reducible to these basic problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to not only lie inside \textsf{PPAD} but also be \textsf{PPAD}-Complete \cite{nash_1, nash_2}. One should ponder what it really means for a problem to be complex.
-
-Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$. By the hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
- 
-\newpage
-
-\section{White-box \textsf{TFNP}}
-
-In computer science and engineering, systems and models are divided into two categories: white-box systems and black-box systems. A system is said to be a \textbf{white-box} if its internal workings are known, meaning that given any input it is possible to know how the system achieves a result. Contrary, the computational process is unknown in a \textbf{black-box} system. Black-box models allow us to consider only the result for a given input, ignoring how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes.
-
-Each \textsf{TFNP} problem can be analyzed through the lens of both white-box and black-box systems: in a \textbf{white-box \textsf{TFNP}} problem we're interested in how the problem gets verified (or solved if it's also in \textsf{FP}), while a \textbf{black-box \textsf{TFNP}} problem we're interested only in the verifiability (or computability) of the problem. Originally, these two models were characterized by solvability and verifiability through Turing machines \cite{decision_vs_search,rel_comp_np_search}. In recent years, researchers have shifted to another characterization: the white-box \textsf{TFNP} model is studied through \textit{protocols}, while black-box \textsf{TFNP} is studied through \textit{decision trees} \cite{separations_proof_complexity, adventures_monotone_tfnp, tfnp_characterization}. Any reader who has come this far will have asked himself the following question: why shift to other computational models? The answer is pretty straightforward: these two models are easier to work with. This shift of perspective allowed researchers to perform complex reasoning more easily, reaching otherwise unintuitive results. In this section, we will briefly discuss protocols and the white-box model, while decision trees and the black-box model will be extensively discussed in the following chapter. 
-
-Suppose that we have two parties, namely Alice and Bob, who want to cooperate in order to achieve a common objective, like computing a function. To reach their goal, Alice and Bob must carry out separate computations, communicating the result to the other party in a pre-defined sequence of steps. This idea serves as groundwork for a definition of protocols, algorithms that dictate such alternations between computation and communications. 
-
-We give the following formal definition of protocol. \cite{comm_compl_appl}
-
-\begin{definition}
- Let $X$ be Alice's input set and let $Y$ be Bob's input set. A protocol $\pi$ is a rooted directed binary tree whose leaves are associated with outputs and internal nodes are owned by either Alice or Bob, where the owner of $v$ is noted by $\mathrm{owner}(v)$. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node $v$ is also associated to a function $g_v : Z \to \{0,1\}$, where $Z = X$ if $\mathrm{owner}(v) = \mathrm{A}$ and $Z = Y$ if $\mathrm{owner}(v) = \mathrm{B}$.
-\end{definition}
-
-When given the input $(x,y) \in X \times Y$, the protocol computes the associated function of the current node (starting from the root), proceeding on the left child if the output is 0 and on the right child if the output is 1. When a leaf is reached, the protocol returns the associated output. The output of the protocol for a given input $(x,y)$ is denoted with $\pi(x,y)$. A function $f$ is said to be computed by the protocol $\pi$ if for all inputs $(x,y)$ it holds that $f(x,y) = \pi(x,y)$.
-
-\newpage
+Decision trees can be viewed as nothing more than the black-box version of protocols: we don't care about who computes the next step or how they do it, we only care about the result being either a 0 or a 1 to proceed with the computation. In fact, like their white-box counterpart, decision trees encode all possible ways to obtain a result, making them \textit{total}. Likewise, the complexity of a decision tree computing a function follows the same complexity measures as a protocol, i.e. its \textit{size} and its \textit{depth}. A function $f$ is said to be computed by the decision tree $T$ if for all inputs $x$ it holds that $f(x) = T(x)$. 
 
 \begin{figure}[H]
     \centering
 
     \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
 
-        \node[circle, draw] (1)[fill=red!20] {$v_1$};
+        \node[circle, draw] (1)[] {$x_1$};
 
-        \node[circle, draw] (2) [below left of=1, xshift=-50, fill=blue!20]{$v_2$};
-        \node[circle, draw] (3) [below right of=1, xshift=50, fill=blue!20]{$v_3$};
+        \node[circle, draw] (2) [below left of=1, xshift=-50, ]{$x_2$};
+        \node[circle, draw] (3) [below right of=1, xshift=50, ]{$x_3$};
 
-        \node[circle, draw] (4) [below left of=2, xshift=-10, fill=red!20]{$v_4$};
-        \node[circle, draw] (5) [below right of=2, xshift=10, fill=blue!20]{$v_5$};
-        \node[circle, draw] (6) [below left of=3, fill=red!20]{$v_6$};
+        \node[circle, draw] (4) [below left of=2, xshift=-10, ]{$x_3$};
+        \node[circle, draw] (5) [below right of=2, xshift=10, ]{$x_3$};
+        \node[circle, draw] (6) [below left of=3, ]{$x_2$};
         \node[rectangle, draw] (7) [below right of=3]{$o_7$};
 
         \node[rectangle, draw] (8) [below left of=4, xshift=10]{$o_1$};
@@ -293,130 +80,388 @@ When given the input $(x,y) \in X \times Y$, the protocol computes the associate
  ;
     \end{tikzpicture}
 
-    \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The green path shows the computation given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$ for the input $(x,y)$}
+    \caption{An example of a decision tree of size 13 and depth 3. The green path shows the computation made for the input $x = 011$.}
 \end{figure}
 
-The complexity of protocols is measured in terms of their \textit{size} and \textit{depth}, that being the number of nodes of the protocol and the length of the longest directed path from the root node to a leaf. The \textbf{communication complexity} of a function $f$ is defined as the depth of the smallest protocol that computes $f$, corresponding to the minimal number of bits that must be communicated by Alice and Bob to compute $f$ for all possible inputs.
+Decision trees give an easier way to describe the computation of an oracle Turing machine: if $M^B$ solves (or verifies) a problem $A$ then the $i$-th query made by the procedure corresponds to a variable $x_i$ for the decision tree where $x_i = 1$ if the query returns a positive result and 0 otherwise. In other words, the computation tree of an oracle Turing machine is a decision tree.
 
-Protocols are clearly a Turing complete computational model: they are nothing more than an algorithm computed by two parties instead of one. Vice versa, a Turing machine can simulate a protocol by following the paths described by the protocol itself. This makes protocols a simple schematic way to define an algorithm. A protocol encodes all possible messages that may be sent by the parties during any conceivable conversation, producing the expected output. This means that a protocol always returns an answer for all possible inputs, making any function computed by a protocol \textit{total}. 
+\begin{proposition}
+ Given a search problem $A \in \mathsf{TFNP}$, there is an oracle Turing machine $M^B$ that solves (or verifies) $A$ if and only if there is a decision tree that solves (or verifies) $A$.
+\end{proposition}
 
-Furthermore, since the function processed by each step of the computation is explicitly defined and thus known, protocols are valid alternatives that characterize white-box \textsf{TFNP}. In particular, for each \textsf{TFNP} problem $R$, we denote with $R^{cc}$ the equivalent $\mathsf{TFNP}^{cc}$ problem, where \textit{cc} stands for \textit{communication complexity}. Due to them being defined on two inputs instead of one, communication search problems are defined on two sets of input values instead of one.
-
-\begin{definition}
- A communication search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
-\end{definition}
-
-A protocol is considered to be efficient when its communication complexity is polylogarithmic with respect to the bit-size of the inputs, i.e. equal to $O(\log^k n)$. This ensures that there is a Turing machine capable of simulating the protocol in polynomial time. We give the following definitions of $\mathsf{FP}^{cc}$ and $\mathsf{FMP}^{cc}$
+The above proposition gives a strong result that allows us to characterize black-box \TFNP through decision trees instead of oracles: \textit{any decision tree separation implies a relativized separation} \cite{proofs_circuits_communication, tfnp_characterization}. As in the communication complexity formulation, given a \TFNP problem $R$, we denote with $R^{dt}$ the equivalent $\TFNP^{dt}$ problem, where \textit{dt} stands for \textit{decision tree}. We will omit this notation when the context makes it clear.
 
 \begin{definition}
- We define $\mathsf{FP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $\pi_n$ such that $\pi_n(x,y) = z$ if and only if $((x,y), z) \in R_n$.
-    \newpage
- We define $\mathsf{FNP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $V_n$ such that $V_n((x,y), z) = 1$ if and only if $((x,y), z) \in R_n$. 
+ We define $\mathsf{FP}^{dt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth decision tree $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$. Likewise, we define $\mathsf{FNP}^{dt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth decision tree $T_y$ such that $T_y(x) = 1$ if and only if $(x,y) \in R_n$.
 \end{definition}
 
-In this case, the certificate is the protocol itself: it defines a schema through which a Turing machine can verify the solution. The concept of reduction also applies to communication search problems, even though they require a pre-fixed value $t$ of the maximum amount of bits usable in the reduction, i.e. the maximum depth of the reduction protocol, which is necessary for computational reasons that we won't discuss. This allows us to define a $t$-bit \textsf{TFNP}$^{cc}$ hierarchy that follows the same structure as the standard one.
+Like protocols, in query search problems the certificate is the verifying decision tree itself. Decision tree reductions are based on a more fine-grained definition, where the function that maps inputs of the first problem to inputs of the second problem is computed by many decision trees with output $\{0,1\}$.
 
 \begin{definition}
- A communication search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times \{0,1\}^m \times O_m$, is said to be many-to-one reducible into a search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there are two functions $f_X, f_Y : \{0,1\}^m \to \{0,1\}^n$ and a $t$-bit protocol $g : (\{0,1\}^m \times \{0,1\}^n) \times O_n' \to O_m$ such that:
-    \[\forall (x,y) \in \{0,1\}^m \times \{0,1\}^m \;\; (f_X(x), f_Y(y), z) \in S \implies (x, y, \pi((x,y), z)) \in R\]
- In other words, the functions $f_X,f_Y$ map inputs of $R$ into inputs of $S$, while the protocol $g$ maps solutions of $S$ into solutions of $R$. 
+ A query search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a query search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is sequence $T = (T_i)_{i \in [n]}$ of decision trees $T_i : \{0,1\}^m \to \{0,1\}$ and a decision tree $T_y^o : \{0,1\}^m \to O_m$ for each $y \in O_n'$ such that:
+    \[\forall x \in \{0,1\}^m \;\; (T(x), y) \in S \implies (x, T_y^o(x)) \in R\]
+ where $T(x) := (T_1(x), \ldots, T_n(x))$.
 \end{definition}
 
-One of the most interesting properties of communication search problems is the ability to be characterized by a single type of search problem: the \textbf{monotone Karchmer-Widgerson game}. The game has a simple objective: given two inputs with different outputs, Alice and Bob have to cooperate to find a bit that differs between the two inputs.
+The difference in notation between $T_1, \ldots, T_n$ and $T_y^o$ underlines the fact that the former return a $\{0,1\}$ output, while the latter returns an output in $O_n$. The \textit{size} of the reduction is the number of input bits to $S$, that being $n$. The \textit{depth} $d$ of the reduction is the maximum depth of any tree involved in the reduction, meaning that
+\[d = \max (\{\mathrm{depth}(T_i) : i \in [n]\} \cup \{\mathrm{depth}(T_y^o) : o \in O_m\})\]
+
+The complexity of a reduction from $R$ to $S$, written as $S(R)$, is equal to the sum of the size and the minimal depth of a decision tree reduction from $R$ to $S$.
+\[S(R) := \min(\{\log m + \mathrm{depth}(T) : T\})\]
 
 \begin{definition}
- Given a Boolean function $f : \{0, 1\}^n \to \{0, 1\}$, we define the Karchmer-Wigderson game of $f$, denoted with $\mathrm{KW}(f)$, as the following communication problem: given the two inputs $x$ and $y$, where $f(x) = 0$ and $f(y) = 1$, find an index $i \in [n]$ such that $x_i \neq y_i$.
-
- If $f$ is a monotone Boolean function, meaning that given two inputs $x,y$ if $x \leq y$ then $f(x) \leq f(y)$, the monotone Karchmer-Widgerson game of $f$, denoted with $\mathrm{mKW}(f)$, finds an index $i \in [n]$ such that $x_i < y_i$.
+ Given $S \in \mathsf{TFNP}^{dt}$, we define the class $S^{dt}$ as the subset of \textsf{TFNP}$^{dt}$ problems efficiently reducible through decision trees to the problem $S$, formally $S^{dt} = \{R \in \mathsf{TFNP} \mid S(R) = O(\log^k n)\}$
 \end{definition}
 
-A surprising result \cite{span_programs, adventures_monotone_tfnp} proved that any communication search problem is equivalent to the monotone KW game of some Boolean function. This result implies that \textsf{TFNP}$^{cc}$ exactly is the study of the monotone Karchmer-Widgerson game.
+\section{Proof Complexity}
 
-\begin{lemma}
- For any communication search problem $R = (R_n)_{n \in \N}$, where $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, in $t$-bit \textsf{TFNP}$^{cc}$, there is a function $f$ on $2^t\abs{O_n}$ variables such that $R$ is communication equivalent to $\mathrm{mKW}(f)$ under $t$-bit mapping reductions.
-\end{lemma}
+Like the white-box model, black-box total search problems can be studied under multiple lenses, such as \textbf{proof complexity}. This branch of complexity theory studies the complexity measures needed for a propositional formula to be proved by propositional proof systems, that being any system of rules that can prove the truthfulness of a propositional formula, i.e. a string made of logical operators applied on a set of $n$ variables, such as $F = x_1 \land (x_1 \to \lnot x_2 \lor x_3)$.
 
-These games were originally introduced in 1990 by Karchmer and Widgerson \cite{kw_games} to show how the communication complexity of a game for a function $f$ is equal to the circuit complexity of a \textit{Boolean circuit} that solves the game on $f$.
+Any statement can be encoded by propositional formulas, which is either a \textit{tautology} (a statement that is always true), a \textit{satisfiable} formula (a statement that can be true or false based on the assignment) or an \textit{unsatisfiable} formula (a statement that is always false). Proving that a formula $F$ is a tautology is equivalent to proving that $\lnot F$ is unsatisfiable.
 
-\begin{theorem}
- Given a function $f : \{0, 1\}^n \to \{0, 1\}$, there is a circuit of depth $d$ that computes $f$ if and only if there is a protocol of depth $d$ that solves $\mathrm{KW}(f)$. Moreover, if $f$ is monotone, the circuit is monotone and the protocol solves $\mathrm{mKW}(f)$
-\end{theorem}
-
-In this case, Boolean circuits are defined as sets of logical AND and logical OR gates connected by cables. Like protocols, Boolean circuits have been proven to be Turing complete due to Turing machines and circuits being capable of simulating each other up to a polynomial factor \cite{sipser_computation}. Again, none should be dumbfounded by this result: any modern computer is just a large amount of Boolean gates wired together. We give the following definition of a Boolean circuit. \cite{comm_compl_appl}
+Proof systems can be viewed as an algorithm that manipulates propositional formulas, producing a new formula. When a formula $G$ is derived by the formula $F$ in the proof system $S$, we write $F \stackrel{S}{\vdash} G$. Proof systems must be \textit{sound}: if $F \stackrel{S}{\vdash} G$ then $G$ is a \textit{logical consequence} of $F$, which means that $F \to G$ is a tautology. In 1979, Cook and Reckhow gave the following formal definition of propositional proof system - often called Cook-Reckhow proof systems.
 
 \begin{definition}
- A Boolean circuit is a directed acyclic graph whose nodes, called gates, are associated with either input variables or Boolean operators. Each gate has an out-degree equal to 1 (except for the output gate which has out-degree 0) and in-degree equal to either 0 or 2. All 0 in-degree gates correspond to input variables, the negations of input variables or constant bits, while all 2 in-degree gates compute the logical AND or the logical OR of its given input variables or Boolean function. 
+ A propositional proof system (or pps) is a polynomial time computable surjective function $f : \Sigma^* \to \mathrm{TAUT}$, where $\mathrm{TAUT}$ is the set of logical tautologies.
 \end{definition}
 
-Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A function $f$ is said to be computer by a circuit with output gate $u$ if for all inputs $x \in \{0,1\}^n$ it holds that $f(x) =  f_u(x)$.
+Given a formula $F \in \mathrm{TAUT}$ a string $s \in \Sigma^*$ and a proof system $f$, we say that $s$ encodes $F$ for the pps $f$ if it holds that $f(s) = F$. This idea justifies why we want proof systems to be surjective: any true statement must have a valid encoding in the proof system. This property is called \textit{completeness} of the proof system.
+
+The most studied proof system is \textit{Resolution} (or \textsf{Res}). Given a formula $F \in \mathrm{TAUT}$, this proof system can prove that it is a tautology by proving that $\lnot F \in \mathrm{UNSAT}$.
+
+A \textit{conjunctive normal form} (CNF) formula $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal form:
+\[F = (x_1 \lor x_2 \lor \lnot{x_3} \lor x_4) \land (x_1 \lor \lnot{x_2}) \land x_3\]
+
+Any formula can be expressed as an equivalent CNF formula, making Resolution a \textit{complete} and \textit{sound} proof system. Resolution proofs are based on repeated applications of the following simple rule called the \textit{resolution rule}:
+\[\dfrac{C \lor x \qquad D \lor \lnot x}{C \lor D}\]
+
+Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}. Given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
+\[\begin{array}{lcl}
+ D_1 :& \lnot{z} & \text{Axiom} \\
+ D_2 :& y \lor z & \text{Axiom} \\
+ D_3 :& y & \text{Res. on $D_1, D_2$} \\
+ D_4 :& x \lor \lnot{y} \lor z  & \text{Axiom} \\
+ D_5 :& x \lor \lnot{y} & \text{Res. on $D_1, D_4$} \\
+ D_6 :& \lnot{x} \lor z & \text{Axiom} \\
+ D_7 :& \lnot{x} & \text{Res. on $D_1, D_6$} \\
+ D_8 :& \lnot{y} & \text{Res. on $D_5, D_7$} \\
+ D_9 :& \bot & \text{Res. on $D_3, D_8$} \\
+\end{array}\]
+
+Each refutation can also be graphically represented by connecting clauses:
 
 \begin{figure}[H]
     \centering
-
-    \begin{tikzpicture}[<-,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-
-        \node[main node] (1) []{$\land$};
-
-        \node[main node] (2) [below left of=1, xshift=-40]{$\land$};
-        \node[main node] (3) [below right of=1, xshift=40]{$\land$};
-
-        \node[main node] (4) [below left of=2]{$\lor$};
-        \node[main node] (5) [below left of=4]{$\land$};
-        \node[main node] (6) [below right of=4]{$\land$};
-        \node[main node] (7) [below of=5]{$x_1$};
-        \node[main node] (8) [below of=6]{$\vnot{x_1}$};
-
-        \node[main node] (9) [below left of=3]{$\lor$};
-        \node[main node] (10) [below left of=9]{$\land$};
-        \node[main node] (11) [below right of=9]{$\land$};
-
-        \node[main node] (12) [below of=10]{$x_2$};
-        \node[main node] (13) [below of=11]{$\vnot{x_2}$};
-
-        \node[] (14) [below right of=3, xshift=50]{};
-        \node[] (15) [below left of=14]{};
-        \node[] (16) [below right of=14]{};
-
-        \node[main node] (17) [below of=15, yshift=8]{$x_3$};
-        \node[main node] (18) [below of=16, yshift=8]{$\vnot{x_3}$};
-
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+        \node (1) []{$\bot$};
+        
+        \node (2) at ($(1)+(-2,1.75)$){};
+        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
+    
+        \node (4) [above left of=2]{};
+        \node (5) [above right of=2]{};
+    
+        \node (6) [above of=3]{$\lnot{y} \lor x$};
+        \node (7) [right of=6]{$\lnot{x}$};
+        
+        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
+        \node (9) [above right of=6]{$\lnot{x} \lor z$};
+    
+        \node (11) [right of=9]{$\lnot{z}$};
+        \node (12) [above left of=2]{$y$};
+    
+        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
+        \node (15) [left of=14]{$y \lor z$};
+    
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge (2)
-            (1) edge (3)
-
-            (2) edge (4) 
-            (2) edge (17)
-
-            (3) edge (9)
-            (3) edge (18)
-
-            (4) edge (5)
-            (4) edge (6)
-
-            (5) edge (7)
-            (5) edge (13)
-
-            (6) edge (8)
-            (6) edge (12)
-
-            (10) edge (7)
-            (10) edge (12)
-
-            (11) edge (8)
-            (11) edge (13)
-
-            (9) edge (10)
-            (9) edge (11)
-
-            ;
+ (15) edge (12)
+            
+ (6) edge (3)
+ (7) edge (3)
+            
+ (8) edge (6)
+ (11) edge (6)
+            
+ (9) edge (7)
+ (11) edge (7)
+    
+ (11) edge (12)
+    
+ (12) edge (1)
+ (3) edge (1)
+ ;
     \end{tikzpicture}
-
-    \caption{A Boolean circuit of size 15 and depth 4 computing $x_1 \oplus x_2 \oplus x_3$.}
+    
+    \caption{Dag-like refutation of the previous formula}
 \end{figure}
 
-The complexity of Boolean circuits is measured in terms of their \textit{size} and \textit{depth}, i.e. the number of gates of the circuit and the length of the longest directed path from an input gate to the output gate. However, differently from protocols, the \textbf{circuit complexity} of a function $f$ is defined as the size of the smallest Boolean circuit that computes it.
+Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause appears only once in a refutation, we say that it is a \textit{tree-like} refutation due to how the underlying graph becomes a tree.
 
-Karchmer and Widgerson's result allows us to characterize white-box \textsf{TFNP} in three ways: the study of communication search problems, the study of the monotone Karchmer-Widgerson game and the study of monotone Boolean circuits. This further extends the already known connections between search problems, communication complexity and circuit complexity, establishing that any result obtained in one of these fields can be in some way extended to the others.
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (1) []{$\bot$};
+        
+        \node (2) at ($(1)+(-2,1.75)$){$y$};
+        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
+    
+        \node (4) [above left of=2]{};
+        \node (5) [above right of=2]{};
+    
+        \node (6) [above of=3]{$\lnot{y} \lor z$};
+        
+        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
+        \node (9) [above right of=6]{$\lnot{x} \lor z$};
+    
+        \node (11) [right of=9]{$\lnot{z}$};
+    
+        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
+        \node (15) [left of=14]{$y \lor z$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (14) edge (2)
+            (15) edge (2)
+                
+            (8) edge (6)
+            (9) edge (6)
+                
+            (6) edge (3)
+            (11) edge (3)
+                
+            (2) edge (1)
+            (3) edge (1)
+            ;
+    \end{tikzpicture}
+    
+    \caption{Tree-like refutation of the previous formula}
+    \label{treelike_res_proof}
+\end{figure}
 
+This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+
+Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Resolution proof is the length of the longest path from an axiom to the empty clause. The \textit{width} of a Resolution proof is the maximum number of literals appearing in a clause of the proof. For example, the proof shown in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a Tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}$ nodes.
+
+But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. Showing that any of these problems is also in $\mathsf{NP}$ would answer the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
+
+Proof systems are essential to work on this question: given the encoding $\Pi$ of a proof of $F$ in a proof system, a verifier can follow the rules defined by the proof system to prove that $F$ is indeed a tautology. In this case, $\Pi$ serves as a certificate for $F$ while the pps defines the verifier. We give the following equivalent definition of a propositional proof system.
+
+\newpage
+
+\begin{definition}
+ A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $\Pi \in \Sigma^*$ such that $V(F,\Pi) = 1$.
+\end{definition}
+
+At first glance, one could think that this definition implies that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the length of such proofs: to be an efficient verifier, the length of the certificates must be polynomially bounded by the length of $F$. In other words, it must hold that $\abs{\Pi} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$, or equivalently that $\mathrm{TAUT} \in \mathsf{NP}$, we must find a \textit{polynomially bounded proof system}, a pps that uses only polynomially bounded proofs for all tautologies.
+
+\begin{proposition}
+ There is a polynomially bounded proof system if and only if $\mathsf{NP} \neq \mathsf{coNP}$.
+\end{proposition}
+
+We already discussed how researchers believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential length encoding for every discovered and undiscovered proof system.
+
+\section{The Black-box model and Proof complexity}
+
+Proof complexity is highly related to other branches of complexity theory, including the study of total search problems. In order to get to this relation between proof complexity and $\mathsf{TFNP}^{dt}$, we have to restrict our focus to CNF formulas. By construction, a CNF formula can be unsatisfiable if and only if for all assignments $\alpha(x_1, \ldots, x_n)$ there is a clause $C_i$ that is false. It's easy to see this fact implies that any CNF formula gives rise to an associated search problem: finding a falsified clause inside the formula (if there is any) for each possible assignment.
+
+\begin{definition}
+ Given a CNF $F = C_1 \land \ldots \land C_m$ over $n$ variables, we define $\mathrm{Search}(F)$ as the following search problem: given an input assignment $\alpha(x_1, \ldots, x_n)$, return an index $i$ such that the assignment falsifies $C_i$.
+\end{definition}
+
+This problem is usually referred to as the \textit{false clause search problem}. When $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is a total search problem since for any input assignment there will always be an unsatisfied clause. Moreover, the search problem of any unsatisfiable formula can easily be solved (or verified) by a decision tree for any formula $F$: if the assignment $\alpha(x_1 = b_1, \ldots, x_n = b_2)$ falsifies the clause $C_i$, define a path $x_1 = b_1, \ldots, x_n = b_n$ on the decision tree and let $C_i$ be the output of such path. In other words, for all $\lnot F \in \mathrm{TAUT}$ it holds that $\mathrm{Search}(F) \in \mathsf{TFNP}^{dt}$. 
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node (1)[circle, draw]{$y$};
+        
+        \node (2) at ($(1)+(-2,-1.75)$) [circle, draw]{$z$};
+        \node (3) at ($(1)+(2,-1.75)$) [circle, draw]{$z$};
+    
+        \node (4) [below left of=2]{};
+        \node (5) [below right of=2]{};
+    
+        \node (6) [below of=3, circle, draw]{$x$};
+        
+        \node (8) [below left of=6, rectangle, draw]{$x \lor \lnot{y} \lor z$};
+        \node (9) [below right of=6, rectangle, draw]{$z \lor \lnot{x}$};
+    
+        \node (11) [right of=9, rectangle, draw]{$\lnot{z}$};
+    
+        \node (14) at ($(8)+(-2.4,0)$) [rectangle, draw]{$y \lor \lnot{z}$};
+        \node (15) [left of=14, rectangle, draw]{$y \lor z$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+ (14) edge [swap] node{1} (2)
+ (15) edge node{0} (2)
+    
+ (8) edge node{0}(6)
+ (9) edge node[swap]{1}(6)
+    
+ (6) edge node{0}(3)
+ (11) edge [swap] node{1}(3)
+    
+ (2) edge node {0} (1)
+ (3) edge node [swap] {1} (1)
+ ;
+    \end{tikzpicture}
+    
+    \caption{Decision tree for the previous unsatisfiable formula}
+    \end{figure}
+
+ Similarly, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$. Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, written as $D(T)$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. By De Morgan's theorem, $\lnot{D(T)}$ is a CNF.
+
+\begin{proposition}
+    \label{Rdt = Search(F)}
+ Given a total query search problem $R \subseteq \{0,1\}^n \times O$, for each $n \in \N$ there exists an unsatisfiable CNF formula $F_n$ defined over $\abs{O}$-many variables such that $R_n = \mathrm{Search}(F_n)$. This formula is called canonical CNF encoding of $R_n$.
+\end{proposition}
+
+\begin{proof}
+ Since $R = (R_n)_{n \in \N} \in \TFNP^{dt}$, for each $y \in O_n$ there is a $\mathrm{polylog}(n)$-depth decision tree $T_y$ that verifies $R_n$. Consider the CNF $F_n := \bigwedge\limits_{y \in O_n} \lnot{D(T_y)}$. Since $R$ is a total search problem, for each input $x$ there is a valid output, implying that at least one tree $T_y$ will have an accepting path, meaning that $D(T_y)$ with input $x$ accepts and therefore $\lnot{D(T_y)}$ with input $x$ rejects, concluding that $F_n$ is unsatisfiable. Moreover, this formulation also concludes that:
+    \[(x,y) \in R_n \iff (x,y) \in \mathrm{Search}(F_n)\]
+ and thus that $R_n = \mathrm{Search}(F_n)$.
+
+\end{proof}
+
+This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in \N}$, where $F_1, F_2, \ldots$ is a family of CNF formulas, and by extension that black-box \TFNP is exactly \textit{the study of the false clause search problem}. Like in the white-box case, the upshot is that it is sufficient to restrict our interests to the study of search problems associated with unsatisfiable CNF formulas.
+
+\newpage
+
+Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
+\[P(F) := \min\{\log \mathrm{size}(\Pi) + \mathrm{deg}(\Pi) : \Pi \text{ is a $P$-proof of } F\}\]
+where $\mathrm{size}(\Pi)$ is the the total number of symbols in $\Pi$ and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. For example, in Tree-like Resolution the degree is the \textit{depth} of the proof, while in Resolution the degree is the \textit{width} of the proof. This degree measure will be specified for the proof systems analyzed in the following sections.
+
+To make things more readable, we will refer to $\mathrm{Search}(F)$ as $S_F$. Since each $\TFNPdt$ problem is equivalent to $S_F$ for some formula $F$, the complexity parameter defined above can be used to give another characterization of $\TFNPdt$ problems.
+
+\begin{definition}
+ We say that a proof system $P$ \textbf{characterizes} a $\TFNPdt$ problem $R$ (and reflexively that $R$ characterizes $P$) if it holds that \[R^{dt} = \{S_F : P(F) = \mathrm{polylog}(n)\}\]
+ where $F = (F_i)_{i \in \N}$ is a family of formulas. In a stronger sense, it must hold that $R^{dt}(S_F) = \Theta(P(F))$. 
+\end{definition}
+
+Most of the \TFNP subclasses discussed in previous sections have been shown to have a characterizing proof system:
+\begin{itemize}
+    \item $\mathrm{FP}^{dt}(S_F) = \Theta(\mathsf{TreeRes}(F))$ \cite{search_problems_dt_model}
+    \item $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$  \cite{approx_counting}
+    \item $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\textsf{-NS}(F))$ \cite{adventures_monotone_tfnp}
+    \item $\mathrm{PPADS}^{dt}(S_F) = \Theta(\textsf{unary-NS}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{PPAD}^{dt}(S_F) = \Theta(\textsf{unary-SA}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathsf{RevRes}(F))$ \cite{separations_proof_complexity}
+    \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathsf{RevResT}(F))$ \cite{separations_proof_complexity}
+\end{itemize}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (2) []{\textsf{TFNP}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (3) [below of = 2]{\textsf{PPP}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (4) [left of = 3, xshift=-40]{\textsf{PLS}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (5) [right of = 3, xshift=40]{\textsf{PPA}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (6) [below of = 3]{\textsf{PPADS}$^{dt}$};
+
+        \node (7) [below of = 6]{};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (8) [left of = 7, xshift=-40]{\textsf{SOPL}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (9) [right of = 7, xshift=40]{\textsf{PPAD}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (10) [below of = 7]{\textsf{CLS}$^{dt}$};
+
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (11) [below of = 10]{\textsf{FP}$^{dt}$};
+
+        \node (12) [left of = 4, xshift = 15]{\textsf{Res} $=$};
+
+        \node (13) [left of = 6, yshift = -1]{\textsf{unary-SA} $=$};
+        
+        \node (14) [left of = 8, xshift = 7.5, yshift = -1]{\textsf{RevRes} $=$};
+        
+        \node (15) [left of = 10, xshift = 5]{\textsf{RevResT} $=$};
+
+        \node (16) [right of = 5, xshift = -10.5, yshift = -1]{$=$ \textsf{$\F_2$-NS}};
+
+        \node (17) [right of = 9, xshift = -4.5, yshift = -1]{$=$ \textsf{unary-NS}};
+
+        \node (18) [left of = 11, xshift = 5]{\textsf{TreeRes} $=$};
+    
+        \path[every node/.style={font=\sffamily\small}]
+ (3) edge (2)
+ (4) edge (2)
+ (5) edge (2)
+ (6) edge (3)
+ (8) edge (4)
+ (8) edge (6)
+ (9) edge (5)
+ (9) edge (6)
+ (10) edge (8)
+ (10) edge (9)
+ (11) edge (10)
+ ;
+    \end{tikzpicture}
+    
+    \caption{Black-box \textsf{TFNP} classes and their characterizing proof systems}
+\end{figure}
+
+\quad
+
+\section{Reductions through CNF formulas}
+
+Intuitively, the characterization given in the previous section shows that any $\TFNPdt$ problem can be transformed into a proof system for refuting unsatisfiable CNF formulas of polylogarithmic width: since any $\TFNPdt$ is equivalent to the search problem for some unsatisfiable CNF formula, any efficient decision tree reduction between problems is nothing more than an efficient proof in the characterizing proof system and vice versa. To formalize this idea, we introduce the concept of \textbf{reductions between CNF formulas} \cite{tfnp_characterization}.
+
+Suppose that $C$ is a clause over $n$ variables and that $T = (T_i)_{i \in [n]}$ is a sequence of depth-$d$ decision trees, where $T_i : \{0,1\}^{m} \to \{0,1\}$. We refer to $C(T)$ as the CNF formula obtained by substituting each variable $x_i$ in $C$ with $D(T_i)$ and rewriting the result as a CNF, or more conveniently:
+\[C(T) := \bigwedge_{i \in [n]} \, \bigwedge_{\substack{r \,:\, \text{rejecting} \\ \text{path of $T_i$}}} \lnot{r}\]
+
+\newpage
+
+\begin{definition}
+ Let $F = C_1 \land \ldots \land C_{m_F}$ be an unsatisfiable CNF over $n_F$ variables. We say that a CNF formula $H$ made of $m_H$ clauses over $n_H$ variables reduces to $F$ via depth-$d$ decision trees if there exist two sequences of depth-$d$ decision trees $T = (T_i)_{i \in [n_F]}$ and $T^o = (T_j^o)_{j \in [m_F]}$, where $T_i : \{0,1\}^{n_H} \to \{0,1\}$ and $T_j^o : \{0,1\}^{n_H} \to [m_H]$, such that given the following formula:
+    \[F_H := \bigwedge_{j \in [m_F]} \,\bigwedge_{\substack{p \,:\; \text{path} \\ \text{in } T_j^o}} C_i(T) \lor \lnot{p}\]
+ it holds that if $F$ is unsatisfiable then $F_H$ is unsatisfiable and by consequence that $H$ is unsatisfiable. 
+\end{definition}
+
+In particular, we notice that $F_H$ can also be written as a CNF by simply distributing each $\lnot{p}$ inside $C_i(T)$. Each clause $C_i(T) \lor \lnot{p}$ must be either tautological (since it could contain a variable and its negation) or a weakening of the corresponding clause of $H$ - meaning that it is a formula $Q$ such that $H \to Q$ - indexed by the label at the end of the path $p$. Moreover, we notice that through this formulation any depth-$d$ decision tree reduction from $S_H$ to $S_F$ induces the search problem $S_{F_H}$. By construction, reductions between CNF formulas are just a formal way to say that reductions between search problems reduction are actually proof systems.
+
+\begin{definition}
+ Given a problem $S_F \in \TFNPdt$ the \textbf{canonical proof system} of such problem, written as $P_F$, is a proof system that refutes an unsatisfiable formula $H$ over $n_H$ variables if $H$ is reducible to an instance of $F$ over $n_F$ variables. 
+\end{definition} 
+
+A $P_F$-proof of $H$ consists of the decision trees that make such reduction possible. The \textit{size} of such proof is given by $n_F$, while the \textit{degree} is given by the maximum depth among the involved decision trees. Hence, the $P_F$ complexity of $H$ is given by:
+    \[P_F(H) := \min\{\log \mathrm{size(\Pi)}+ \mathrm{depth}(\Pi) : \Pi \text{ is a $P_F$-proof of } H\}\]
+
+This definition directly implies that given $S_F \in \TFNPdt$, the \textbf{characterizing proof system} of $S_F^{dt}$ is equivalent to the canonical proof system $P_F$. Canonical proof systems are \textit{sound}, since by construction any valid substitution of an unsatisfiable CNF formula is also unsatisfiable, and also \textit{efficiently verifiable}, since it suffices to check that each of the clauses of $F_H$ is either tautological or a weakening of a clause in $H$, which can both be done in polynomial time compared to the size of the proof.
+
+The following theorem plays a crucial role in $\TFNPdt$ characterization through proof complexity, stating that the proof system $P_F$ has a short proof of $H$ if and only if $S_H$ efficiently reduces to $S_F$. In other words, an efficient proof of a formula in a characterizing proof system automatically gives an efficient reduction to the corresponding complete search problem.
+
+\newpage
+
+\begin{theorem}
+    \label{equiv_proof}
+ Let $S_F \in \TFNPdt$ and let $H$ be an unsatisfiable CNF formula. The two following results hold:
+    \begin{enumerate}
+        \item If $H$ has a size $s$ and depth $d$ proof in $P_F$ then $S_H$ has a size $O(s)$ and depth $d$ reduction to $S_F$
+        \item If $S_H$ has a size $s$ and depth $d$ decision tree reduction to $S_F$ then $H$ has a size $s2^{O(d)}$ and depth $d$ proof in $P_F$
+    \end{enumerate}
+ In particular, this implies that $S_F^{dt}(S_H) = \Theta(P_F(H))$.
+\end{theorem}
+
+
+\begin{proof}
+ Suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a $P_F$ proof of $H$ of size $s$ and depth $d$. Given any assignment $\alpha$ such that $(\alpha, i) \in S_F$, let $C_i$ be the clause of $F$ falsified by $T_1(\alpha), \ldots, T_{n_F}(\alpha)$ and let $p$ be the path followed by $T_i^o(\alpha)$. It's easy to see that a clause of the formula $C_i(T) \lor \lnot{p}$ must be falsified by $\alpha$. In particular, such clause is also the weakening of the $T_i^o(\alpha)$-th clause of $H$, concluding that $(\alpha, T_i^o(\alpha)) \in S_H$. In other words, the $P_F$ proof of $H$ corresponds to a reduction from $S_H$ to $S_F$ of size $n_F = O(s)$ and depth $d$.
+
+ Vice versa, suppose that $T = (T_i)_{i \in [n_F]}$ and $T' = (T_j^o)_{j \in [m_F]}$ is a decision tree reduction from $S_H$ to $S_F$ of size $s$ and depth $d$. Then, we can construct $F_H$ as previously described through the use of these decision trees. Let $L$ be a clause of $C_i(T)$ for some $i \in [m_F]$ and let $p$ be any path in $T_i^o$. If the formula $C_i(T) \lor \lnot{p}$ is tautological, then it can be ignored since $F_H$ is a CNF. Otherwise, let $\alpha$ be an assignment that falsifies $L \lor \lnot{p}$. Then, it holds that $T_1(\alpha), \ldots, T_{n_F}(\alpha)$ falsifies $C_i(T)$ and that $T_i^o(\alpha)$ follows path $p$. Thus, the $T_i(\alpha)$-th clause of $\lnot{H}$ must also be false, implying that $L \lor \lnot{p}$ is a weakening of such clause. This concludes that $F_H$ is a $P_F$-proof of $H$ of depth at most $d$ (due to how $F_H$ is constructed) and thus that the size is at most $s2^{O(d)}$.
+
+\end{proof}
 
 \cleardoublepage
