@@ -1,8 +1,7 @@
 % ============================================== %
 % Author: Simone Bianco
 %
-% Thesis Title: The Role of Parity-based Computation in Black-Box Total Search Problems
-% Thesis Title: Relations between parity-Based computation and Black-Box Total Search Problems
+% Thesis Title: Efficient Parity Decision Trees and Their Connections to Logical Proofs and Total Search Problems in NP
 %
 % Bachelor of Science in Computer Science, Sapienza University of Rome.
 %
@@ -11,7 +10,7 @@
 % ============================================== %
 
 % Document Class
-\documentclass[binding=0.6cm, noexaminfo]{sapthesis}
+\documentclass[binding=0.6cm, noexaminfo, oneside]{styles/sapthesis}
 
 % Packages
 \usepackage{microtype}
@@ -51,48 +50,13 @@
   minalphanames=3
 ]{biblatex}
 
-% Commands and Settings
-\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
-\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
-\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
-\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-\newcounter{boxlblcounter}  
-\newcommand{\makeboxlabel}[1]{\fbox{#1.}\hfill}
-\newenvironment{boxlabel}
-  {\begin{list}
-    {\arabic{boxlblcounter}}
-    {\usecounter{boxlblcounter}
-     \setlength{\labelwidth}{3em}
-     \setlength{\labelsep}{0em}
-     \setlength{\itemsep}{2pt}
-     \setlength{\leftmargin}{1.5cm}
-     \setlength{\rightmargin}{2cm}
-     \setlength{\itemindent}{0em} 
-     \let\makelabel=\makeboxlabel
-    }
-  }
-{\end{list}}
-\lstdefinestyle{myStyle}{
-    belowcaptionskip=1\baselineskip,
-    breaklines=true,
-    numberstyle=\tiny\color{gray},
-    captionpos=b,
-    frame=tb,
-    basicstyle=\footnotesize\ttfamily,
-    keywordstyle=\bfseries\color{green!40!black},
-    commentstyle=\itshape\color{blue!40!black},
-    identifierstyle=\color{black},
-    backgroundcolor=\color{white},
-}
-\lstset{style=mystyle}
+%%%% NOTE: Enable the following two lines if you want to use SapThesis' bibliography style
 
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{5pt}
+% \bibliographystyle{sapthesis}
+% \bibliography{./references.bib}
 
-% Metadata
-\hypersetup{pdftitle={Thesis},pdfauthor={Simone Bianco}, urlcolor=black, linkcolor=black, colorlinks=true}
+% ================== METADATA ==================
+\hypersetup{pdftitle={Thesis},pdfauthor={Simone Bianco}, colorlinks=true}
 \title{Efficient Parity Decision Trees and Their Connections to Logical Proofs and Total Search Problems in NP}
 \author{Simone Bianco}
 \IDnumber{1986936}
@@ -105,55 +69,14 @@
 \copyyear{2024}
 \thesistype{Bachelor's Thesis}
 
-% ================== CUSTOM ENVIRONMENTS ==================
-
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
-
-\theoremstyle{definition}
-\newtheorem{claimlemma}{Claim}[lemma]
-\newtheorem{claimtheorem}{Claim}[theorem]
-\newtheorem{definition}{Definition}[chapter]
-
-% ================== CUSTOM MACROS ==================
-
-\newcommand\blankchar[1][1.25ex]{\mbox{\kern.06em\vrule height1ex}\vbox{\hrule width#1}\hbox{\vrule height1ex}}         % Tape blank character
-
-\newcommand{\vnot}{\overline}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\say}[1]{\flqq\textit{#1}\frqq}
-\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
-\newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
-\newcommand{\abk}[1]{\left\langle#1\right\rangle}
-
-\newcommand{\TM}{\textsf{TM}\xspace}
-
-\newcommand{\FP}{\textsf{FP}\xspace}
-\newcommand{\FNP}{\textsf{FNP}\xspace}
-\newcommand{\TFNP}{\textsf{TFNP}\xspace}
-\newcommand{\TFNPdt}{\mathsf{TFNP}^{dt}\xspace}
-
-\newcommand{\N}{\mathbb{N}}
-\renewcommand{\P}{\mathbb{P}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\F}{\mathbb{F}}
-
-\newcommand{\Res}{\mathsf{Res}}
-\newcommand{\ResP}{\mathsf{Res(\oplus)}}
-\newcommand{\NS}{\mathsf{NS}}
-\newcommand{\FNS}{\F_2\text{-}\mathsf{NS}}
-\newcommand{\enc}{\mathrm{enc}}
+% ================== CUSTOM ELEMENTS ==================
+\usepackage{./styles/custom}
 
 % ================== DOCUMENT ==================
 
 \addbibresource{./references.bib}
 
 \begin{document}
-
-\lstset{language=Python}
 
 \frontmatter
 
@@ -163,42 +86,49 @@
 \dedication{
   \say{Either mathematics is too big for the human mind,\\or the human mind is more than a machine}\\― Kurt Gödel
 }
+
 % ================== ABSTRACT ==================
 
-\input{./chapter/abstract}
-
+\input{./chapters/abstract}
 \cleardoublepage
 
+% ================== TABLE OF CONTENTS ==================
+
+\hypersetup{linkcolor=black} % Print ToC in black
+\setlength{\parskip}{4pt} % Vertical Spacing between elements of the ToC
 \tableofcontents
+
 \let\cleardoublepage\clearpage
-
-\hypersetup{colorlinks=true, linkcolor=blue, citecolor=red}
-
 
 \mainmatter
 
+% ================== CHAPTER TYPESETTING ==================
+
+\hypersetup{linkcolor=blue, urlcolor=black, citecolor=red} % Link colors
+\setlength{\parindent}{0pt} % Horizontal spacing at the start of a paragraph
+\setlength{\parskip}{5pt} % Vertical spacing between paragraphs
+
 % ================== CHAPTERS ==================
-\input{./chapter/1}
-\input{./chapter/2}
-\input{./chapter/3}
-\input{./chapter/4}
+\input{./chapters/1}
+\input{./chapters/2}
+\input{./chapters/3}
+\input{./chapters/4}
 
 % % ================== NOTES ==================
-% \input{./chapter/notes}
+% \input{./chapters/notes}
 
 % ================== CONCLUSIONS ==================
-\input{./chapter/conclusions}
+\input{./chapters/conclusions}
 
 % ================== ACKNOWLEDGMENTS ==================
-\input{./chapter/acknowledgements}
+\input{./chapters/acknowledgements}
 
 \backmatter
 \phantomsection
 
 % ================== BIBLIOGRAPHY ==================
-\addcontentsline{toc}{chapter}{Bibliography}
-% \bibliographystyle{sapthesis}
-% \bibliography{./references.bib}
+
+\addcontentsline{toc}{chapter}{Bibliography}  % Add Bibliography to ToC
 \printbibliography
 
 \end{document}

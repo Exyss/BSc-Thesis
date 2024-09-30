@@ -1,41 +1,11 @@
-## 🎓 Bachelor's Thesis in Computer Science
+# 🎓 Bachelor's Thesis in Computer Science
 
-Source code for my Bachelor's Degree Thesis in Computer Science at Sapienza Università di Roma, entitled ___"The Role of Parity-based Computation in Black-Box Total Search Problems"___.
+My Bachelor's Degree Thesis in Computer Science at Sapienza Università di Roma, entitled ___"Efficient Parity Decision Trees and Their Connections to Logical Proofs and Total Search Problems in NP"___.
 
-The thesis summarizes complexity theory results in the study of total search problems, in particular the black-box model characterized by decision trees, while also extending the known results through the introduction of Parity Decision Trees, a stronger computational. In particular, the results include the introduction of $\textsf{FP}^{pdt}$, i.e. the class of TFNP problems efficiently solvable by a PDT, the proof complexity characterization of such class through Tree-like Linear Resolution over $\textsf{F}_2$ and relations between $\textsf{FP}^{pdt}$ and the already known classes, in particular the inclusions $\textsf{FP}^{dt} \subsetneq \textsf{FP}^{pdt} \subseteq \textsf{PPA}^{dt}$ and the non-inclusion $\textsf{PLS}^{dt} \not\subseteq \textsf{FP}^{dt}$.
+## Abstract
+In computability theory, a _search problem_ is a type of computational problem based on finding a specific property, object or structure in a given instance of a particular entity. Search problems describe any input-output-based problem, even everyday problems, ranging from number factorization to complex graph theory questions. Not all search problems are solvable by a device capable of carrying out a computation. Furthermore, some computable search problems are without a doubt harder than others. For a given instance, some problems may even take the age of the universe to be solved by a machine. Complexity theorists study the complexity measures of such problems to identify what can and cannot be computed efficiently, i.e. in a reasonable amount of time.
 
-## 📑 Contents
+In recent years, Total Search Problems, i.e. search problems that have at least one solution for all possible instances of the problem, have been studied under two distinct models: the white-box and black-box models. In the former, each partial step of the computation is explicitly defined, while in the latter we only care about the results of such steps. Extensive study of total search problems has shown that it is sufficient to restrict our interest to a small set of problems, each corresponding to a basic combinatorial principle, defining what is now referred to as the $\textsf{TFNP}$ hierarchy. 
+Moreover, the two models have been proven to be highly related to other complexity theory branches. The white-box model is highly related to circuits and protocols, while the black-box model is highly related to decision trees and proof systems. These characterizations inspired researchers to extend the known results in hope of achieving an _universal theory_. However, the known relations are still not strong enough to give this title to total search problems.
 
-1 Preliminaries
-
-&nbsp;&nbsp;&nbsp;1.1 Computational models and Turing machines
-
-&nbsp;&nbsp;&nbsp;1.2 Complexity measures
-
-2 Search problems
-
-&nbsp;&nbsp;&nbsp;2.1 Decision vs. Search
-
-&nbsp;&nbsp;&nbsp;2.2 The complexity classes FP, FNP and TFNP
-
-&nbsp;&nbsp;&nbsp;2.3 The TFNP hierarchy
-
-&nbsp;&nbsp;&nbsp;2.4 White-box TFNP
-
-3 Black-box TFNP 20
-
-&nbsp;&nbsp;&nbsp;3.1 Oracles and decision trees
-
-&nbsp;&nbsp;&nbsp;3.2 Connections to Proof Complexity
-
-&nbsp;&nbsp;&nbsp;3.3 Reductions through CNF formulas
-
-4 Parity in black-box TFNP
-
-&nbsp;&nbsp;&nbsp;4.1 Parity decision trees
-
-&nbsp;&nbsp;&nbsp;4.2 Linear Resolution over $\textsf{F}_2$
-
-&nbsp;&nbsp;&nbsp;4.3 Nullstellensatz
-
-&nbsp;&nbsp;&nbsp;4.4 From TreeRes⊕ to $\textsf{F}_2$-Nullstellensatz
+The thesis summarizes complexity theory results in the study of total search problems, in particular the black-box model characterized by decision trees, while also producing new results through the introduction of Parity Decision Trees, an extension of the decision tree computational model based on linear equations in $\mathbb{F}_2$. First, we show that parity defines a computational model stronger than the traditional one, introducing a new class $\textsf{FP}^{pdt}$, i.e. the class of $\textsf{TFNP}$ problems efficiently solvable by a PDT. Then, we show that this class is characterized by Tree-like Linear Resolution over $\mathbb{F}_2$, an extension of the Tree-like Resolution proof system. Finally, we show that short proofs of this proof system can be converted into short proofs of the Nullstellensatz proof system, which characterizes all problems reducible to the polynomial parity argument (PPA) principle. These results define elations between $\textsf{FP}^{pdt}$ and the already known classes, in particular the inclusions $\textsf{FP}^{dt} \subsetneq \textsf{FP}^{pdt} \subseteq \textsf{PPA}^{dt}$ and the non-inclusion $\textsf{PLS}^{dt} \not\subseteq \textsf{FP}^{dt}$.

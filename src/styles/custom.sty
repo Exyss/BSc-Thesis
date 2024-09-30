@@ -1,0 +1,53 @@
+\ProvidesPackage{custom}[Custom Styles]
+
+% ================== CUSTOM TODO NOTES COMMANDS ==================
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+
+% ================== CUSTOM ENVIRONMENTS ==================
+
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+
+\theoremstyle{definition}
+\newtheorem{claimlemma}{Claim}[lemma]
+\newtheorem{claimtheorem}{Claim}[theorem]
+\newtheorem{definition}{Definition}[chapter]
+
+% ================== CUSTOM MACROS ==================
+
+% Parenthesis
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\say}[1]{\flqq\textit{#1}\frqq}
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
+\newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
+\newcommand{\abk}[1]{\left\langle#1\right\rangle}
+
+
+% Complexity classes
+\newcommand{\FP}{\textsf{FP}\xspace}
+\newcommand{\FNP}{\textsf{FNP}\xspace}
+\newcommand{\TFNP}{\textsf{TFNP}\xspace}
+\newcommand{\TFNPdt}{\mathsf{TFNP}^{dt}\xspace}
+
+% Number sets and Fields
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+
+% TM Tape blank character
+\newcommand\blankchar[1][1.25ex]{\mbox{\kern.06em\vrule height1ex}\vbox{\hrule width#1}\hbox{\vrule height1ex}}         
+
+% Others
+\newcommand{\TM}{\textsf{TM}\xspace}
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\ResP}{\mathsf{Res_\oplus}}
+\newcommand{\NS}{\mathsf{NS}}
+\newcommand{\FNS}{\F_2\text{-}\mathsf{NS}}

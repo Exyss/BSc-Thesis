@@ -117,7 +117,7 @@ For search problems, we define the class \textsf{FcoNP} in the same way. In part
 
 \newpage
 
-\section{The \textsf{TFNP} hierarchy}
+\section{Reductions between problems}
 
 One of the most interesting aspects of computable (and uncomputable) problems is the ability to be transformed into another problem in order to achieve a solution. Suppose that we have an instance $a$ of problem $A$ and that we know an algorithm that transforms $a$ into an instance $b$ of a problem $B$ such that $a$ is a \say{yes} answer if and only if $b$ is a \say{yes} answer. Then, by solving $b$ we would get an answer to $a$. In computer science, this concept is known as \textbf{reduction}: a problem $A$ is said to be reducible into a problem $B$, written as $A \leq B$, if any instance $a$ of $A$ can be mapped into an instance $b$ of $B$ whose solution gives a solution to the former.
 
@@ -127,17 +127,61 @@ In decision problems, this concept is described through \textit{many-to-one mapp
  A decision problem $A$ is many-to-one reducible to a decision problem $B$, written as $A \leq_m B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. 
 \end{definition}
 
-When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$, implying that the complexity of $A$ is "as hard as" $B$, meaning that its complexity is in the order of the complexity of $B$. For example, if $B$ is in \textsf{P} and the reduction $A \leq_m B$ can be computed in polynomial time then $A$ also lies in \textsf{P}.
+When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$, implying that the complexity of $A$ is "as hard as" $B$, meaning that its complexity is in the order of the complexity of $B$. For example, if $B$ is in \textsf{P} and the reduction $A \leq_m B$ can be computed in polynomial time then $A$ also lies in \textsf{P}. The same also holds for \textsf{NP}.
 
-Reductions between decision problems map any \say{yes} answers of problem $A$ to some \say{yes} answers of problem $B$ and the same goes for \say{no} answers. In search problems, however, there is no concept of a negative answer: even if a problem has only two possible outputs, both of them are still a solution. Some people could argue that an input for which there is no solution is a negative answer to the search problem. But how could we map inputs without solutions to other inputs without solutions? What if one of the two problems involved is total and the other isn't? This clearly doesn't make sense. Even if it did make sense, we are only interested in finding solutions. We give the following definition of search problem reduction:
+To better understand how reductions work, consider the $3\mathrm{COL}$ problem, which asks the question \say{is this graph 3-colorable?}. A graph is said to be 3-colorable if we can color each node of the graph with a color different from all of its neighbors by using at most 3 colors.
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=1.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    
+        \node[circle, draw, fill=blue] (1) []{};
+        \node[circle, draw, fill=green] (2) [below left of=1]{};
+        \node[circle, draw, fill=red] (3) [below right of=2]{};
+        \node[circle, draw, fill=blue] (4) [right of=3]{};
+        \node[circle, draw, fill=green] (5) [above right of=4]{};
+        \node[circle, draw, fill=red] (6) [above left of=5]{};
+    
+        \path[every node/.style={font=\sffamily\small}]
+            (1) edge (2)
+            (2) edge (3)
+            (3) edge (4)
+            (4) edge (5)
+            (5) edge (6)
+            (6) edge (1)
+
+            (1) edge (3)
+            (1) edge (5)
+            (2) edge (6)
+            (2) edge (4)
+            (3) edge (5)
+            (4) edge (6)
+
+            ;
+    \end{tikzpicture}
+    
+    \caption{Example of a 3-colorable graph}
+\end{figure}
+
+This problem can easily be reduced to the $\mathrm{SAT}$ problem, which asks the question \say{does this propositional formula have an assignment that satisfies it?}. This problem is clearly in \textsf{NP}: if $\phi$ is a satisfiable formula, we can use an assignment $\alpha$ that satisfies $\phi$ as the certificate, which can easily be done in linear time. To reduce $3\mathrm{COL}$ to $\mathrm{SAT}$, we construct the following sub-formulas:
+\begin{itemize}
+    \item For each node $v \in V(G)$, we define the sub-formula $\phi_v = (r_v \lor g_v \lor b_v)$ which imposes that each node must have at least one color assigned
+    \item For each edge $(u,v) \in E(G)$, we define the sub-formula $\phi_{(u,v)} = (\overline{r_u} \land \overline{r_v}) \land (\overline{g_u} \land \overline{g_v}) \land (\overline{b_u} \land \overline{b_v})$ which imposes that the nodes of each edge must have different colors.
+\end{itemize}
+
+Then, we construct the final formula that encodes the 3-colorization of $G$:
+\[\phi_G = \left ( \bigwedge_{v \in V(G)} \phi_v \right ) \land \left ( \bigwedge_{(u,v) \in E(G)} \phi_{(u,v)} \right )\]
+
+By definition of $\phi_G$, it holds that $G$ is 3-colorable if and only if $\phi_G$ is satisfiable. In particular, there is a bijection between $G$'s color assignments and $\phi_G$'s variable assignments. This reduction can be constructed in polynomial time, concluding that $3\mathrm{COL} \leq_m^P \mathrm{SAT}$, where $\leq_m^P$ indicates that the reduction requires polynomial time. Since $\mathrm{SAT} \in \mathsf{NP}$ and since the reduction can be done in polynomial time, we can build a \TM that given the input graph $G$ first computes the reduction and then uses the certifying assignment $\alpha$ to check if $\phi_G$ is satisfied by it. 
+
+Reductions between decision problems map any \say{yes} answers of problem $A$ to some \say{yes} answers of problem $B$ and the same goes for \say{no} answers. In search problems, however, there is no concept of a negative answer: even if a problem has only two possible outputs, both of them are still a solution. Some people could argue that an input for which there is no solution is a negative answer to the search problem. But how could we map inputs without solutions to other inputs without solutions? What if one of the two problems involved is total and the other isn't? This clearly doesn't make sense and, even if it did, we are only interested in finding solutions. We give the following definition of search problem reduction:
 
 \begin{definition}
  A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, written as $R \leq_m S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a function $f : \{0,1\}^m \to \{0,1\}^n$ and a function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
     \[\forall x \in \{0,1\}^m \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
  In other words, the function $f$ maps inputs of $R$ into inputs of $S$, while the function $g$ maps solutions of $S$ into solutions of $R$. 
 \end{definition}
-
-\newpage
 
 Reductions play a critical role in computer science. In particular, they allow us to define the concept of \textbf{completeness}, the property of an entire class of problems to be reduced into one specific problem from that very same class.
 
@@ -147,13 +191,17 @@ Reductions play a critical role in computer science. In particular, they allow u
 
 Under some circumstances, if a complete problem is proven to have a specific property then that property gets automatically inherited by all the problems of the class. For example, if an \textsf{NP}-Complete problem is proven to be solvable in polynomial time, then every single problem inside \textsf{NP} would inherit this property, making the entire class collapse and giving an answer to the question $\mathsf{P} = \mathsf{NP}$. However, for this inheritance ability to hold, these reductions must still be efficient with respect to the complexity of the class. For example, for a problem $B$ to be \textsf{NP}-Complete then any \textsf{NP} problem $A$ must be reducible to $B$ in polynomial time since otherwise there would be no way of using the reduction to efficiently obtain solutions of $A$. The same reasoning also holds for the concept of completeness in the class \textsf{FNP}.
 
-The most famous \textsf{NP}-Complete problem is the $\mathrm{SAT}$ problem, which asks \say{does this formula have an assignment that satisfies it?}, first proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem, that being $\mathrm{FSAT}$, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
+The $\mathrm{SAT}$ problem previously described is actually the first ever known \textsf{NP}-Complete problem, a seminal result proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem, that being $\mathrm{FSAT}$, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
 
-\begin{proposition}
+\begin{theorem}
  The decisional problem $A$ is \textsf{NP}-Complete if and only if the functional problem $FA$ is \textsf{FNP}-Complete.
-\end{proposition}
-    
-However, it is not known if there is a \textsf{FNP}-Complete problem that is also \textit{total}. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus no output assignment satisfies them. Researchers believe that the existence of such a problem is very unlikely since this total problem would be able to give a solution to problems that aren't total. 
+\end{theorem}
+
+Since Cook's result, many important problems have been shown to be \textsf{NP}-Complete, such as Karp's 21 decision problems \cite{karp}. Nowadays, hundreds of problems fall into this class. Since most researchers believe that $\mathsf{P} \neq \mathsf{NP}$, once a problem is proven to be \textsf{NP}-Complete they start looking to approximations of the problem, due to a general optimal solution being out of reach. Proving that $\mathsf{P} \neq \mathsf{NP}$ would imply that all such problems are actually intractable, making approximation algorithms the best we can hope for.
+
+\section{The \textsf{TFNP} hierarchy}
+
+Currently, it is not known if there is a \textsf{FNP}-Complete problem that is also \textit{total}. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus no satisfying assignment can be returned as a solution. Researchers believe that the existence of such a problem is very unlikely. 
 
 For these reasons, in the \textsf{TFNP} world the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems that have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}.  
 
@@ -370,21 +418,21 @@ Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A fu
         \node[main node] (5) [below left of=4]{$\land$};
         \node[main node] (6) [below right of=4]{$\land$};
         \node[main node] (7) [below of=5]{$x_1$};
-        \node[main node] (8) [below of=6]{$\vnot{x_1}$};
+        \node[main node] (8) [below of=6]{$\overline{x_1}$};
 
         \node[main node] (9) [below left of=3]{$\lor$};
         \node[main node] (10) [below left of=9]{$\land$};
         \node[main node] (11) [below right of=9]{$\land$};
 
         \node[main node] (12) [below of=10]{$x_2$};
-        \node[main node] (13) [below of=11]{$\vnot{x_2}$};
+        \node[main node] (13) [below of=11]{$\overline{x_2}$};
 
         \node[] (14) [below right of=3, xshift=50]{};
         \node[] (15) [below left of=14]{};
         \node[] (16) [below right of=14]{};
 
         \node[main node] (17) [below of=15, yshift=8]{$x_3$};
-        \node[main node] (18) [below of=16, yshift=8]{$\vnot{x_3}$};
+        \node[main node] (18) [below of=16, yshift=8]{$\overline{x_3}$};
 
         \path[every node/.style={font=\sffamily\small}]
             (1) edge (2)
