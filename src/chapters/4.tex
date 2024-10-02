@@ -295,12 +295,15 @@ Once we have defined the class $\mathsf{FP}^{pdt}$, we are interested in finding
  f_k = \alpha_k
 \end{array}\right . \iff (f_1 = \alpha_1) \land (f_2 = \alpha_2) \land \ldots \land (f_k = \alpha_k)\]
 
+\noindent
 We can rewrite these conjunctions as a negation of a disjunction:
 \[\bigwedge_{i = 1}^k (f_i = \alpha_i) \iff \lnot \bigvee_{i = 1}^k \lnot (f_i = \alpha_i) \iff \lnot \bigvee_{i = 1}^k (f_i = 1 + \alpha_i)\]
 
+\noindent
 which implies that the negation of the system is equivalent to a set of disjunctions:
 \[\lnot \bigwedge_{i = 0}^k (f_1 = \alpha_1) \iff \bigvee_{i = 0}^k (f_1 = 1 + \alpha_1)\]
 
+\noindent
 We define such a set of disjunctions as a \textbf{linear clause}. More generally, a \textit{linear CNF formula} over $\F_n$ is a conjunction of linear clauses defined on $\F_n$.
 
 \begin{definition}
@@ -329,15 +332,19 @@ We call this the \textit{linear encoding} of a CNF. From now on, we will restric
 The weakening rule makes this proof system powerful thanks to how semantical implications can be used as "shortcuts". For example, consider the following linear CNF:
 \[(x = 1) \land (x+y = 1) \land ((x = 0) \lor (y = 1))\]
 
+\noindent
 By rewriting the last linear clause as a negation of a conjunction, we notice that:
 \[(x = 0) \lor (y = 1) \equiv \lnot ((x = 1) \land (y = 0))\]
 
+\noindent
 By simple substitution, we get that:
 \[\lnot ((x = 1) \land (y = 0)) \implies  \lnot ((x = 1) \land (x+y = 1))\]
 
+\noindent
 which is equivalent to:
 \[\lnot ((x = 1) \land (x+y = 1)) \equiv (x = 0) \lor (x+y = 0)\]
 
+\noindent
 concluding that $(x = 0) \lor (y = 1) \models (x = 0) \lor (x+y = 0)$. Proceeding with the resolution rule, we get the following Tree-like refutation.
 \begin{figure}[H]
     \centering
@@ -485,16 +492,18 @@ We conclude that problems efficiently solvable parity decision trees are indeed 
 
 After defining the class $\mathsf{FP}^{pdt}$ and proving that $\mathsf{TreeRes}_\oplus$ characterizes it, we're interested in studying where this class lies in the \textsf{TFNP}$^{dt}$ hierarchy. It's a well-known fact that was shown that $\mathsf{TreeRes}_\oplus$ can efficiently simulate $\mathsf{TreeRes}$ but the reverse doesn't hold due to the hardness of simulating weakening rules. This result also follows more naturally from our results since $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$. Parity makes PDTs stronger than decision trees, but how much stronger?
 
-We know that Tree-like Linear Resolution over $\F_2$ is based on linear forms defined on $\F_2$. Since Nullstellensatz over $\F_2$ also works with polynomials over $\F_2$, our intuition was to show that these two proof systems are somehow related to one another.
+We know that Tree-like Linear Resolution over $\F_2$ is based on linear forms defined on $\F_2$. Since Nullstellensatz over $\F_2$ also works with polynomials over $\F_2$, our intuition was to show that these two proof systems are somehow related to one another. Initially, our first hypothesis was that $\mathsf{TreeRes}_\oplus$ is a very powerful tool even capable of efficiently simulating $\mathrm{\F_2\text{-}NS}$. We tried to prove this result by showing that $\mathsf{PPA}^{dt} \subseteq \mathsf{FP}^{pdt}$, which appeared to be out of reach.
 
-Initially, our first hypothesis was that $\mathsf{TreeRes}_\oplus$ is a very powerful tool even capable of efficiently simulating $\mathrm{\F_2\text{-}NS}$. We tried to prove this result by showing that $\mathsf{PPA}^{dt} \subseteq \mathsf{FP}^{pdt}$, which appeared to be out of reach. In a seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate regular Resolution (or $\mathsf{RegRes}$), a restricted proof system derived from Resolution. Due to any regular Resolution proof also being a Resolution proof, this result also implies that $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate $\mathsf{Res}$. Thanks to \Cref{equiv_proof} and the fact that $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$, we conclude the following black-box separation.
+In a seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate regular Resolution (or $\mathsf{RegRes}$), a restricted proof system derived from Resolution. Due to any regular Resolution proof also being a Resolution proof, this result also implies that $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate $\mathsf{Res}$. Thanks to \Cref{equiv_proof} and the fact that $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$, we conclude the following black-box separation.
 
 \begin{corollary}
     \label{pls_not_inside_fp_pdt}
     $\mathsf{PLS}^{dt} \not\subseteq \mathsf{FP}^{pdt}$
 \end{corollary}
 
-This rings a bell: looks like PDTs aren't actually that strong. We quickly shifted our perspective on our previous study on relationships with Nullstellensatz, trying to show that the simulation holds in the other direction. Indeed, we were capable of proving that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}Nullstellensatz}$ proof, providing us a \textbf{black-box inclusion} for our new class.
+\newpage
+
+This separation rings a bell: looks like PDTs aren't actually that strong. We quickly shifted our perspective on our previous study on relationships with Nullstellensatz, trying to show that the simulation holds in the other direction. Indeed, we were capable of proving that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}Nullstellensatz}$ proof, providing us a \textbf{black-box inclusion} for our new class.
 
 \section{Nullstellensatz}
 
@@ -532,9 +541,8 @@ Consider the following CNF formula:
 The algebraic encoding is given by $p_1 = x_1$, $p_i = (1-x_{i-1})x_i$ when $2 \leq i \leq 4$ and $p_5 = 1-x_4$. To refute this CNF, we must find the polynomials $g_1, \ldots, g_5, h_1, \ldots, h_4$ through which
 \[\sum_{i = 1}^5 g_ip_{i} + \sum_{j = 1}^4 h_j(x_j^2-x_j) = 1\]
 
-To simplify things, we let $h_1, \ldots, h_4 = 0$ in order to have $\sum_{j = 1}^4 h_j(x_j^2-x_j) = 0$.
-
-Let $g_1, \ldots, g_5$ be equal to:
+\noindent
+To simplify things, we let $h_1, \ldots, h_4 = 0$ in order to have $\sum_{j = 1}^4 h_j(x_j^2-x_j) = 0$. Let $g_1, \ldots, g_5$ be equal to:
 \[\begin{split}
  g_1 &= x_2x_3x_4 \\
  g_2 &= x_3x_4 \\
@@ -543,6 +551,7 @@ Let $g_1, \ldots, g_5$ be equal to:
  g_5 &= 1 \\
 \end{split}\]
 
+\noindent
 We easily get that:
 \[\begin{split}
     \sum_{i = 1}^5 g_ip_{i}&= x_1x_2x_3x_4 + (1-x_1)x_2x_3x_4 + (1-x_2)x_3x_4 + (1-x_3)x_4 + (1-x_4)\\
@@ -551,7 +560,6 @@ We easily get that:
     &= x_4 + (1-x_4)\\
     &= 1\\
 \end{split}\]
-
 concluding that $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ and thus proving that the CNF is unsatisfiable. In Nullstellensatz, the \textit{size} of a proof is the total number of monomials of the polynomials that make the proof, i.e. the total number of terms in the sum once fully expanded without simplifying any addition (or subtraction). The \textit{degree} of the proof is the maximum degree of any polynomial $g_ip_i$ or $h_j(x^j+x_j)$. For example, the polynomial $(1-x_1)(1-x_2)x_2x_3$ has size 4 and degree 4 since $(1-x_1)(1-x_2)x_2x_3 = x_2x_3 - x_2^2x_3 - x_1x_2x_3 + x_1x_2^2x_3$. The previous proof example has size $1+2+2+2+2 = 9$ and degree $4$.
 
 Nullstellensatz's degree measure vaguely resembles Resolution's width measure. For example, the algebraic encoding of a CNF clause $C$ of width $w$ clearly has degree $w$. Moreover, it's easy to see that a degree upper bound $d$ for the Nullstellensatz refutation of a CNF formula defined on $n$ variables implies a size upper bound of $O(n^{O(d)})$. This result enables us to restrict our interest to the degree of the proof.
@@ -596,7 +604,7 @@ The balancing process is obtained through a well-known result called $\frac{1}{2
         By way of contradiction, suppose that this process never finds a subtree with size at most $\ceil{\frac{2}{3} s}$. Then, this would mean that it also holds for $v_k = \ell$. However, since $\ell$ is a leaf, we know that $T_{v_\ell}$ must have size 1, which is definitely at most $\ceil{\frac{2}{3} s}$ for any value of $s$, giving a contradiction. Thus, there must be a node that terminates the process.
     \end{proof}
         
-    Since $T_{v_1} = \{r\} \cup T_{a_1} \cup T_{b_1}$, we know that both of these subtrees must have at least $\floor{\frac{1}{3} s}$. By assuming that $a_1 = v_{2}$, the claim concludes the proof of the lemma.
+    Since $T_{v_1} = \{r\} \cup T_{a_1} \cup T_{b_1}$, we know that both of these subtrees must have size at least $\floor{\frac{1}{3} s}$. Without loss of generality, by assuming that $a_1 = v_{2}$ the claim concludes the proof of the lemma.
 \end{proof}
 
 We'll now show a way to simulate the resolution rule through $\F_2$-Nullstellensatz by converting two \textsf{NS} refutations $P_1 \stackrel{}{\vdash} 1$ and $P_2 \stackrel{}{\vdash} 1$, where $P_1$ and $P_2$ are disjoint, into a refutation  $P_1, P_2 \stackrel{}{\vdash} 1$ with degree equal to the degree of the two initial refutations.
@@ -612,18 +620,19 @@ We'll now show a way to simulate the resolution rule through $\F_2$-Nullstellens
  for some $g_1, \ldots, g_{m+1}, a_1, \ldots, a_n$, implying that:
     \[\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) = r - g_{m+1} p_{m+1} = r-g_{m+1} p\]
     
+\noindent
  Likewise, we know that:
     \[\sum_{i = 1}^{k+1} h_i q_i + \sum_{j = 1}^n b_j (x_j^2-x_j) = t\]
  for some $h_1, \ldots, h_{k+1}, b_1, \ldots, b_n$, implying that:
     \[\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j) = t-h_{k+1}q_{k+1} = t-h_{k+1}(1-p)\]
 
+\noindent
  We notice that:
     \[\begin{split}
  t(1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) &= t(1-p)(r-g_{m+1} p) \\
         &= rt-g_{m+1} tp - prt + g_{m+1} p^2t \\
         &= rt-rtp
     \end{split}\]
-
  with degree $d_1+2d_1$. In the last step, we used the fact that due to multilinearity it holds that $p^2 = p$. Similarly, we get that:
     \[\begin{split}
  rp\, \left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j)  \right ) &= rtp 
@@ -638,11 +647,9 @@ We'll now show a way to simulate the resolution rule through $\F_2$-Nullstellens
  g_i t(1-p) & \text{if } 1 \leq i \leq m \\
  h_irp & \text{if } m+1 \leq i \leq k \\
     \end{array} \right .\]
-    
  while $c_1, \ldots, c_n$ are defined as $c_j = a_jt(1-p) + b_jrp$. Through simple algebra, we get that:
     \[\sum_{i = 1}^{m+k} s_i f_i + \sum_{j = 1}^n c_j (x_j^2-x_j) =\]
     \[t(1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) + rp \left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j) \right )= rt\]
-
  concluding that $\Pi := \{s_1, \ldots, s_{m+k}, c_1, \ldots, c_n\}$ is a proof of $P_1 \cup P_2$ with degree $O(d_1 + d_2)$.
 
 \end{proof}
@@ -685,9 +692,9 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
  g_i & \text{otherwise}  \\
     \end{array}\right .\]
     
+\noindent
  With simple algebra, we get that:
     \[\sum_{i = 1}^{m+1} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = g_{m+1}'p_{m+1} + \sum_{i = 1}^{m} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = (1-q) + q = 1\]
-    
  thus $\Pi = \{g_1', \ldots, g_{m+1}', h_1, \ldots, h_n\}$ is a proof of $P$ with degree $d$.
 
 \end{proof}

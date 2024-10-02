@@ -2,11 +2,9 @@
 
 \addcontentsline{toc}{chapter}{Conclusions}
 
-\change{Must be completely rewritten}
+The relations between total search problems, protocols, circuits, and proofs make \textsf{TFNP} an interesting and multifaceted theory that holds the potential to capture several key aspects of complexity theory under a single, unified framework. However, despite these promising connections, such universal characterization remains \textit{fuzzy} and incomplete: tools such as \textit{query-to-communication lifting} theorems and \textit{interpolation theorems} do not yet provide a sufficiently strong bridge to unify these approaches.
 
-The relations between total search problems, protocols, circuits and proofs make \textsf{TFNP} an interesting theory that may be even capable of capturing all of these branches of complexity theory under an \textit{universal theory}. However, such universal characterizations are still \textit{fuzzy}: relations between the white-box and black-box models such as \textit{query-to-communication lifting} theorems and \textit{interpolation theorems} are not strong enough.
-
-We have shown that parity applied to black-box total search problems defines a stronger computational model through parity decision trees. Moreover, we have discussed how parity decision trees are easily characterized by Tree-like Linear Resolution over $\F_2$. Through this characterization, we were able to show that this model's computational power seems to be limited when applied in this context.
+In our study, we have shown that introducing parity to the black-box model leads to the definition of a new class that used a more powerful computational model, i.e. parity decision trees, providing a new lens through which we can study the complexity of total search problem. We have also showed how parity decision trees are characterized in a natural way by Tree-like Linear Resolution over $\mathbb{F}_2$. Through this connection, we have gained insights into the inherent computational limitations of parity decision trees, suggesting that their applicability may be confined to specific problem classes.
 
 \begin{figure}[H]
     \centering
@@ -64,14 +62,13 @@ We have shown that parity applied to black-box total search problems defines a s
     \caption{$\TFNPdt$ hierarchy extended through our results. An arrow $A \to B$ means that $A \subseteq B$ while a dashed arrow $A \dashrightarrow B$ means that $A \not\subseteq B$.}   
 \end{figure} 
 
-\newpage
-
-\newpage
-
-The results open questions that further research could investigate:
+\noindent
+These findings raise several questions for further exploration regarding the use of parity decision treesin the black-box model:
 \begin{enumerate}
-    \item We have discussed how parity decision trees are stronger than decision trees. Can the whole black-box \textsf{TFNP} hierarchy also be modeled through PDTs? Is $\mathsf{TFNP}^{pdt}$ a stronger model? How is it related to $\mathsf{TFNP}^{dt}$?
-    \item Reductions in the current black-box model are modeled through decision trees. Can these reductions be modeled through parity decision tree reductions? Do the same inclusions between classes of the hierarchy hold?
-    \item Our results are based on the $\F_2$ field. Are they extendable to $\F_n$? Is Tree-like Linear Resolution over $\F_n$ capable of characterizing a computational model that generalizes parity decision trees?
-    \item Parity decision trees are also related to communication complexity \cite{parity_complexity, pdts_comm_compl}. Is there an equivalent model also in white-box \textsf{TFNP}? Is it characterized by a specific type of circuit model?
+    \item \textit{Modeling the \textsf{TFNP} hierarchy with parity decision trees}. We have shown that parity decision trees are computationally stronger than classical decision trees. Can the entire black-box \textsf{TFNP} hierarchy also be effectively modeled using PDTs? Does the introduction of parity decision trees create a fundamentally stronger model? What is the precise relationship between these two hierarchies?
+    \item \textit{Reductions through Parity Decision Tree}. In the current black-box model, reductions between problems are captured using decision trees. Can such reductions be generalized to parity decision tree reductions? Do the same inclusions and separations between classes also hold in the \textsf{TFNP}$^{pdt}$ hierarchy?
+    \item \textit{Generalizing to finite fields beyond $\F_2$}. Our results have so far been based on the field $\F_2$. Can these techniques and characterizations be extended to a general finite field $\F_q$? Is Tree-like Linear Resolution over $\F_q$ able to define a broader class of computational models that generalize parity decision trees?
+    \item \textit{Connection to Communication Complexity}. Parity decision trees have been shown to be linked to communication complexity  \cite{parity_complexity, pdts_comm_compl}. Is there an white-box model in \textsf{TFNP}$^{cc}$ analogous to $\textsf{FP}^{pdt}$ that could be characterized by specific types of communication protocols or circuit classes?
+
 \end{enumerate}
+

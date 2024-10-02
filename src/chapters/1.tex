@@ -34,9 +34,9 @@ Initially, the machine's tape contains only an \textit{input string}, while all 
  A Turing machine is a 7-uple $M = (Q, F, \Gamma, \Sigma, q_0, \delta)$ where:
     \begin{itemize}
         \item $Q$ is a finite set of states, $F \subseteq Q$ is a finite set of halting states and $q_0 \in Q$ is the initial state taken by the machine.
-        \item $\Gamma$ is a finite set of symbols, usually called the tape alphabet. The tape alphabet always contains the symbol $\blankchar\,$.
+        \item $\Gamma$ is a finite set of symbols, usually called the tape alphabet. The tape alphabet always contains the symbol $\blankchar\,$, i.e. the black tape cell symbol.
         \item $\Sigma$ is a finite set of symbols, usually called the input alphabet, where $\Sigma \subseteq \Gamma - \{\blankchar\}$. The input string can be formed only of these characters.
-        \item $\delta : (Q - F) \times \Gamma \to Q \times \Gamma \times \{\mathsf{L}, \mathsf{R}\}$ is a partial function, usually called the transition function, where $\mathsf{L}$ and $\mathsf{R}$ represents a left or right shift of the read-write head. Intuitively, if $\delta(q, a) = (p, b, L)$ then it holds that, when the machine is in state $q$ and it reads the symbol $a$ on the current cell of the tape, it transitions to the state $p$, replaces the symbol $a$ with $b$ and moves the head to the left.
+        \item $\delta : (Q - F) \times \Gamma \to Q \times \Gamma \times \{\mathsf{L}, \mathsf{R}\}$ is a partial function, usually called the transition function, where $\mathsf{L}$ and $\mathsf{R}$ represents a left or right shift of the read-write head. Intuitively, if $\delta(q, a) = (p, b, L)$ then, when the machine is in state $q$ and reads the symbol $a$ on the current cell of the tape, it transitions to the state $p$, replaces the symbol $a$ with $b$ and moves the head to the left.
     \end{itemize}
 \end{definition}
 
