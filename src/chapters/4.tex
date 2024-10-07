@@ -100,7 +100,7 @@ which once simplified corresponds to the assignment $x_0 = 0, x_2 = 1, x_3 = 1$.
  We define $\mathsf{FP}^{pdt}$ as the set of query search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth PDT $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$.
 \end{definition}
 
-It's easy to see that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$ since any decision tree is just a PDT with all the queries defined only on one variable. Any PDT can be converted into a normal decision tree simply by "splitting" each linear query. Given a node $v$ labeled with the linear form $f + x_i$, let $u$ and $w$ be the children of $v$ respectively given by $f + x_i = 0$ and $f+x_i = 1$. Let $T_u$ and $T_w$ be the two subtrees with root $u$ and $w$.
+It's easy to see that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$ since any decision tree is just a PDT with all the queries defined only on one variable. Any PDT can be converted into a normal decision tree simply by \curlyquotes{splitting} each linear query. Given a node $v$ labeled with the linear form $f + x_i$, let $u$ and $w$ be the children of $v$ respectively given by $f + x_i = 0$ and $f+x_i = 1$. Let $T_u$ and $T_w$ be the two subtrees with root $u$ and $w$.
 
 \newpage
 
@@ -224,10 +224,19 @@ By repeating this process until all queries are defined on a single variable, we
 \end{theorem}
 
 \begin{proof}
- Consider the search problem of determining the parity of $n$ variables for a given assignment $\alpha$. This problem can be solved by a PDT that makes a single query on all $n$ variables. By applying the splitting process to this tree, we get a decision tree of size $2^n$ and depth $n$. It's easy to see that the resulting decision tree is the smallest possible tree that can solve this search problem.
-\end{proof}
+    Any decision tree is also a parity decision tree, thus we trivially get that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$. Let $\mathrm{PARITY}$ be the \textit{$n$-bit parity search problem}, i.e. the problem of determining the parity of $n$ variables for a given assignment $\alpha$. This problem can be solved by a PDT of size and depth $O(1)$ by making a single query $x_1 + \ldots + x_n$, concluding that $\mathrm{PARITY} \in \mathsf{FP}^{dt}$.
+    
+    \begin{claim}
+        Any decision tree solving $\mathrm{PARITY}$ on $n$ variables has depth $\Omega(n)$.
+    \end{claim}
 
-\newpage
+    \begin{proof}[Proof of the claim.]
+        Suppose that $\mathrm{PARITY}$ on $n$ variables can be solved by a decision tree $T$ with depth less than $n$. We use an adversarial argument: we think of an execution
+        of $T$, where some adversary answers each query of $T$ on the value of every input bit. The adversary can respond with $x_i = 0$ on all the first $n-1$ bits. Until the last bit $x_n$ is revealed, the tree has no way of determining the final output since it can either be 0 or 1 until the value of $x_n$ is revealed, concluding that it requires at least another query.
+    \end{proof}
+    
+    By definition, $\mathsf{FP}^{dt}$ contains all the problems with a decision tree of polylogarithmic depth. Since $\mathrm{PARITY}$ requires a decision tree with depth $\Theta(n)$, we get that $\mathrm{PARITY} \notin \mathsf{FP}^{dt}$.
+\end{proof}
 
 Since a system of linear forms can have multiple solutions, many assignments could be mapped to the same output. However, some systems could also be unsatisfiable, meaning that the node is unreachable by any assignment. When this happens we say that the node is \textbf{degenerate}.
 
@@ -280,9 +289,9 @@ We observe that if a node doesn't meet any of the previous conditions then it ca
     
  Let $T$ be a degenerate PDT of size $s$ and depth $d$ that solves $S_F$. Let $U$ be the set of degenerate nodes of $T$. Notice that since $\Phi_r^T$ is empty, thus always satisfiable, we know that $r \notin U$. Consider the node $u \in U$ with the minimal distance from the root $r$. Since $u$ is not the root of $T$, there must be two vertices $p$ and $s$ such that $p$ is the parent of $u$ and $s$ is the sibling of $u$.
 
- We notice that $\Phi_s^T$ must be satisfiable: if we assume that this is not true then both $\Phi_s^T$ and $\Phi_u^T$ would be unsatisfiable, which can be true only if $\Phi_p^T$ is also unsatisfiable, but we chose $w$ as the node in $U$ with minimal distance. Since $\Phi_s^T$ is satisfiable, the label $f = \alpha$ on the edge $(p,s)$ must be already contained inside the system $\Phi_p^T$, meaning that each assignment that satisfies $\Phi_p^T$ also satisfies $\Phi_s^T$.
+ We notice that $\Phi_s^T$ must be satisfiable: if we assume that this is not true then both $\Phi_s^T$ and $\Phi_u^T$ would be unsatisfiable, which can be true only if $\Phi_p^T$ is also unsatisfiable, but we chose $w$ as the node in $U$ with minimal distance. Since $\Phi_s^T$ is satisfiable, the label $f = \alpha$ on the edge $(p,s)$ must be already implied $\Phi_p^T$, meaning that each assignment that satisfies $\Phi_p^T$ also satisfies $\Phi_s^T$.
 
- We construct a new PDT $T'$ by removing the subtree $T_u$ with root $u$ from the initial PDT $T$ and by contracting the edge $(p,s)$, merging the two nodes $p$ and $s$ into a single node $v$. In other words, the subtree $T_u$ gets removed and the children of $s$ become the new children of $p$. Each assignment that satisfies $\Phi_p^T$ also satisfies $\Phi_v^{T'}$, concluding that $T'$ also solves $S_F$. By repeating the process until $U$ is empty, we get a non-degenerate PDT that solves $S_F$ of size at most $s$ and depth at most $d$.
+ We construct a new PDT $T'$ by removing the subtree $T_u$ with root $u$ from the initial PDT $T$ and by contracting the edge $(p,s)$, merging the two nodes $p$ and $s$ into a single node $v$. In other words, the subtree $T_u$ gets removed and the children of $s$ become the new children of $p$. Each assignment that satisfies $\Phi_p^T$ also satisfies $\Phi_s^{T'}$, concluding that $T'$ also solves $S_F$. By repeating the process until $U$ is empty, we get a non-degenerate PDT that solves $S_F$ of size at most $s$ and depth at most $d$.
 \end{proof}
 
 \section{Linear Resolution over $\F_2$}
@@ -314,22 +323,20 @@ We define such a set of disjunctions as a \textbf{linear clause}. More generally
 Linear CNF formulas can assume a complex structure such as the following:
 \[((x_1+x_2 = 0) \lor (x_1 = 1)) \land ((x_2 + x_3 + x_4 = 3) \lor (x_2 + x_4 = 0))\]
 
-\newpage
-
 We define \textbf{Linear Resolution over $\F_n$} (or $\mathsf{ResLin(\F_n)}$), an extension of standard Resolution (see \Cref{chap:bb-tfnp}) based on the following two rules:
 \begin{enumerate}
     \item \textit{Resolution rule}: given two linear clauses $(f = 0) \lor C$ and $(f = 1) \lor D$ defined on $\F_n$, we can derive the linear clause $C \lor D$
     \item \textit{Weakening rule}: given a linear clause $C$, we can derive any linear clause $D$ such that $C \implies D$.
 \end{enumerate}
 
-Like in normal Resolution, in $\mathsf{ResLin(\F_n)}$ any derivation of a linear clause $C$ from a linear CNF $F$ is a sequence of linear clauses that ends with $C$, where every clause is either an axiom of $F$ or it can be derived from previous clauses through one of the two derivation rules. A linear CNF is unsatisfiable if and only if the empty linear clause can be derived from it. 
+Like in normal Resolution, in $\mathsf{ResLin(\F_n)}$ any derivation of a linear clause $C$ from a linear CNF $F$ is a sequence of linear clauses that ends with $C$, where every clause is either an axiom of $F$ or it can be derived from previous clauses through one of the two derivation rules. A linear CNF is unsatisfiable if and only if the empty linear clause, i.e. $0 = 1$, can be derived from it. 
 
 Any standard CNF formula can be described as a linear CNF formula over $\F_2$ simply by treating each clause as a disjunction of linear forms made of a single term. For example, the CNF $(x_1 \lor \lnot{x_2}) \land (\lnot{x_3} + x_1)$ can be written as the following linear CNF formula:
 \[((x_1 = 1) \lor (x_2 = 0)) \land ((x_3 = 0) \lor (x_1 = 1))\]
 
 We call this the \textit{linear encoding} of a CNF. From now on, we will restrict our interests to Linear Resolution over $\F_2$, also called \textit{parity Resolution} (or $\mathsf{Res}_\oplus$).
 
-The weakening rule makes this proof system powerful thanks to how semantical implications can be used as "shortcuts". For example, consider the following linear CNF:
+The weakening rule makes this proof system powerful thanks to how semantical implications can be used as \curlyquotes{shortcuts}. For example, consider the following linear CNF:
 \[(x = 1) \land (x+y = 1) \land ((x = 0) \lor (y = 1))\]
 
 \noindent
@@ -405,7 +412,7 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
 
  By induction on the depth of a vertex of $T$, we show that the clause written in $v$ contradicts the system $\Phi_v^T$. The root node contains the empty clause and is labeled by an empty system, making the statement trivially true. Assume now that the statement holds for a generic node $v$. We have to show that the hypothesis also holds for its children $u$ and $w$.
 
- Suppose that $v$ is the result of a resolution rule application, where $D_1 \lor D_2$ is the clause inside $v$. Assume that $u$ is the node that contains $(f = 0) \lor D_1$ while $w$ contains $(f = 1) \lor D_2$. By inductive hypothesis, we know that $D_1 \lor D_2$ contradicts the system $\Phi_v^T$ and equivalently that the system $\lnot (\lnot D_1 \land \lnot D_2)$ contradicts $\Phi_v^T$. This means that se of equalities in $D_1$ contradict $\Phi_v^T$. Moreover, we know that $\Phi_u^T = \Phi_v^T \land (f = 1)$, concluding that $(f = 0) \lor D_1$ contradicts $\Phi_u^T$. Likewise, we can show that $(f = 1) \lor D_2$ contradicts $\Phi_w^T$.
+ Suppose that $v$ is the result of a resolution rule application, where $D_1 \lor D_2$ is the clause inside $v$. Assume that $u$ is the node that contains $(f = 0) \lor D_1$ while $w$ contains $(f = 1) \lor D_2$. By inductive hypothesis, we know that $D_1 \lor D_2$ contradicts the system $\Phi_v^T$. This means that the set of equalities in $D_1$ contradicts $\Phi_v^T$. Moreover, we know that $\Phi_u^T = \Phi_v^T \land (f = 1)$, concluding that $(f = 0) \lor D_1$ contradicts $\Phi_u^T$. Likewise, we can show that $(f = 1) \lor D_2$ contradicts $\Phi_w^T$.
     
  Suppose now that $v$ is the result of a weakening rule, where $u$ is the only child. Since $(v,u)$ is unlabeled, we get that $\Phi_v^T = \Phi_u^T$. Furthermore, since $v$ is the result of a weakening applied to $u$, we know that the clause in $u$ semantically implies the clause in $v$, but by inductive hypothesis we know that the clause in $v$ contradicts the system $\Phi_v^T$, meaning that $u$ must also contradict the system $\Phi_v^T = \Phi_u^T$. Finally, if $v$ is a leaf then the statement is trivially true since it refutes a clause of $F$.
 
@@ -490,7 +497,7 @@ We conclude that problems efficiently solvable parity decision trees are indeed 
     $\mathsf{FP}^{pdt}(S_F) = \Theta(\mathsf{TreeRes}_\oplus(F))$
 \end{theorem}
 
-After defining the class $\mathsf{FP}^{pdt}$ and proving that $\mathsf{TreeRes}_\oplus$ characterizes it, we're interested in studying where this class lies in the \textsf{TFNP}$^{dt}$ hierarchy. It's a well-known fact that was shown that $\mathsf{TreeRes}_\oplus$ can efficiently simulate $\mathsf{TreeRes}$ but the reverse doesn't hold due to the hardness of simulating weakening rules. This result also follows more naturally from our results since $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$. Parity makes PDTs stronger than decision trees, but how much stronger?
+After defining the class $\mathsf{FP}^{pdt}$ and proving that $\mathsf{TreeRes}_\oplus$ characterizes it, we're interested in studying where this class lies in the \textsf{TFNP}$^{dt}$ hierarchy. It's a well-known fact that $\mathsf{TreeRes}_\oplus$ can efficiently simulate $\mathsf{TreeRes}$ but the reverse doesn't hold due to the hardness of simulating weakening rules. This result also follows more naturally from our results since $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$. Parity makes PDTs stronger than decision trees, but how much stronger?
 
 We know that Tree-like Linear Resolution over $\F_2$ is based on linear forms defined on $\F_2$. Since Nullstellensatz over $\F_2$ also works with polynomials over $\F_2$, our intuition was to show that these two proof systems are somehow related to one another. Initially, our first hypothesis was that $\mathsf{TreeRes}_\oplus$ is a very powerful tool even capable of efficiently simulating $\mathrm{\F_2\text{-}NS}$. We tried to prove this result by showing that $\mathsf{PPA}^{dt} \subseteq \mathsf{FP}^{pdt}$, which appeared to be out of reach.
 
@@ -513,22 +520,23 @@ The \textit{weak Nullstellensatz}, a corollary of the stronger theorem, states t
 
 This weaker version of the theorem has been used to define an \textit{algebraic} proof system, that being a proof system based on polynomial algebra. Intuitively, these proof systems are based on the idea of showing that a set of polynomials $p_1, \ldots, p_m$, called \textit{axioms}, doesn't share a common root, which serves as a proof for the polynomials. In this case, a Nullstellensatz proof is given by the set of polynomials $g_1, \ldots, g_m$ through which we get that $\sum_{i=1}^m g_ip_i = 1$  \cite{ns_definitions}. 
 
-Any CNF formula can be translated to an \textit{algebraic encoding}, a set of polynomials $p_1, \ldots, p_m$ for which the CNF formula is unsatisfiable if and only if there is a Nullstellensatz proof for $p_1, \ldots, p_m$. Given the clause $C = \bigvee_{i = 1}^k x_i \lor \bigvee_{j = 1}^h \lnot y_j$, the algebraic encoding of $C$, written as $p_C$, is given by $p_C := \prod_{i = 1}^{k} x_i \cdot \prod_{j = 1}^h (1- y_j)$.
+Any CNF formula can be translated to an \textit{algebraic encoding}, a set of polynomials $p_1, \ldots, p_m$ for which the CNF formula is unsatisfiable if and only if there is a Nullstellensatz proof for $p_1, \ldots, p_m$. Given the clause $C = \bigvee_{i = 1}^k x_i \lor \bigvee_{j = 1}^h \lnot y_j$, the algebraic encoding of $C$, written as $p_C$, is given by $p_C := \prod_{i = 1}^{k} x_i \cdot \prod_{j = 1}^h (1- y_j)$. 
+
+To clear things up, we notice that through this formulation the concept of truthfulness is \textbf{inverted}: the boolean values $0$ and $1$ respectively correspond to the algebraic values $1$ and $0$. For example, the boolean clause $C$ evaluates to 1 when at least a literal inside it evaluates to 1, while an algebraic clause evaluates to 0 when at least a literal inside it evaluates to 0.
 
 The algebraic encoding of a CNF formula $F = C_1 \land \ldots \land C_m$ is given by the set of polynomial equations $p_F = \{p_{C_1} = 0, \ldots, p_{C_m} = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$. These last polynomials are necessary to impose that the values of $x_1, \ldots, x_n$ are either a 0 or a 1. A Nullstellensatz \textit{refutation} for $F$ is given by the polynomials $g_1, \ldots, g_m, h_1, \ldots, h_n$ such that:
 \[\sum_{i = 1}^m g_ip_{C_i} + \sum_{j = 1}^m h_j(x_j^2-x_j) = 1\]
-
-To clear things up, we notice that through this formulation the concept of truthfulness is \textbf{inverted}: the boolean values $0$ and $1$ respectively correspond to the algebraic values $1$ and $0$. For example, the boolean clause $C$ evaluates to 1 when at least a literal inside it evaluates to 1, while an algebraic clause evaluates to 0 when at least a literal inside it evaluates to 0. Likewise, in order for the CNF $F$ to be satisfied by an assignment $x$ each clause must evaluate to 1, while in Nullstellensatz the polynomials inside $p_F$ must all evaluate to 0. 
+In order for the CNF $F$ to be satisfied by an assignment $x$, each clause must evaluate to 1, while in Nullstellensatz the polynomials inside $p_F$ must all evaluate to 0. 
 
 \begin{figure}[H]
     \centering
     \begin{tabular}{r c l}
- 0 & $\longleftrightarrow$ & 1 \\
- 1 & $\longleftrightarrow$ & 0 \\
-        $x_i$ & $\longleftrightarrow$ & $x_i$ \\
-        $\lnot x_i$ & $\longleftrightarrow$ & $1-x_i$ \\
-        $C \lor D$ & $\longleftrightarrow$ & $C \cdot D$ \\
-        $C \land D$ & $\longleftrightarrow$ & $C + D$ \\
+ 0 & $\longrightarrow$ & 1 \\
+ 1 & $\longrightarrow$ & 0 \\
+        $x_i$ & $\longrightarrow$ & $x_i$ \\
+        $\lnot x_i$ & $\longrightarrow$ & $1-x_i$ \\
+        $C \lor D$ & $\longrightarrow$ & $C \cdot D$ \\
+        $C \land D$ & $\longrightarrow$ & $C + D$ \\
     \end{tabular}
 
     \caption{Mappings from boolean encoding to algebraic encoding}
@@ -560,16 +568,19 @@ We easily get that:
     &= x_4 + (1-x_4)\\
     &= 1\\
 \end{split}\]
-concluding that $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ and thus proving that the CNF is unsatisfiable. In Nullstellensatz, the \textit{size} of a proof is the total number of monomials of the polynomials that make the proof, i.e. the total number of terms in the sum once fully expanded without simplifying any addition (or subtraction). The \textit{degree} of the proof is the maximum degree of any polynomial $g_ip_i$ or $h_j(x^j+x_j)$. For example, the polynomial $(1-x_1)(1-x_2)x_2x_3$ has size 4 and degree 4 since $(1-x_1)(1-x_2)x_2x_3 = x_2x_3 - x_2^2x_3 - x_1x_2x_3 + x_1x_2^2x_3$. The previous proof example has size $1+2+2+2+2 = 9$ and degree $4$.
+concluding that $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ and thus proving that the CNF is unsatisfiable. In Nullstellensatz, the \textit{size} of a proof is the total number of monomials of the polynomials that make the proof, i.e. the total number of terms in the sum once fully expanded without simplifying any addition (or subtraction). The \textit{degree} of the proof is the maximum degree of any polynomial $g_ip_i$ or $h_j(x^j+x_j)$. For example, the polynomial $(1-x_1)(1-x_2)x_2x_3$ has size 4 and degree 4 since $(1-x_1)(1-x_2)x_2x_3 = x_2x_3 - x_2^2x_3 - x_1x_2x_3 + x_1x_2^2x_3$. The previous proof has size $1+2+2+2+2 = 9$ and degree $4$.
 
-Nullstellensatz's degree measure vaguely resembles Resolution's width measure. For example, the algebraic encoding of a CNF clause $C$ of width $w$ clearly has degree $w$. Moreover, it's easy to see that a degree upper bound $d$ for the Nullstellensatz refutation of a CNF formula defined on $n$ variables implies a size upper bound of $O(n^{O(d)})$. This result enables us to restrict our interest to the degree of the proof.
+Nullstellensatz's degree measure vaguely resembles Resolution's width measure. For example, the algebraic encoding of a CNF clause $C$ of width $w$ clearly has degree $w$. Moreover, it's easy to see that a degree upper bound $d$ for the Nullstellensatz refutation of a CNF formula defined on $n$ variables implies a size upper bound of $n^{O(d)}$. This result enables us to restrict our interest to the degree of the proof.
 
 \begin{proposition}
  Given a CNF formula $F$ defined on $n$ variables, if $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ with degree $O(d)$ then the size of the proof is $n^{O(d)}$.
 \end{proposition}
 
-A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the degree of the proof only by a constant factor, which is negligible, allowing us to work easier.
+A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the size and the degree of the proof only by a constant factor, which is negligible, allowing us to work easier.
 
+As shown in \Cref{TFNP_dt_hierarchy}, $\F_2$-Nullstellensatz characterizes the black-box version of the class $\mathsf{PPA}$, the class of total search problems that are reducible to the Polynomial Parity Argument (PPA), first defined by Papadimitriou \cite{PPA_complexity}. These problems have a solution guaranteed by the \textit{Handshaking lemma}: every undirected graph with an odd-degree node must have another odd-degree node. Papadimitriou defined the completeness of this class through the $LEAF$ problem, which asks the question \say{given a leaf of a graph, find another leaf on such graph}.
+
+Through \Cref{equiv_proof}, we know that an efficient proof for a formula $F$ directly implies that its search problem $S_F$ is actually efficiently reducible to the black-box version of the $\mathrm{LEAF}$ problem. In the following section, we show how to convert an efficient $\mathrm{TreeRes}_\oplus$ into an efficient $\F_2$-Nullstellensatz proof, proving that each problem efficiently solvable through a PDT is reducible to an instance of $\mathrm{LEAF}^{dt}$, which implies that $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$.
 
 \section{From $\mathrm{TreeRes}_\oplus$ to $\F_2$-Nullstellensatz}
 
@@ -582,9 +593,7 @@ To achieve our result, we first convert the $\mathrm{TreeRes}_\oplus$ proof into
  Every $\mathsf{TreeRes}_{\oplus}$ proof of size $s$ and depth $d$ can be converted to a $\mathsf{TreeRes}_{\oplus}$ proof of size $O(s)$, degree $O(d)$ and with the weakening rule applied only to the axioms.
 \end{corollary}
 
-The balancing process is obtained through a well-known result called $\frac{1}{2}, \frac{2}{3}$ lemma \cite{13_23_lemma} which is commonly used to show that protocols and tree-like circuits (or \textit{formulas}) can be balanced, meaning that for any tree of size $s$ there is an equivalent tree of size $s^{O(1)}$ and degree $O(\log s)$.
-
-\newpage
+The balancing process is obtained through a well-known result called $\frac{1}{2}, \frac{2}{3}$ lemma \cite{13_23_lemma} which is commonly used to show that protocols and Tree-like circuits (also called \textit{formulas}) can be balanced, meaning that their tree structure of size $s$ can be transformed in an equivalent one of size $s^{O(1)}$ and degree $O(\log s)$.
 
 \begin{lemma}
     \label{13_23_lewis}
@@ -594,9 +603,9 @@ The balancing process is obtained through a well-known result called $\frac{1}{2
 \begin{proof}
     Let $r$ be the radix of $T$ and let $\ell$ be a leaf of $T$ with the longest possible path $r \to \ell$. Let $v_1, \ldots, v_k$ be the nodes of such path, where $r = v_1$ and $\ell = v_k$. For each index $i$ such that $1 \leq i \leq k$, let $a_i b_i$ be the two children of $v_i$.
 
-    \begin{claimlemma}
+    \begin{claim}
         For any index $i$, if $T_{v_i}$ has size at least $\floor{\frac{1}{3} s}$ then for some index $j$, where $i \leq j \leq k$, it holds that $T_{v_j}$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$.
-    \end{claimlemma}
+    \end{claim}
 
     \begin{proof}[Proof of the claim]
         If $T_{v_i}$ has size less than $\ceil{\frac{2}{3} s}$ then we are done. Otherwise, since $T_{v_i} = \{v_i\} \cup T_{a_i} \cup T_{b_i}$, one between the subtrees $T_{a_i}, T_{b_i}$ must have size at least $\frac{1}{2} \ceil{2}{3} s - 1$, meaning that it has size at least $\floor{\frac{1}{3} s}$. If this subtree has also a size at most $\ceil{\frac{2}{3} s}$ then we are done. Instead, if this doesn't hold for both subtrees, we can repeat the process (assuming that $v_{i+1} := a_i$ without loss of generality) since we know that $T_{v_{i+1}}$ has size greater than $\floor{\frac{1}{3} s}$.
@@ -665,7 +674,7 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
 \end{lemma}
 
 \begin{proof}
- Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $1(1+q)$ can be derived with degree 2 from axioms. 
+ Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $q(1+q)$ can be derived with degree 2 from axioms. 
     \[(y_1 + \ldots + y_t)(y_1 + \ldots y_t + 1) = \sum_{i = 1}^t y_i^2 + \sum_{i = 1}^t y_i + 2 \sum_{i \neq j} y_i y_j = \sum_{i = 1}^t y_i^2 + y_i\]
  since $2 = 0$ in $\F_2$. This implies that for each $j \in [d]$ we can derive $p(f_j+\beta_j+1)$ with degree $d+1$.
 
@@ -707,9 +716,9 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
 \begin{proof}
  Let $F = C_1 \land \cdots \land C_m$ and let $T$ be a $\mathsf{TreeRes}_\oplus$-proof of $F$ with size $s$ and width $w$. Through \Cref{leaf_weakening} we know that there must also be a $\mathsf{TreeRes}_\oplus$-proof of size $O(s)$ with the weakening rule applied only to the leaves. Let $\widehat{C_1}, \ldots, \widehat{C_m}$ be the linear clauses obtained through such weakening rules.
     
-    \begin{claimtheorem}
+    \begin{claim}
  If $T'$ is a subtree of $T$ with root $C$, leaves $D_1, \ldots, D_k$ and without nodes derived through the weakening rule then $p_{D_1}, \ldots, p_{D_k} \vdash p_C$ with degree $O(\log (s) + w)$
-    \end{claimtheorem}
+    \end{claim}
 
     \begin{proof}[Proof of the claim]
  We proceed by strong induction on the size $u$ of $T'$. If $u = 1$ then the root $C$ is the only clause in $T'$, which means that it must be the only leaf in $T'$. We trivially get that $C \vdash C$ with degree $w$.

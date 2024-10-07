@@ -9,25 +9,26 @@
 
 % ================== CUSTOM ENVIRONMENTS ==================
 
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
 
 \theoremstyle{definition}
-\newtheorem{claimlemma}{Claim}[lemma]
-\newtheorem{claimtheorem}{Claim}[theorem]
-\newtheorem{definition}{Definition}[chapter]
+\newtheorem*{claim}{Claim}
+\newtheorem{definition}{Definition}
 
 % ================== CUSTOM MACROS ==================
 
 % Parenthesis
 \newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\say}[1]{\flqq\textit{#1}\frqq}
 \newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
 \newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
 \newcommand{\abk}[1]{\left\langle#1\right\rangle}
 
+% Quotes
+\newcommand{\curlyquotes}[1]{\textquotedblleft #1\textquotedblright}    % Curly quotes
+\newcommand{\say}[1]{\flqq\textit{#1}\frqq}
 
 % Complexity classes
 \newcommand{\FP}{\textsf{FP}\xspace}

@@ -9,27 +9,27 @@ For many years, the study of \textbf{decision problems} has been the main focus 
  A decision problem for a property $P$ is a subset $L$ of a language $\{0,1\}^*$ such that $L = \{x \in \{0,1\}^* \mid P(x) = 1\}$.
 \end{definition}
 
-A decision problem is said to be \textit{decidable} if there is a Turing machine answers the question posed by the problem with 0 or 1 for any input $x \in \{0,1\}^*$. This also implies that the machine has to halt for every input. Decidability theory plays a core role in math and computer science since most problems can be modeled through it. However, by their nature, decision problems are limited. Some problems require a more complex result than a simple yes-or-no answer. Instead of asking the question \say{does this object have the required property?}, we may be more interested in the question \say{what gives this object the following property?}.
+A decision problem is said to be \textit{decidable} if there is a Turing machine answers the question posed by the problem with 0 or 1 for any input $x \in \{0,1\}^*$. This also implies that the machine has to halt for every input. Decidability theory plays a large role in mathematics and computer science since most problems can be modeled through it. However, by their nature, decision problems are limited. Some problems require a more complex result than a simple yes-or-no answer. Instead of asking the question \say{does this object have the required property?}, we may be more interested in the question \say{what gives this object the following property?}.
 
-These kinds of questions are modeled by \textbf{functional problems}, i.e. any problem where an output that is more complex than a yes-or-no answer is expected for a given input. Functional problems are by nature "harder" than decision problems, describing any possible type of computation achievable through the concept of computable function, even decidability itself (any decision problem is just a functional problem with only two possible outputs).
+These kinds of questions are modeled by \textbf{functional problems}, i.e. any problem where an output that is more complex than a yes-or-no answer is expected for a given input. Functional problems are by nature \curlyquotes{harder} than decision problems, describing any possible type of computation achievable through the concept of computable function, even decidability itself (any decision problem is just a functional problem with only two possible outputs).
 
 \newpage
 
-Functional problems are described through the concept of relation: given a set of inputs $X$ and a set of possible outputs $Y$, a functional problem is as a relation $R \subseteq X \times Y$ such that the pair $(x,y)$ is in $R$ if and only if $y$ is the output to the input $x$ for the given question. For example, the question \say{what is the prime factorization of $n$?} is modeled by the functional problem $\mathrm{FACTOR} = \{(n, (p_1, \ldots, p_k)) \in \N \times \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
+Functional problems are described through the concept of relation: given a set of inputs $X$ and a set of possible outputs $Y$, a functional problem is as a relation $R \subseteq X \times Y$ such that the pair $(x,y)$ is in $R$ if and only if $y$ is the output to the input $x$ for the given question. For instance, the question \say{what is the prime factorization of $n$?} is modeled by the functional problem $\mathrm{FACTOR} = \{(n, (p_1, \ldots, p_k)) \in \N \times \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
 
 We observe that questions like \say{is $y$ a valid output for the input $x$?} are still modeled by decision problems due to them requiring a simple yes-or-no answer, while a function problem would ask the question \say{what is the output for the input $x$?}. For example, the question \say{is $p_1, \ldots, p_k$ the prime factorization of $n$?} corresponds to the decision problem $\mathrm{FACTORIZATION}_n = \{(p_1, \ldots, p_k) \in \N^k \mid n = p_1 \cdot \ldots \cdot p_k\}$.
 
-Even though decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined differently. For example, the decision problem $\mathrm{PRIMES}$ can be converted into the functional problem $\{(n, b) \in \N \times \{0,1\} \mid b = 1 \text{ if } n \text{ is prime, } b = 0 \text{ otherwise}\}$, but they aren't effectively the same problem even though they answer the same question.
+Even though decision problems can indeed be modeled as functional problems whose outputs are only \say{yes} and \say{no}, they aren't effectively a subset of functional problems due to them being defined differently: the decision problem $\mathrm{PRIMES}$ can be converted into the functional problem $\{(n, b) \in \N \times \{0,1\} \mid b = 1 \text{ if } n \text{ is prime, } b = 0 \text{ otherwise}\}$, but they aren't effectively the same problem despite answering the same question.
 
 Another important thing to notice is that, even though the name implies a correlation to standard mathematical functions due to the concept of input-output being involved, the given definition also includes \textit{partial} and \textit{multivalued} functions, i.e. functions for which not all inputs have a corresponding output and functions for which one input can have more outputs. For these reasons, the term \textit{functional problem} is considered to be slightly abused. In recent years, this issue was solved by the introduction of the more general term \textbf{search problems}, describing the idea of finding a valid output for the given input, better suiting the previous formal definition.
 
-To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^k$ for some $k \in \N$, describing all inputs as a sequence of bits. Since each problem could have inputs of different lengths, researchers have defined search problems through the use of a sequence of relations rather than a single relation \cite{rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}. This also allows separation between different types of outputs based on the length of the inputs.
+To give a more detailed definition of search problems, we assume that these problems all share the language $\{0,1\}^*$, describing all inputs as a sequence of bits. Since each problem could have inputs of different lengths, researchers have defined search problems through the use of a sequence of relations rather than a single relation \cite{rel_comp_np_search, proofs_circuits_communication, tfnp_characterization}. This also allows separation between different types of outputs based on the length of the inputs.
 
 \begin{definition}
  A search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called outcome set.
 \end{definition}
 
-Since it includes partial functions, this definition allows search problems to be "undefined" for some inputs, meaning that there is no answer for some inputs. A search problem is said to be \textbf{total} if for each $R_n$ in the sequence it holds that $\forall x \in \{0,1\}^n$ there is an answer $y \in O_n$ such that $(x,y) \in R_n$. In other words, a total search problem has at least an output for all possible inputs, removing partial functions from the context, while multivalued functions are still allowed. For example, $\mathrm{FACTORING}$ is a total non-multivalued search problem due to each natural number having a guaranteed unique prime factorization by the Fundamental Theorem of Arithmetic.
+Since it includes partial functions, this definition allows search problems to be \curlyquotes{undefined} for some inputs, meaning that there is no answer for some inputs. A search problem is said to be \textbf{total} if for each $R_n$ in the sequence it holds that $\forall x \in \{0,1\}^n$ there is an answer $y \in O_n$ such that $(x,y) \in R_n$. In other words, a total search problem has at least an output for all possible inputs, removing partial functions from the context, while multivalued functions are still allowed. For example, $\mathrm{FACTORING}$ is a total non-multivalued search problem due to each natural number having a guaranteed unique prime factorization by the Fundamental Theorem of Arithmetic.
 
 \newpage
 
@@ -47,7 +47,7 @@ The class of problems that are verifiable by a polynomial time verifier with cer
     We define $\mathsf{P}$ as the set of decision problems that can be solved by a polynomial time \TM. We define $\mathsf{NP}$ as the set of decision problems that can be verified by a polynomial time verifier.
 \end{definition}
 
-It's easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every efficiently solvable problem can also be efficiently verified by simply ignoring the certificate and solving the problem. However, it is currently not known whether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the assumption that $\mathsf{P} \neq \mathsf{NP}$. For example, cryptography assumes that it's easy to check that each encrypted string is the result of the encryption scheme being applied to the original message, which works as the certificate, and very hard to find this message only through the encrypted string. If $\mathsf{P} = \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
+It's easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every efficiently solvable problem can also be efficiently verified by simply ignoring the certificate and solving the problem. However, it is currently not known whether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the assumption that $\mathsf{P} \neq \mathsf{NP}$. Examples include the field of cryptography, which assumes that it's easy to check that each encrypted string is the result of the encryption scheme being applied to the original message, which works as the certificate, and very hard to find this message only through the encrypted string. If $\mathsf{P} \neq \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
 
 In the context of search problems, we define the class \textsf{FP} - \textit{functional} \textsf{P} - as the class of search problems efficiently solvable by an algorithm and \textsf{FNP} - \textit{functional} \textsf{NP} - as the class of search problems whose solutions are efficiently verifiable by a verifier. 
 
@@ -57,7 +57,7 @@ In the context of search problems, we define the class \textsf{FP} - \textit{fun
  We define $\mathsf{FP}$ as the set of search problems $R = (R_n)_{n \in \N}$ whereby $\forall n \in \N$ there is a polynomial time \TM $T_n$ such that $T_n(x) = y$ if and only if $(x,y) \in R_n$. We define $\mathsf{FNP}$ as the set of search problems $R = (R_n)_{n \in \N}$ whereby $\forall n \in \N$ there is a polynomial time verifier $V_n$ such that $\exists w \in \{0,1\}^{n^k}$ for which $V_n(x,y,w) = 1$ if and only if $(x,y) \in R_n$. 
 \end{definition}
 
-An important remark to be made is that, even though any decision problem can be transformed into a search problem with only two possible outputs, since they are defined on two different types of problems it doesn't make sense to say that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, an important result shows that it can hold that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$ \cite{decision_vs_search, fp_vs_p}. This implies that, even though search problems are by definition more complex than decision problems, the functional version of the conjecture is as hard as the decisional one.
+An important remark to be made is that, even though any decision problem can be transformed into a search problem with only two possible outputs, since they are defined on two different types of problems it doesn't make sense to say that \textsf{P} $\subseteq$ \textsf{FP} or that \textsf{NP} $\subseteq$ \textsf{FNP}. However, an important result shows that it can hold that $\textsf{P} = \textsf{NP} $ if and only if $\textsf{FP} = \textsf{FNP}$ \cite{decision_vs_search, fp_vs_p}. This implies that, despite search problems being by definition more complex than decision problems, the functional version of the conjecture is as hard as the decisional one.
 
 \begin{theorem}
     $\textsf{P} = \textsf{NP}$ if and only if $\textsf{FP} = \textsf{FNP}$
@@ -101,7 +101,7 @@ For simplicity, we assume that each search problem in \textsf{FP} is also total:
 
 Another way to view total search problems is through the lens of \textit{polynomial disqualification}. In decisional problems, the class \textsf{coNP} contains all the problems whose complement is in \textsf{NP}. If the complementary problem is polynomially verifiable, this means that there is a polynomial verifier that can decide if an input doesn't have the required property, effectively disqualifying it. Proving that a decision problem is in \textsf{coNP} is also equivalent to proving that for each input of that problem there is no string capable of certifying that the solution is correct. Researchers currently believe that $\mathsf{NP} \neq \mathsf{coNP}$, even though this is still an open question. If the answer to this question is proven negative, we would also have a direct answer to the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question: we know that if $\mathsf{NP} \neq \mathsf{coNP}$ then $\mathsf{P} \neq \mathsf{NP}$ \cite{complexity_arora_barak, sipser_computation}
 
-For search problems, we define the class \textsf{FcoNP} in the same way. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can be certified or disqualified in polynomial time \cite{tfnp_f_np_conp}.
+For search problems, we define the class \textsf{FcoNP} in the same way. In particular, the class $\textsf{TFNP}$ corresponds to the class $\mathsf{F}(\mathsf{NP} \cap \mathsf{coNP})$, which contains search problems whose inputs can be certified and disqualified in polynomial time \cite{tfnp_f_np_conp}.
 
 \begin{proposition}
     \label{tfnp_f_np_conp}
@@ -124,10 +124,8 @@ One of the most interesting aspects of computable (and uncomputable) problems is
 In decision problems, this concept is described through \textit{many-to-one mappings}, computable functions that map instances of the original problem to instances of the reduced problem.
 
 \begin{definition}
- A decision problem $A$ is many-to-one reducible to a decision problem $B$, written as $A \leq_m B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in A$. 
+ A decision problem $A$ is many-to-one reducible to a decision problem $B$, written as $A \leq_m B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in B$. 
 \end{definition}
-
-When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$, implying that the complexity of $A$ is "as hard as" $B$, meaning that its complexity is in the order of the complexity of $B$. For example, if $B$ is in \textsf{P} and the reduction $A \leq_m B$ can be computed in polynomial time then $A$ also lies in \textsf{P}. The same also holds for \textsf{NP}.
 
 To better understand how reductions work, consider the $3\mathrm{COL}$ problem, which asks the question \say{is this graph 3-colorable?}. A graph is said to be 3-colorable if we can color each node of the graph with a color different from all of its neighbors by using at most 3 colors.
 
@@ -173,40 +171,44 @@ This problem can easily be reduced to the $\mathrm{SAT}$ problem, which asks the
 Then, we construct the final formula that encodes the 3-colorization of $G$:
 \[\phi_G = \left ( \bigwedge_{v \in V(G)} \phi_v \right ) \land \left ( \bigwedge_{(u,v) \in E(G)} \phi_{(u,v)} \right )\]
 
-By definition of $\phi_G$, it holds that $G$ is 3-colorable if and only if $\phi_G$ is satisfiable. In particular, there is a bijection between $G$'s color assignments and $\phi_G$'s variable assignments. This reduction can be constructed in polynomial time, concluding that $3\mathrm{COL} \leq_m^P \mathrm{SAT}$, where $\leq_m^P$ indicates that the reduction requires polynomial time. Since $\mathrm{SAT} \in \mathsf{NP}$ and since the reduction can be done in polynomial time, we can build a \TM that given the input graph $G$ first computes the reduction and then uses the certifying assignment $\alpha$ to check if $\phi_G$ is satisfied by it. 
+By definition of $\phi_G$, it holds that $G$ is 3-colorable if and only if $\phi_G$ is satisfiable. In particular, there is a bijection between $G$'s color assignments and $\phi_G$'s variable assignments. This concludes that $3\mathrm{COL} \leq_m \mathrm{SAT}$. Moreover, this reduction can be computed by a Turing machine in polynomial time. When this happens, we say that $3\mathrm{COL} \leq_p \mathrm{SAT}$
+
+Many-to-one reductions between problems are transitive: starting from a problem $A$, we can reduce it to a problem $B$ through a function $f$ and then reduce it to a problem $C$ through a function $g$. This implies that the composition $g \circ f$ is a reduction from $A$ to $C$. For instance, the $\mathrm{4\text{-}COL}$ problem, a variant of the $\mathrm{3\text{-}COL}$ with four colors instead of three colors, can be reduced in polynomial time to $\mathrm{3\text{-}COL}$, giving us the reduction chain $\mathrm{4\text{-}COL} \leq_p \mathrm{3\text{-}COL} \leq_p \mathrm{SAT}$.
 
 Reductions between decision problems map any \say{yes} answers of problem $A$ to some \say{yes} answers of problem $B$ and the same goes for \say{no} answers. In search problems, however, there is no concept of a negative answer: even if a problem has only two possible outputs, both of them are still a solution. Some people could argue that an input for which there is no solution is a negative answer to the search problem. But how could we map inputs without solutions to other inputs without solutions? What if one of the two problems involved is total and the other isn't? This clearly doesn't make sense and, even if it did, we are only interested in finding solutions. We give the following definition of search problem reduction:
 
 \begin{definition}
- A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, written as $R \leq_m S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a function $f : \{0,1\}^m \to \{0,1\}^n$ and a function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
+ A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, written as $R \leq_m S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a computable function $f : \{0,1\}^m \to \{0,1\}^n$ and a computable function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
     \[\forall x \in \{0,1\}^m \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
  In other words, the function $f$ maps inputs of $R$ into inputs of $S$, while the function $g$ maps solutions of $S$ into solutions of $R$. 
 \end{definition}
 
-Reductions play a critical role in computer science. In particular, they allow us to define the concept of \textbf{completeness}, the property of an entire class of problems to be reduced into one specific problem from that very same class.
+When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$. For instance, if $A \leq_p B$ through a function $f$ and $B$ can be solved in polynomial time then we can build a machine that first computes $f(x)$ for a given input $x$ and then compute whether $f(x) \in B$ or not. Since both the reduction and the final computation in this case require polynomial time, we conclude that $A$ can also be solved in polynomial time.
+
+Reductions play a critical role in computer science. In particular, they allow us to define the concept of \textbf{completeness}. A problem is considered complete for a class $\mathcal{C}$ when every problem from its class can be reduced to it under a specific constraint. This constraint usually depends on the complexity constraints dictated by a subclass $\mathcal{D} \subseteq \mathcal{C}$: if every problem in $\mathcal{C}$ is reducible to $B$ under the same constraints that define the subclass $\mathcal{D}$ and we can show that $B \in \mathcal{D}$, then the whole class $\mathcal{C}$ collapses onto its subclass, that is $\mathcal{C} = \mathcal{D}$.
+
+For instance, since $\mathsf{P} \subseteq \mathsf{NP}$, the completeness constraint behind \textsf{NP}-Completeness would be to maintain polynomial time reductions. In \textsf{P}-Completeness, instead, the completeness constraint would be to maintain logarithmic space reductions due to how $\mathsf{L} \subseteq \mathsf{P}$, where $\mathsf{L}$ is the class of problems decidable in logarithmic space.
 
 \begin{definition}
- A problem $B$ is said to be complete for a class of problems $\mathcal{C}$ if $B \in \mathcal{C}$ and $\forall A \in \mathcal{C}$ it holds that $A \leq_m B$.
+    A problem $B$ is said to be \textsf{NP}-Complete if $B \in \mathcal{C}$ and $\forall A \in \mathsf{NP}$ it holds that $A \leq_p B$.
 \end{definition}
 
-Under some circumstances, if a complete problem is proven to have a specific property then that property gets automatically inherited by all the problems of the class. For example, if an \textsf{NP}-Complete problem is proven to be solvable in polynomial time, then every single problem inside \textsf{NP} would inherit this property, making the entire class collapse and giving an answer to the question $\mathsf{P} = \mathsf{NP}$. However, for this inheritance ability to hold, these reductions must still be efficient with respect to the complexity of the class. For example, for a problem $B$ to be \textsf{NP}-Complete then any \textsf{NP} problem $A$ must be reducible to $B$ in polynomial time since otherwise there would be no way of using the reduction to efficiently obtain solutions of $A$. The same reasoning also holds for the concept of completeness in the class \textsf{FNP}.
-
-The $\mathrm{SAT}$ problem previously described is actually the first ever known \textsf{NP}-Complete problem, a seminal result proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem, that being $\mathrm{FSAT}$, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
+From this definition, we derive that an \textsf{NP}-Complete problem can be solved in polynomial time if and only if $\mathsf{P} = \mathsf{NP}$. The $\mathrm{SAT}$ problem previously described is actually the first ever known \textsf{NP}-Complete problem, a seminal result proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem $\mathrm{FSAT}$, which asks the question \say{which assignment satisfies the following formula?}, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
 
 \begin{theorem}
  The decisional problem $A$ is \textsf{NP}-Complete if and only if the functional problem $FA$ is \textsf{FNP}-Complete.
 \end{theorem}
 
-Since Cook's result, many important problems have been shown to be \textsf{NP}-Complete, such as Karp's 21 decision problems \cite{karp}. Nowadays, hundreds of problems fall into this class. Since most researchers believe that $\mathsf{P} \neq \mathsf{NP}$, once a problem is proven to be \textsf{NP}-Complete they start looking to approximations of the problem, due to a general optimal solution being out of reach. Proving that $\mathsf{P} \neq \mathsf{NP}$ would imply that all such problems are actually intractable, making approximation algorithms the best we can hope for.
+Since Cook's result, many important problems have been shown to be \textsf{NP}-Complete, such as Karp's 21 decision problems \cite{karp}. Nowadays, thousands of problems fall into this class. Since most researchers believe that $\mathsf{P} \neq \mathsf{NP}$, once a problem is proven to be \textsf{NP}-Complete they start looking to approximations of the problem, due to a general optimal solution being out of reach. Proving that $\mathsf{P} \neq \mathsf{NP}$ would imply that all such problems are actually \textit{intractable}, making approximation algorithms the best we can hope for.
 
 \section{The \textsf{TFNP} hierarchy}
 
 Currently, it is not known if there is a \textsf{FNP}-Complete problem that is also \textit{total}. For example, the problem $\mathrm{FSAT}$ isn't total due to some formulas being unsatisfiable, thus no satisfying assignment can be returned as a solution. Researchers believe that the existence of such a problem is very unlikely. 
 
-For these reasons, in the \textsf{TFNP} world the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems that have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}.  
+For these reasons, in the \textsf{TFNP} world the concept of completeness is studied under a \textit{different approach}: instead of considering problems that are complete for the whole class, we consider important problems that have a lot of \textsf{TFNP} problems reducible to them. These important problems form additional subclasses of \textsf{TFNP}. With a slight abuse of notation, we denote with $S$ the class of problems efficiently reducible to the search problem $S$.
 
 \begin{definition}
- Given \textsf{TFNP} problem $S$, we define the class $S$ as the subset of \textsf{TFNP} problems efficiently reducible to the problem $S$ in polynomial time, formally $S = \{R \in \mathsf{TFNP} \mid R \leq_m S \text{ in } O(n^k)\}$
+ Given \textsf{TFNP} problem $S$, we define the class $S$ as the subset of \textsf{TFNP} problems efficiently reducible to the problem $S$ in polynomial time, formally $S = \{R \in \mathsf{TFNP} \mid R \leq_m S \text{ in polynomial time}\}$
 \end{definition}
 
 The extensive study of \textsf{TFNP} classes has been successful in capturing the complexity of many branches of mathematics, such as problems from cryptography, game theory and economics that are reducible to TFNP complete problems. Unexpectedly, a vast majority of total search problems can be characterized with very few subclasses, which form the \textbf{\textsf{TFNP} hierarchy}. 
@@ -229,7 +231,7 @@ Each of these subclasses is characterized by a complete total search problem tha
     
     \item \textsf{PPAD} (Polynomial Parity Argument - Directed): the class of problems whose solution is guaranteed the \say{Every directed graph with an unbalanced node must have another unbalanced node} principle. It is defined as the class of problems that are polynomial-time reducible to the END-OF-LINE problem.
     
-    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the CONTINUOUS-LOCALPOINT problem. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the END-OF-POTENTIAL-LINE problem.
+    \item \textsf{CLS} (Continuous Local Search): the class of search problems designed to model the process of finding a local optimum of a continuous function over a continuous domain. It is defined as the class of problems that are polynomial-time reducible to the CONT-LOCALPOINT problem. It has been proven that $\mathsf{CLS} = \mathsf{EOPL} = \mathsf{PLS} \cap \mathsf{PPAD}$ \cite{gradient_descent, Further_collapses_TFNP}, where \textsf{EOPL} is the class of search problems that are polynomial-time reducible to the END-OF-POTENTIAL-LINE problem.
 \end{itemize}
 
 \newpage
@@ -282,127 +284,26 @@ Each of these subclasses is characterized by a complete total search problem tha
 
 Interestingly, lots of complex problems have been proven to be reducible to these basic problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to not only lie inside \textsf{PPAD} but also be \textsf{PPAD}-Complete \cite{nash_1, nash_2}. One should ponder what it really means for a problem to be complex.
 
-Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$. By the hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
+Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question. By the hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
  
 \newpage
 
 \section{White-box \textsf{TFNP}}
 
-In computer science and engineering, systems and models are divided into two categories: white-box systems and black-box systems. A system is said to be a \textbf{white-box} if its internal workings are known, meaning that given any input it is possible to know how the system achieves a result. Contrary, the computational process is unknown in a \textbf{black-box} system. Black-box models allow us to consider only the result for a given input, ignoring how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes.
+In computer science and engineering, systems and models are distinguished between white-box and black-box systems. A system is \textbf{white-box} if its internal workings are known, meaning that given any input it is possible to know how the system achieves a result. Contrary, the computational process is unknown in a \textbf{black-box} system. Black-box models allow us to consider only the result for a given input, ignoring how that result is achieved. For example, a programmer uses both white-box and black-box systems: personal functions are white-boxes, while ready-to-go library functions are black-boxes.
 
-Each \textsf{TFNP} problem can be analyzed through the lens of both white-box and black-box systems: in a \textbf{white-box \textsf{TFNP}} problem we're interested in how the problem gets verified (or solved if it's also in \textsf{FP}), while a \textbf{black-box \textsf{TFNP}} problem we're interested only in the verifiability (or computability) of the problem. Originally, these two models were characterized by solvability and verifiability through Turing machines \cite{decision_vs_search,rel_comp_np_search}. In recent years, researchers have shifted to another characterization: the white-box \textsf{TFNP} model is studied through \textit{protocols}, while black-box \textsf{TFNP} is studied through \textit{decision trees} \cite{separations_proof_complexity, adventures_monotone_tfnp, tfnp_characterization}. Any reader who has come this far will have asked himself the following question: why shift to other computational models? The answer is pretty straightforward: these two models are easier to work with. This shift of perspective allowed researchers to perform complex reasoning more easily, reaching otherwise unintuitive results. In this section, we will briefly discuss protocols and the white-box model, while decision trees and the black-box model will be extensively discussed in the following chapter. 
+Each \textsf{TFNP} problem can be analyzed through the lens of both white-box and black-box systems. Originally, these two models were characterized by solvability and verifiability through Turing machines \cite{decision_vs_search,rel_comp_np_search}. In recent years, researchers have shifted to another characterization: the white-box \textsf{TFNP} model is studied through \textit{Boolean circuits}, while black-box \textsf{TFNP} is studied through \textit{decision trees} \cite{separations_proof_complexity, adventures_monotone_tfnp, tfnp_characterization}. Any reader who has come this far will have asked himself the following question: why shift to other computational models? The answer is pretty straightforward: they are easier to work with. This shift of perspective allowed researchers to perform complex reasoning more easily, reaching otherwise unintuitive results. In this section, we will briefly discuss the white-box model, while the black-box model will be extensively discussed in the following chapter. 
 
-Suppose that we have two parties, namely Alice and Bob, who want to cooperate in order to achieve a common objective, like computing a function. To reach their goal, Alice and Bob must carry out separate computations, communicating the result to the other party in a pre-defined sequence of steps. This idea serves as groundwork for a definition of protocols, algorithms that dictate such alternations between computation and communications. 
-
-We give the following formal definition of protocol. \cite{comm_compl_appl}
+In this context, Boolean circuits are defined as sets of logical AND and logical OR gates connected by cables. Boolean circuits have been proven to be Turing complete due to Turing machines and families of circuits being capable of simulating each other up to a logarithmic factor \cite{complexity_arora_barak}. Again, none should be dumbfounded by this result: any modern computer is just a large amount of Boolean gates wired together. We give the following definition of a Boolean circuit. \cite{comm_compl_appl}
 
 \begin{definition}
- Let $X$ be Alice's input set and let $Y$ be Bob's input set. A protocol $\pi$ is a rooted directed binary tree whose leaves are associated with outputs and internal nodes are owned by either Alice or Bob, where the owner of $v$ is noted by $\mathrm{owner}(v)$. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node $v$ is also associated to a function $g_v : Z \to \{0,1\}$, where $Z = X$ if $\mathrm{owner}(v) = \mathrm{A}$ and $Z = Y$ if $\mathrm{owner}(v) = \mathrm{B}$.
+    A Boolean circuit is a directed acyclic graph whose nodes, called gates, each associated with either an input variable, its negation or a Boolean operator. Each input gate has in-degree 0 and unlimited out-degree. Each Boolean gate has an out-degree gate equal to 1 (except for the output gate which has out-degree 0) and in-degree equal to either 1 or 2. All the 2 in-degree gates compute the logical AND or the logical OR of their given input variables or Boolean function. 
 \end{definition}
 
-When given the input $(x,y) \in X \times Y$, the protocol computes the associated function of the current node (starting from the root), proceeding on the left child if the output is 0 and on the right child if the output is 1. When a leaf is reached, the protocol returns the associated output. The output of the protocol for a given input $(x,y)$ is denoted with $\pi(x,y)$. A function $f$ is said to be computed by the protocol $\pi$ if for all inputs $(x,y)$ it holds that $f(x,y) = \pi(x,y)$.
+Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A function $f$ is said to be computed by a circuit with output gate $u$ if for all inputs $x \in \{0,1\}^n$ it holds that $f(x) =  f_u(x)$.
 
-\newpage
+The complexity of Boolean circuits is measured in terms of their \textit{size} and \textit{depth}, i.e. the number of gates of the circuit and the length of the longest directed path from an input gate to the output gate. However, differently from protocols, the \textbf{circuit complexity} of a function $f$ is defined as the size of the smallest Boolean circuit that computes it.
 
-\begin{figure}[H]
-    \centering
-
-    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-
-        \node[circle, draw] (1)[fill=red!20] {$v_1$};
-
-        \node[circle, draw] (2) [below left of=1, xshift=-50, fill=blue!20]{$v_2$};
-        \node[circle, draw] (3) [below right of=1, xshift=50, fill=blue!20]{$v_3$};
-
-        \node[circle, draw] (4) [below left of=2, xshift=-10, fill=red!20]{$v_4$};
-        \node[circle, draw] (5) [below right of=2, xshift=10, fill=blue!20]{$v_5$};
-        \node[circle, draw] (6) [below left of=3, fill=red!20]{$v_6$};
-        \node[rectangle, draw] (7) [below right of=3]{$o_7$};
-
-        \node[rectangle, draw] (8) [below left of=4, xshift=10]{$o_1$};
-        \node[rectangle, draw] (9) [below right of=4, xshift=-10]{$o_2$};
-        \node[rectangle, draw] (10) [below left of=5, xshift=10]{$o_3$};
-        \node[rectangle, draw] (11) [below right of=5, xshift=-10]{$o_4$};
-        \node[rectangle, draw] (12) [below left of=6, xshift=10]{$o_5$};
-        \node[rectangle, draw] (13) [below right of=6, xshift=-10]{$o_6$};
-
-        \path[every node/.style={font=\sffamily\small}]
- (1) edge[swap, color=Green]  node{0} (2)
- (1) edge node{1}(3)
-
- (2) edge[swap]  node{0} (4)
- (2) edge[color=Green]  node{1}(5)
-
- (3) edge[swap]  node{0} (6)
- (3) edge  node{1}(7)
-            
- (4) edge[swap]  node{0} (8)
- (4) edge  node{1}(9)
-
- (5) edge[swap]  node{0} (10)
- (5) edge[color=Green]  node{1}(11)
-
- (6) edge[swap]  node{0} (12)
- (6) edge  node{1}(13)
- ;
-    \end{tikzpicture}
-
-    \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The green path shows the computation given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$ for the input $(x,y)$}
-\end{figure}
-
-The complexity of protocols is measured in terms of their \textit{size} and \textit{depth}, that being the number of nodes of the protocol and the length of the longest directed path from the root node to a leaf. The \textbf{communication complexity} of a function $f$ is defined as the depth of the smallest protocol that computes $f$, corresponding to the minimal number of bits that must be communicated by Alice and Bob to compute $f$ for all possible inputs.
-
-Protocols are clearly a Turing complete computational model: they are nothing more than an algorithm computed by two parties instead of one. Vice versa, a Turing machine can simulate a protocol by following the paths described by the protocol itself. This makes protocols a simple schematic way to define an algorithm. A protocol encodes all possible messages that may be sent by the parties during any conceivable conversation, producing the expected output. This means that a protocol always returns an answer for all possible inputs, making any function computed by a protocol \textit{total}. 
-
-Furthermore, since the function processed by each step of the computation is explicitly defined and thus known, protocols are valid alternatives that characterize white-box \textsf{TFNP}. In particular, for each \textsf{TFNP} problem $R$, we denote with $R^{cc}$ the equivalent $\mathsf{TFNP}^{cc}$ problem, where \textit{cc} stands for \textit{communication complexity}. Due to them being defined on two inputs instead of one, communication search problems are defined on two sets of input values instead of one.
-
-\begin{definition}
- A communication search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called "outcome set".
-\end{definition}
-
-A protocol is considered to be efficient when its communication complexity is polylogarithmic with respect to the bit-size of the inputs, i.e. equal to $O(\log^k n)$. This ensures that there is a Turing machine capable of simulating the protocol in polynomial time. We give the following definitions of $\mathsf{FP}^{cc}$ and $\mathsf{FMP}^{cc}$
-
-\begin{definition}
- We define $\mathsf{FP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $\pi_n$ such that $\pi_n(x,y) = z$ if and only if $((x,y), z) \in R_n$.
-    \newpage
- We define $\mathsf{FNP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $V_n$ such that $V_n((x,y), z) = 1$ if and only if $((x,y), z) \in R_n$. 
-\end{definition}
-
-In this case, the certificate is the protocol itself: it defines a schema through which a Turing machine can verify the solution. The concept of reduction also applies to communication search problems, even though they require a pre-fixed value $t$ of the maximum amount of bits usable in the reduction, i.e. the maximum depth of the reduction protocol, which is necessary for computational reasons that we won't discuss. This allows us to define a $t$-bit \textsf{TFNP}$^{cc}$ hierarchy that follows the same structure as the standard one.
-
-\begin{definition}
- A communication search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times \{0,1\}^m \times O_m$, is said to be many-to-one reducible into a search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there are two functions $f_X, f_Y : \{0,1\}^m \to \{0,1\}^n$ and a $t$-bit protocol $g : (\{0,1\}^m \times \{0,1\}^n) \times O_n' \to O_m$ such that:
-    \[\forall (x,y) \in \{0,1\}^m \times \{0,1\}^m \;\; (f_X(x), f_Y(y), z) \in S \implies (x, y, \pi((x,y), z)) \in R\]
- In other words, the functions $f_X,f_Y$ map inputs of $R$ into inputs of $S$, while the protocol $g$ maps solutions of $S$ into solutions of $R$. 
-\end{definition}
-
-One of the most interesting properties of communication search problems is the ability to be characterized by a single type of search problem: the \textbf{monotone Karchmer-Widgerson game}. The game has a simple objective: given two inputs with different outputs, Alice and Bob have to cooperate to find a bit that differs between the two inputs.
-
-\begin{definition}
- Given a Boolean function $f : \{0, 1\}^n \to \{0, 1\}$, we define the Karchmer-Wigderson game of $f$, denoted with $\mathrm{KW}(f)$, as the following communication problem: given the two inputs $x$ and $y$, where $f(x) = 0$ and $f(y) = 1$, find an index $i \in [n]$ such that $x_i \neq y_i$.
-
- If $f$ is a monotone Boolean function, meaning that given two inputs $x,y$ if $x \leq y$ then $f(x) \leq f(y)$, the monotone Karchmer-Widgerson game of $f$, denoted with $\mathrm{mKW}(f)$, finds an index $i \in [n]$ such that $x_i < y_i$.
-\end{definition}
-
-A surprising result \cite{span_programs, adventures_monotone_tfnp} proved that any communication search problem is equivalent to the monotone KW game of some Boolean function. This result implies that \textsf{TFNP}$^{cc}$ exactly is the study of the monotone Karchmer-Widgerson game.
-
-\begin{lemma}
- For any communication search problem $R = (R_n)_{n \in \N}$, where $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, in $t$-bit \textsf{TFNP}$^{cc}$, there is a function $f$ on $2^t\abs{O_n}$ variables such that $R$ is communication equivalent to $\mathrm{mKW}(f)$ under $t$-bit mapping reductions.
-\end{lemma}
-
-These games were originally introduced in 1990 by Karchmer and Widgerson \cite{kw_games} to show how the communication complexity of a game for a function $f$ is equal to the circuit complexity of a \textit{Boolean circuit} that solves the game on $f$.
-
-\begin{theorem}
- Given a function $f : \{0, 1\}^n \to \{0, 1\}$, there is a circuit of depth $d$ that computes $f$ if and only if there is a protocol of depth $d$ that solves $\mathrm{KW}(f)$. Moreover, if $f$ is monotone, the circuit is monotone and the protocol solves $\mathrm{mKW}(f)$
-\end{theorem}
-
-In this case, Boolean circuits are defined as sets of logical AND and logical OR gates connected by cables. Like protocols, Boolean circuits have been proven to be Turing complete due to Turing machines and circuits being capable of simulating each other up to a polynomial factor \cite{sipser_computation}. Again, none should be dumbfounded by this result: any modern computer is just a large amount of Boolean gates wired together. We give the following definition of a Boolean circuit. \cite{comm_compl_appl}
-
-\begin{definition}
- A Boolean circuit is a directed acyclic graph whose nodes, called gates, are associated with either input variables or Boolean operators. Each gate has an out-degree equal to 1 (except for the output gate which has out-degree 0) and in-degree equal to either 0 or 2. All 0 in-degree gates correspond to input variables, the negations of input variables or constant bits, while all 2 in-degree gates compute the logical AND or the logical OR of its given input variables or Boolean function. 
-\end{definition}
-
-Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A function $f$ is said to be computer by a circuit with output gate $u$ if for all inputs $x \in \{0,1\}^n$ it holds that $f(x) =  f_u(x)$.
 
 \begin{figure}[H]
     \centering
@@ -468,9 +369,106 @@ Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A fu
     \caption{A Boolean circuit of size 15 and depth 4 computing $x_1 \oplus x_2 \oplus x_3$.}
 \end{figure}
 
-The complexity of Boolean circuits is measured in terms of their \textit{size} and \textit{depth}, i.e. the number of gates of the circuit and the length of the longest directed path from an input gate to the output gate. However, differently from protocols, the \textbf{circuit complexity} of a function $f$ is defined as the size of the smallest Boolean circuit that computes it.
+One of the most interesting properties of circuits is their strict relation to \textit{protocols}. Suppose that we have two parties, namely Alice and Bob, who want to cooperate in order to achieve a common objective, like computing a function. To reach their goal, Alice and Bob must carry out separate computations, communicating the result to the other party in a pre-defined sequence of steps. This idea serves as groundwork for a definition of protocols, algorithms that dictate such alternations between computation and communications. We give the following formal definition of protocol. \cite{comm_compl_appl}
 
-Karchmer and Widgerson's result allows us to characterize white-box \textsf{TFNP} in three ways: the study of communication search problems, the study of the monotone Karchmer-Widgerson game and the study of monotone Boolean circuits. This further extends the already known connections between search problems, communication complexity and circuit complexity, establishing that any result obtained in one of these fields can be in some way extended to the others.
+\begin{definition}
+ Let $X$ be Alice's input set and let $Y$ be Bob's input set. A protocol $\pi$ is a rooted directed binary tree whose leaves are associated with outputs and internal nodes are owned by either Alice or Bob, where the owner of $v$ is noted by $\mathrm{owner}(v)$. Each leaf is labeled with an output $o \in O$, where $O$ is the outcome set. Each internal node $v$ is also associated to a function $g_v : Z \to \{0,1\}$, where $Z = X$ if $\mathrm{owner}(v) = \mathrm{A}$ and $Z = Y$ if $\mathrm{owner}(v) = \mathrm{B}$.
+\end{definition}
 
+When given the input $(x,y) \in X \times Y$, the protocol computes the associated function of the current node (starting from the root), proceeding on the left child if the output is 0 and on the right child if the output is 1. When a leaf is reached, the protocol returns the associated output. The output of the protocol for a given input $(x,y)$ is denoted with $\pi(x,y)$. A function $f$ is said to be computed by the protocol $\pi$ if for all inputs $(x,y)$ it holds that $f(x,y) = \pi(x,y)$.
+
+The complexity of protocols is measured in terms of their \textit{size} and \textit{depth}, that being the number of nodes of the protocol and the length of the longest directed path from the root node to a leaf. The \textbf{communication complexity} of a function $f$ is defined as the depth of the smallest protocol that computes $f$, corresponding to the minimal number of bits that must be communicated by Alice and Bob to compute $f$ for all possible inputs.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.75cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+
+        \node[circle, draw] (1)[fill=red!20] {$v_1$};
+
+        \node[circle, draw] (2) [below left of=1, xshift=-50, fill=blue!20]{$v_2$};
+        \node[circle, draw] (3) [below right of=1, xshift=50, fill=blue!20]{$v_3$};
+
+        \node[circle, draw] (4) [below left of=2, xshift=-10, fill=red!20]{$v_4$};
+        \node[circle, draw] (5) [below right of=2, xshift=10, fill=blue!20]{$v_5$};
+        \node[circle, draw] (6) [below left of=3, fill=red!20]{$v_6$};
+        \node[rectangle, draw] (7) [below right of=3]{$o_7$};
+
+        \node[rectangle, draw] (8) [below left of=4, xshift=10]{$o_1$};
+        \node[rectangle, draw] (9) [below right of=4, xshift=-10]{$o_2$};
+        \node[rectangle, draw] (10) [below left of=5, xshift=10]{$o_3$};
+        \node[rectangle, draw] (11) [below right of=5, xshift=-10]{$o_4$};
+        \node[rectangle, draw] (12) [below left of=6, xshift=10]{$o_5$};
+        \node[rectangle, draw] (13) [below right of=6, xshift=-10]{$o_6$};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (1) edge[swap, color=Green]  node{0} (2)
+            (1) edge node{1}(3)
+
+            (2) edge[swap]  node{0} (4)
+            (2) edge[color=Green]  node{1}(5)
+
+            (3) edge[swap]  node{0} (6)
+            (3) edge  node{1}(7)
+                        
+            (4) edge[swap]  node{0} (8)
+            (4) edge  node{1}(9)
+
+            (5) edge[swap]  node{0} (10)
+            (5) edge[color=Green]  node{1}(11)
+
+            (6) edge[swap]  node{0} (12)
+            (6) edge  node{1}(13)
+        ;
+    \end{tikzpicture}
+
+    \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The green path shows the computation given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$ for the input $(x,y)$}
+\end{figure}
+
+A protocol encodes all possible messages that may be sent by the parties during any conceivable conversation, producing the expected output. This means that a protocol always returns an answer for all possible inputs, making any function computed by a protocol \textit{total}. This makes protocols are also a valid way to solve or verify total search problems.
+
+In particular, for each \textsf{TFNP} problem $R$, we denote with $R^{cc}$ the equivalent $\mathsf{TFNP}^{cc}$ problem, where \textit{cc} stands for \textit{communication complexity}. Due to them being defined on two inputs instead of one, communication search problems are defined on two sets of input values instead of one.
+
+\begin{definition}
+ A communication search problem is a sequence $R = (R_n)_{n \in \N}$ of relations $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, one for each $n \in \N$, where each $O_n$ is a finite set called \curlyquotes{outcome set}.
+\end{definition}
+
+A protocol is considered to be efficient when its communication complexity is polylogarithmic with respect to the bit-size of the inputs, i.e. equal to $O(\log^k n)$. This ensures that there is a Turing machine capable of simulating the protocol in polynomial time. We give the following definitions of $\mathsf{FP}^{cc}$ and $\mathsf{FNP}^{cc}$
+
+\begin{definition}
+ We define $\mathsf{FP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $\pi_n$ such that $\pi_n(x,y) = z$ if and only if $((x,y), z) \in R_n$. We define $\mathsf{FNP}^{cc}$ as the set of communication search problems $R = (R_n)_{n \in \N}$ for which there exists a polylogarithmic depth protocol $V_n$ such that $V_n((x,y), z) = 1$ if and only if $((x,y), z) \in R_n$. 
+\end{definition}
+
+In this case, the certificate is the protocol itself: it defines a schema through which a Turing machine can verify the solution. The concept of reduction also applies to communication search problems, but only under a pre-fixed value $t$ of the maximum amount of bits usable in the reduction, i.e. the maximum depth of the reduction protocol, which is necessary for computational reasons that we won't discuss. This allows us to define a $t$-bit \textsf{TFNP}$^{cc}$ hierarchy that follows the same structure as the standard one.
+
+\newpage
+
+\begin{definition}
+    A communication search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times \{0,1\}^m \times O_m$, is said to be many-to-one reducible into a search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there are two functions $f_X, f_Y : \{0,1\}^m \to \{0,1\}^n$ and a $t$-bit protocol $g : (\{0,1\}^m \times \{0,1\}^n) \times O_n' \to O_m$ such that:
+       \[\forall (x,y) \in \{0,1\}^m \times \{0,1\}^m \;\; (f_X(x), f_Y(y), z) \in S \implies (x, y, \pi((x,y), z)) \in R\]
+    In other words, the functions $f_X,f_Y$ map inputs of $R$ into inputs of $S$, while the protocol $g$ maps solutions of $S$ into solutions of $R$. 
+\end{definition}
+
+Circuits and protocols are related one another through the \textbf{Karchmer-Widgerson game}. The game has a simple objective: given two inputs with different outputs, Alice and Bob have to cooperate to find a bit that differs between the two inputs. When the function is monotone, that being a function for which given any pair of inputs $x,y$ such that $x \leq y$ it also holds that $f(x) \leq f(y)$, the game is also called monotone. 
+
+\begin{definition}
+    Given a Boolean function $f : \{0, 1\}^n \to \{0, 1\}$, we define the Karchmer-Wigderson game of $f$, denoted with $\mathrm{KW}(f)$, as the following communication problem: given the two inputs $x$ and $y$, where $f(x) = 0$ and $f(y) = 1$, find an index $i \in [n]$ such that $x_i \neq y_i$.
+
+    If $f$ is a monotone Boolean function, meaning that given two inputs $x,y$ if $x \leq y$ then $f(x) \leq f(y)$, the monotone Karchmer-Widgerson game of $f$, denoted with $\mathrm{mKW}(f)$, finds an index $i \in [n]$ such that $x_i < y_i$.
+\end{definition}
+
+These games were originally introduced in 1990 by Karchmer and Widgerson \cite{kw_games} to show how the communication complexity of a game for a function $f$ is equal to the circuit complexity of a \textit{Boolean circuit} that solves the game on $f$.
+
+\begin{theorem}
+    Given a function $f : \{0, 1\}^n \to \{0, 1\}$, there is a circuit of depth $d$ that computes $f$ if and only if there is a protocol of depth $d$ that solves $\mathrm{KW}(f)$. Moreover, if $f$ is monotone, the circuit is monotone and the protocol solves $\mathrm{mKW}(f)$
+\end{theorem}
+
+A surprising result \cite{span_programs, adventures_monotone_tfnp} proved that any communication search problem is equivalent to the monotone KW game of some Boolean function. This result implies that \textsf{TFNP}$^{cc}$ exactly is the study of the monotone Karchmer-Widgerson game.
+
+\begin{lemma}
+ For any communication search problem $R = (R_n)_{n \in \N}$, where $R_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n$, in $t$-bit \textsf{TFNP}$^{cc}$, there is a function $f$ on $2^t\abs{O_n}$ variables such that $R$ is communication equivalent to $\mathrm{mKW}(f)$ under $t$-bit mapping reductions.
+\end{lemma}
+
+These results further extend the already known connections between search problems, communication complexity and circuit complexity, establishing that any result obtained in one of these models can be in some way established to the others.
 
 \cleardoublepage

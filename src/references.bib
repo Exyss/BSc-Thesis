@@ -326,31 +326,18 @@ author = {Dmitry Itsykson and Dmitry Sokolov},
   doi={10.1109/FOCS.1965.14}
 }
 
-
-@article{ns_definitions,
-    author = {De Rezende, Susanna F. and Meir, Or and Nordstr\"{o}m, Jakob and Robere, Robert},
-    title = {Nullstellensatz Size-Degree Trade-offs from Reversible Pebbling},
-    year = {2021},
-    issue_date = {Jun 2021},
-    publisher = {Birkhauser Verlag},
-    address = {CHE},
-    volume = {30},
-    number = {1},
-    issn = {1016-3328},
-    doi = {10.1007/s00037-020-00201-y},
-    abstract = {We establish an exactly tight relation between reversible
-    pebblings of graphs and Nullstellensatz refutations of pebbling formulas,
-    showing that a graph G can be reversibly pebbled in time t and space s if and only if there is a Nullstellensatz refutation of the pebbling formula
-    over G in size t + 1 and degree s (independently of the field in which
-    the Nullstellensatz refutation is made). We use this correspondence
-    to prove a number of strong size-degree trade-offs for Nullstellensatz,
-    which to the best of our knowledge are the first such results for this
-    proof system.},
-    journal = {Comput. Complex.},
-    month = {jun},
-    numpages = {45},
-    keywords = {68Q17, Proof complexity, Nullstellensatz, Trade-offs, Pebbling}
+@INPROCEEDINGS{ns_definitions,
+  author={Beame, P. and Impagliazzo, R. and Krajicek, J. and Pitassi, T. and Pudlak, P.},
+  booktitle={Proceedings 35th Annual Symposium on Foundations of Computer Science}, 
+  title={Lower bounds on Hilbert's Nullstellensatz and propositional proofs}, 
+  year={1994},
+  volume={},
+  number={},
+  pages={794-806},
+  keywords={Polynomials;Equations;Computer science;Galois fields;Mathematics;Geometry;Testing;Concrete;Upper bound},
+  doi={10.1109/SFCS.1994.365714}
 }
+
 
 @article{pdts_comm_compl,
   title={Parity decision tree complexity and 4-party communication complexity of XOR-functions are polynomially equivalent},
@@ -433,4 +420,16 @@ journal = {Complexity of Computer Computations},
 doi = {10.1007/978-3-540-68279-0_8}
 }
 
-
+@article{PPA_complexity,
+title = {On the complexity of the parity argument and other inefficient proofs of existence},
+journal = {Journal of Computer and System Sciences},
+volume = {48},
+number = {3},
+pages = {498-532},
+year = {1994},
+issn = {0022-0000},
+doi = {https://doi.org/10.1016/S0022-0000(05)80063-7},
+url = {https://www.sciencedirect.com/science/article/pii/S0022000005800637},
+author = {Christos H. Papadimitriou},
+abstract = {We define several new complexity classes of search problems, “between” the classes FP and FNP. These new classes are contained, along with factoring, and the class PLS, in the class TFNP of search problems in FNP that always have a witness. A problem in each of these new classes is defined in terms of an implicitly given, exponentially large graph. The existence of the solution sought is established via a simple graph-theoretic argument with an inefficiently constructive proof; for example, PLS can be thought of as corresponding to the lemma “every dag has a sink.” The new classes, are based on lemmata such as “every graph has an even number of odd-degree nodes.” They contain several important problems for which no polynomial time algorithm is presently known, including the computational versions of Sperner's lemma, Brouwer's fixpoint theorem, Chévalley's theorem, and the Borsuk-Ulam theorem, the linear complementarity problem for P-matrices, finding a mixed equilibrium in a non-zero sum game, finding a second Hamilton circuit in a Hamiltonian cubic graph, a second Hamiltonian decomposition in a quartic graph, and others. Some of these problems are shown to be complete.}
+}
