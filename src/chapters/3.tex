@@ -128,118 +128,116 @@ Given a formula $F \in \mathrm{TAUT}$ a string $s \in \Sigma^*$ and a proof syst
 
 The most studied proof system is \textit{Resolution} (or \textsf{Res}). Given a formula $F \in \mathrm{TAUT}$, this proof system can prove that it is a tautology by proving that $\lnot F \in \mathrm{UNSAT}$.
 
-A \textit{conjunctive normal form} (CNF) formula $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal form:
-\[F = (x_1 \lor x_2 \lor \lnot{x_3} \lor x_4) \land (x_1 \lor \lnot{x_2}) \land x_3\]
+A \textit{conjunctive normal form} (CNF) formula $F$ is a conjunction of $m$ \textit{clauses} $C_1, \ldots, C_m$, where $C_i$ is a disjunction of $k_i$ \textit{literals}, that being either a variable defined on $F$ or its negation. For example, the following formula is in conjunctive normal $F = (x_1 \lor x_2 \lor \lnot{x_3} \lor x_4) \land (x_1 \lor \lnot{x_2}) \land x_3$
 
 Any formula can be expressed as an equivalent CNF formula, making Resolution a \textit{complete} and \textit{sound} proof system. Resolution proofs are based on repeated applications of the following simple rule called the \textit{resolution rule}:
 \[\dfrac{C \lor x \qquad D \lor \lnot x}{C \lor D}\]
 
 Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}. Given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
 \[\begin{array}{lcl}
- D_1 :& \lnot{z} & \text{Axiom} \\
+ D_1 :& \lnot y \lor z & \text{Axiom} \\
  D_2 :& y \lor z & \text{Axiom} \\
  D_3 :& y & \text{Res. on $D_1, D_2$} \\
- D_4 :& x \lor \lnot{y} \lor z  & \text{Axiom} \\
- D_5 :& x \lor \lnot{y} & \text{Res. on $D_1, D_4$} \\
- D_6 :& \lnot{x} \lor z & \text{Axiom} \\
- D_7 :& \lnot{x} & \text{Res. on $D_1, D_6$} \\
- D_8 :& \lnot{y} & \text{Res. on $D_5, D_7$} \\
- D_9 :& \bot & \text{Res. on $D_3, D_8$} \\
+ D_4 :& x \lor \lnot y \lor z & \text{Axiom} \\
+ D_5 :& \lnot z & \text{Axiom} \\
+ D_6 :& x \lor \lnot y & \text{Res. on $D_4, D_5$} \\
+ D_7 :& \lnot x \lor \lnot y \lor z & \text{Axiom} \\
+ D_8 :& \lnot x \lor \lnot y & \text{Res on $D_7, D_5$} \\
+ D_9 :& x & \text{Res on $D_3, D_6$} \\
+ D_{10} :& \lnot x & \text{Res on $D_3, D_8$} \\
+ D_{11} :& \bot & \text{Res on $D_9, D_{10}$} \\
 \end{array}\]
 
-Each refutation can also be graphically represented by connecting clauses:
+\noindent
+Each refutation can also be graphically represented by connecting clauses with lines:
 
 \begin{figure}[H]
     \centering
     
-    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-        \node (1) []{$\bot$};
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+        \node (1) []{$\lnot{y} \lor z$};
+        \node (2) [right of=1]{$y \lor \lnot{x}$};
+        \node (3) [right of=2]{$x \lor \lnot{y} \lor z$};
+        \node (4) [right of=3]{$\lnot{x} \lor \lnot y\lor z$};
+        \node (5) [right of=4]{$\lnot{z}$};
+
+        \node (6) [below of=3]{$x \lor \lnot y$};
+        \node (7) [left of=6]{$y$};
+        \node (8) [right of=6]{$\lnot x \lor \lnot y$};
+
+        \node (9) [below left of=6]{$x$};
+        \node (10) [below right of=6]{$\lnot x$};
         
-        \node (2) at ($(1)+(-2,1.75)$){};
-        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
-    
-        \node (4) [above left of=2]{};
-        \node (5) [above right of=2]{};
-    
-        \node (6) [above of=3]{$\lnot{y} \lor x$};
-        \node (7) [right of=6]{$\lnot{x}$};
-        
-        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
-        \node (9) [above right of=6]{$\lnot{x} \lor z$};
-    
-        \node (11) [right of=9]{$\lnot{z}$};
-        \node (12) [above left of=2]{$y$};
-    
-        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
-        \node (15) [left of=14]{$y \lor z$};
+        \node (11) [below right of=9]{$\bot$};
     
         \path[every node/.style={font=\sffamily\small}]
- (15) edge (12)
-            
- (6) edge (3)
- (7) edge (3)
-            
- (8) edge (6)
- (11) edge (6)
-            
- (9) edge (7)
- (11) edge (7)
-    
- (11) edge (12)
-    
- (12) edge (1)
- (3) edge (1)
- ;
+            (1) edge (7)
+            (2) edge (7)
+            (3) edge (6)
+            (4) edge (8)
+            (5) edge (6)
+            (5) edge (8)
+
+            (6) edge (9)
+            (7) edge (9)
+            (7) edge (10)
+            (8) edge (10)
+
+            (9) edge (11)
+            (10) edge (11)
+        ;
     \end{tikzpicture}
     
     \caption{Dag-like refutation of the previous formula}
 \end{figure}
 
-Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause - thus excluding the axioms - appears only once in a refutation, we say that it is a \textit{tree-like} refutation due to how the clauses form a tree.
+Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause - thus excluding the axioms - appears only once in a refutation, we say that it is a \textit{tree-like} refutation due to how the clauses form a tree. This restriction implies that we cannot \curlyquotes{store} intermediate results. Any dag-like refutation can be converted into a tree-like refutation by derive multiple times each clause that we have to reuse.
 
 \begin{figure}[H]
     \centering
     
-    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-    
-        \node (1) []{$\bot$};
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+        \node (1) []{$\lnot{y} \lor z$};
+        \node (2) [right of=1]{$y \lor \lnot{x}$};
+        \node (3) [right of=2]{$x \lor \lnot{y} \lor z$};
+        \node (4) [right of=3]{$\lnot{x} \lor \lnot y\lor z$};
+        \node (5) [right of=4]{$\lnot{z}$};
+
+        \node (6) [below of=3]{$x \lor \lnot y$};
+        \node (7) [left of=6]{$y$};
+        \node (8) [right of=6]{$\lnot x \lor \lnot y$};
+        \node (7x) [left of=7]{$y$};
+
+        \node (9) [below left of=6]{$x$};
+        \node (10) [below right of=6]{$\lnot x$};
         
-        \node (2) at ($(1)+(-2,1.75)$){$y$};
-        \node (3) at ($(1)+(2,1.75)$){$\lnot{y}$};
-    
-        \node (4) [above left of=2]{};
-        \node (5) [above right of=2]{};
-    
-        \node (6) [above of=3]{$\lnot{y} \lor z$};
-        
-        \node (8) [above left of=6]{$x \lor \lnot{y} \lor z$};
-        \node (9) [above right of=6]{$\lnot{x} \lor z$};
-    
-        \node (11) [right of=9]{$\lnot{z}$};
-    
-        \node (14) at ($(8)+(-2.4,0)$){$y \lor \lnot{z}$};
-        \node (15) [left of=14]{$y \lor z$};
+        \node (11) [below right of=9]{$\bot$};
     
         \path[every node/.style={font=\sffamily\small}]
-            (14) edge (2)
-            (15) edge (2)
-                
-            (8) edge (6)
-            (9) edge (6)
-                
-            (6) edge (3)
-            (11) edge (3)
-                
-            (2) edge (1)
-            (3) edge (1)
-            ;
+            (1) edge (7)
+            (2) edge (7)
+            (1) edge (7x)
+            (2) edge (7x)
+            (3) edge (6)
+            (4) edge (8)
+            (5) edge (6)
+            (5) edge (8)
+
+            (6) edge (9)
+            (7x) edge (9)
+            (7) edge (10)
+            (8) edge (10)
+
+            (9) edge (11)
+            (10) edge (11)
+        ;
     \end{tikzpicture}
     
     \caption{Tree-like refutation of the previous formula}
     \label{treelike_res_proof}
 \end{figure}
 
-This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself. A standard result in proof complexity states that Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself.Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
 
 Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Resolution proof is the length of the longest path from an axiom to the empty clause. The \textit{width} of a Resolution proof is the maximum number of literals appearing in a clause of the proof. For example, the proof shown in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a Tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}$ nodes.
 
@@ -276,7 +274,7 @@ This problem is usually referred to as the \textit{false clause search problem}.
 \begin{figure}[H]
     \centering
     
-    \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    \begin{tikzpicture}[<-,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
     
         \node (1)[circle, draw]{$y$};
         
@@ -289,7 +287,7 @@ This problem is usually referred to as the \textit{false clause search problem}.
         \node (6) [below of=3, circle, draw]{$x$};
         
         \node (8) [below left of=6, rectangle, draw]{$x \lor \lnot{y} \lor z$};
-        \node (9) [below right of=6, rectangle, draw]{$z \lor \lnot{x}$};
+        \node (9) [below right of=6, rectangle, draw]{$\lnot{x} \lor \lnot y \lor z$};
     
         \node (11) [right of=9, rectangle, draw]{$\lnot{z}$};
     

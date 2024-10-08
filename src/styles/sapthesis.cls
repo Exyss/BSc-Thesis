@@ -215,7 +215,6 @@
 \numberwithin{table}{chapter}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% redefinition of the \maketitle command to generate the titlepage %
 
