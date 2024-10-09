@@ -3,13 +3,13 @@
 
 \section{Parity decision trees}
 
-The concept of parity is extensively studied in computer science. In our case, we are interested in exploring parity through the lens of \textit{linear forms modulo 2}, i.e. linear equations defined on $n$ variables over the algebraic field $\F_2$. In this field, each term can either be a 0 or a 1, with the defining characteristic that $1+1 = 0$.
+The concept of parity is extensively studied in computer science. In our case, we are interested in exploring parity through the lens of \textit{linear forms modulo 2}, i.e. linear combinations defined on $n$ variables over the algebraic field $\F_2$. In this field, each term can either be a 0 or a 1, with the defining characteristic that $1+1 = 0$.
 
 \begin{definition}
- Given $n$ variables $x_1, \ldots, x_n$, we define a \textbf{linear form} as a linear equation over $\F_2$. In general, a linear form can be expressed as $\sum\limits_{i = 1}^n \alpha_i x_i$, where $\alpha_1, \ldots, \alpha_n \in \F_2$
+ Given $n$ variables $x_1, \ldots, x_n$, we define a linear form as a linear combination over $\F_2$. In general, a linear form can be expressed as $\sum\limits_{i = 1}^n \alpha_i x_i$, where $\alpha_1, \ldots, \alpha_n \in \F_2$
 \end{definition}
 
-Intuitively, each sum in a linear form is nothing more than an application of the XOR operator: the linear form $x_1 + x_2$ is equal to 1 if and only if $x_1$ is \textit{different} from $x_2$ (i.e. if $x_1 = 1$ and $x_2 = 0$ or if $x_1 = 0$ and $x_2 = 1$). Additionally, in $\F_2$ the concepts of addition and subtraction are equivalent: since $1+1 = 0$, we easily get that $1 = -1$. Through these properties, parity can be used to determine if two or more objects are equal or not. For example, consider the following system of linear forms:
+Intuitively, each sum in a linear form is nothing more than an application of the \textbf{XOR operator}: the linear form $x_1 + x_2$ is equal to 1 if and only if $x_1$ is \textit{different} from $x_2$ (i.e. if $x_1 = 1$ and $x_2 = 0$ or if $x_1 = 0$ and $x_2 = 1$). Additionally, in $\F_2$ the concepts of addition and subtraction are equivalent: since $1+1 = 0$, we easily get that $1 = -1$. Through these properties, parity can be used to determine if two or more objects are equal or not. For example, consider the following system of linear forms:
 \[\left \{ \begin{array}{l}
  x_1 + x_2 + x_3 = 1 \\
  x_1 + x_2 + x_4 = 1 \\
@@ -583,7 +583,7 @@ As shown in \Cref{TFNP_dt_hierarchy}, $\F_2$-Nullstellensatz characterizes the b
 
 Through \Cref{equiv_proof}, we know that an efficient proof for a formula $F$ directly implies that its search problem $S_F$ is actually efficiently reducible to the black-box version of the $\mathrm{LEAF}$ problem. In the following section, we show how to convert an efficient $\mathrm{TreeRes}_\oplus$ into an efficient $\F_2$-Nullstellensatz proof, proving that each problem efficiently solvable through a PDT is reducible to an instance of $\mathrm{LEAF}^{dt}$, which implies that $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$.
 
-\section{From $\mathrm{TreeRes}_\oplus$ to $\F_2$-Nullstellensatz}
+\section{From $\mathsf{TreeRes}_\oplus$ to $\F_2$-Nullstellensatz}
 
 We prove that Nullstellensatz over $\F_2$ is capable of efficiently simulating $\mathrm{TreeRes}_\oplus$. Given the linear clause $C = \bigvee_{i = 1}^k (f_i = \alpha_i)$, the algebraic encoding of $C$, written as $p_C$, is given by $p_C := \prod_{i = 1}^{k} (f_i + a_i)$. The algebraic encoding of a linear CNF formula $F = C_1 \land \ldots \land C_m$ is given by the set of polynomial equations $p_F = \{p_{C_1} = 0, \ldots, p_{C_m} = 0, x_1^2-x_1 = 0, \ldots, x_n^2-x_n = 0\}$.
 
@@ -596,7 +596,7 @@ To achieve our result, we first convert the $\mathrm{TreeRes}_\oplus$ proof into
 
 Next, we prove some basic Nullstellensatz inspired by the ones shown in \cite{groebner}, which allow us to manipulate and combine different types of proofs. We will use these properties to inductively simulate the resolution rule.
 
-Given a formula $F$, we denote with $F_{\mid_{f = \alpha}}$ the formula obtained by substituting $f$ with $\alpha$ inside $F$. This is usually called \textit{restriction on $F$ on $f = \alpha$}. In particular, we notice that if $F$ is a CNF formula then by restricting it on $f = 0$ any clause $C \lor (f = 0)$ becomes $C \lor (0 = 1)$, which is equivalent to $C$ through weakening. If we restrict $F$ on $f = 1$, any clause $C \lor (f = 0)$ becomes $C \lor (1=1)$, which directly evaluates to $1$.
+Given a formula $F$, we denote with $F_{\mid_{f = \alpha}}$ the formula obtained by substituting $f$ with $\alpha$ inside $F$. This is usually called \textit{restriction of $F$ on $f = \alpha$}. In particular, we notice that if $F$ is a CNF formula then by restricting it on $f = 0$ any clause $C \lor (f = 0)$ becomes $C \lor (0 = 1)$, which is equivalent to $C$ through weakening. If we restrict $F$ on $f = 1$, any clause $C \lor (f = 0)$ becomes $C \lor (1=1)$, which directly evaluates to $1$.
 In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alpha}}$ the restriction of $p$ on $f = \alpha$, i.e. the polynomial obtained by setting $f$ equal to $\alpha$ in $p$.
 
 \begin{lemma}
@@ -817,7 +817,6 @@ Finally, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) 
  By \Cref{pdt_to_resp}, we know that there is a \textsf{TreeRes}$_{\oplus}$ proof of $F$ with size $O(s)$ and depth $d$. Then, by theorem \Cref{main_thm}, we know that there must be a $\F_2$-Nullstellensatz refutation for $F$ with degree $O(w + \log s)$ and size $n^{O(w + \log s)}$, where $w$ is the width of the tree-like proof.
  
  Moreover, since $\log s = O(\log^k n)$, we have that $s = O(n^k)$, hence $F$ has a $\F_2$-\textsf{NS} refutation of degree $O(\log n)$. By \Cref{equiv_proof}, we know that there is an efficient reduction $S_F \leq_m \mathsf{PPA}^{dt}$, concluding that $R \in \mathsf{PPA}^{pdt}$
-
 \end{proof}
 
 % The balancing process is obtained through a well-known result called $\frac{1}{2}, \frac{2}{3}$ lemma \cite{13_23_lemma} which is commonly used to show that protocols and Tree-like circuits (also called \textit{formulas}) can be balanced, meaning that their tree structure of size $s$ can be transformed in an equivalent one of size $s^{O(1)}$ and degree $O(\log s)$.

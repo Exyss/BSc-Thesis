@@ -47,7 +47,7 @@ The class of problems that are verifiable by a polynomial time verifier with cer
     We define $\mathsf{P}$ as the set of decision problems that can be solved by a polynomial time \TM. We define $\mathsf{NP}$ as the set of decision problems that can be verified by a polynomial time verifier.
 \end{definition}
 
-It's easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every efficiently solvable problem can also be efficiently verified by simply ignoring the certificate and solving the problem. However, it is currently not known whether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the assumption that $\mathsf{P} \neq \mathsf{NP}$. Examples include the field of cryptography, which assumes that it's easy to check that each encrypted string is the result of the encryption scheme being applied to the original message, which works as the certificate, and very hard to find this message only through the encrypted string. If $\mathsf{P} \neq \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
+It's easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every efficiently solvable problem can also be efficiently verified by simply ignoring the certificate and solving the problem. However, it is currently not known whether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the \textbf{assumption} that $\mathsf{P} \neq \mathsf{NP}$. Examples include the field of cryptography, which assumes that it's easy to check that each encrypted string is the result of the encryption scheme being applied to the original message, which works as the certificate, and very hard to find this message only through the encrypted string. If $\mathsf{P} \neq \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
 
 In the context of search problems, we define the class \textsf{FP} - \textit{functional} \textsf{P} - as the class of search problems efficiently solvable by an algorithm and \textsf{FNP} - \textit{functional} \textsf{NP} - as the class of search problems whose solutions are efficiently verifiable by a verifier. 
 
@@ -91,7 +91,7 @@ An important remark to be made is that, even though any decision problem can be 
 
 \newpage
 
-As discussed in the previous section, not all search problems are total, meaning that a solution could not exist for some inputs. A lot of real-world problems have a guaranteed solution for each input, ranging from simple number functions to harder problems, making total search problems more interesting than non-total ones.
+As discussed in the previous section, not all search problems are \textbf{total}, meaning that a solution could not exist for some inputs. A lot of real-world problems have a guaranteed solution for each input, ranging from simple number functions to harder problems, making total search problems more interesting than non-total ones.
 
 \begin{definition}
  We define the class $\mathsf{TFNP}$ as the subset of \textsf{FNP} problems that are also total.
@@ -121,10 +121,10 @@ For search problems, we define the class \textsf{FcoNP} in the same way. In part
 
 One of the most interesting aspects of computable (and uncomputable) problems is the ability to be transformed into another problem in order to achieve a solution. Suppose that we have an instance $a$ of problem $A$ and that we know an algorithm that transforms $a$ into an instance $b$ of a problem $B$ such that $a$ is a \say{yes} answer if and only if $b$ is a \say{yes} answer. Then, by solving $b$ we would get an answer to $a$. In computer science, this concept is known as \textbf{reduction}: a problem $A$ is said to be reducible into a problem $B$, written as $A \leq B$, if any instance $a$ of $A$ can be mapped into an instance $b$ of $B$ whose solution gives a solution to the former.
 
-In decision problems, this concept is described through \textit{many-to-one mappings}, computable functions that map instances of the original problem to instances of the reduced problem.
+In decision problems, this concept is described through \textbf{many-to-one mappings}, computable functions that map instances of the original problem to instances of the reduced problem. This particular type of reduction from $A$ to $B$ is denoted by $A \leq_m B$.
 
 \begin{definition}
- A decision problem $A$ is many-to-one reducible to a decision problem $B$, written as $A \leq_m B$, if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in B$. 
+ A decision problem $A$ is many-to-one reducible to a decision problem $B$ if there is a computable function $f$ such that $x \in A$ if and only if $f(x) \in B$. 
 \end{definition}
 
 To better understand how reductions work, consider the $3\mathrm{COL}$ problem, which asks the question \say{is this graph 3-colorable?}. A graph is said to be 3-colorable if we can color each node of the graph with a color different from all of its neighbors by using at most 3 colors.
@@ -171,21 +171,23 @@ This problem can easily be reduced to the $\mathrm{SAT}$ problem, which asks the
 Then, we construct the final formula that encodes the 3-colorization of $G$:
 \[\phi_G = \left ( \bigwedge_{v \in V(G)} \phi_v \right ) \land \left ( \bigwedge_{(u,v) \in E(G)} \phi_{(u,v)} \right )\]
 
-By definition of $\phi_G$, it holds that $G$ is 3-colorable if and only if $\phi_G$ is satisfiable. In particular, there is a bijection between $G$'s color assignments and $\phi_G$'s variable assignments. This concludes that $3\mathrm{COL} \leq_m \mathrm{SAT}$. Moreover, this reduction can be computed by a Turing machine in polynomial time. When this happens, we say that $3\mathrm{COL} \leq_p \mathrm{SAT}$
+By definition of $\phi_G$, it holds that $G$ is 3-colorable if and only if $\phi_G$ is satisfiable. In particular, there is a bijection between $G$'s color assignments and $\phi_G$'s variable assignments. This concludes that $3\mathrm{COL} \leq_m \mathrm{SAT}$. Moreover, this reduction can be computed by a Turing machine in polynomial time. When this happens, we write $3\mathrm{COL} \leq_p \mathrm{SAT}$
 
 Many-to-one reductions between problems are transitive: starting from a problem $A$, we can reduce it to a problem $B$ through a function $f$ and then reduce it to a problem $C$ through a function $g$. This implies that the composition $g \circ f$ is a reduction from $A$ to $C$. For instance, the $\mathrm{4\text{-}COL}$ problem, a variant of the $\mathrm{3\text{-}COL}$ with four colors instead of three colors, can be reduced in polynomial time to $\mathrm{3\text{-}COL}$, giving us the reduction chain $\mathrm{4\text{-}COL} \leq_p \mathrm{3\text{-}COL} \leq_p \mathrm{SAT}$.
 
 Reductions between decision problems map any \say{yes} answers of problem $A$ to some \say{yes} answers of problem $B$ and the same goes for \say{no} answers. In search problems, however, there is no concept of a negative answer: even if a problem has only two possible outputs, both of them are still a solution. Some people could argue that an input for which there is no solution is a negative answer to the search problem. But how could we map inputs without solutions to other inputs without solutions? What if one of the two problems involved is total and the other isn't? This clearly doesn't make sense and, even if it did, we are only interested in finding solutions. We give the following definition of search problem reduction:
 
 \begin{definition}
- A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, written as $R \leq_m S$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a computable function $f : \{0,1\}^m \to \{0,1\}^n$ and a computable function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
+ A search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times O_m$ is said to be many-to-one reducible to a search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there is a computable function $f : \{0,1\}^m \to \{0,1\}^n$ and a computable function $g : \{0,1\}^m \times O_n' \to O_m$ such that:
     \[\forall x \in \{0,1\}^m \;\; (f(x), y) \in S \implies (x, g(x,y)) \in R\]
  In other words, the function $f$ maps inputs of $R$ into inputs of $S$, while the function $g$ maps solutions of $S$ into solutions of $R$. 
 \end{definition}
 
-When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of to the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$. For instance, if $A \leq_p B$ through a function $f$ and $B$ can be solved in polynomial time then we can build a machine that first computes $f(x)$ for a given input $x$ and then compute whether $f(x) \in B$ or not. Since both the reduction and the final computation in this case require polynomial time, we conclude that $A$ can also be solved in polynomial time.
+When a reduction can be efficiently computed by a \TM with a time (or space) complexity that is in the order of the complexity of $B$, the problem $A$ can be solved by a machine that first computes the reduction and then solves the problem $B$. For instance, if $A \leq_p B$ through a function $f$ and $B$ can be solved in polynomial time then we can build a machine that first computes $f(x)$ for a given input $x$ and then compute whether $f(x) \in B$ or not. Since both the reduction and the final computation in this case require polynomial time, we conclude that $A$ can also be solved in polynomial time.
 
 Reductions play a critical role in computer science. In particular, they allow us to define the concept of \textbf{completeness}. A problem is considered complete for a class $\mathcal{C}$ when every problem from its class can be reduced to it under a specific constraint. This constraint usually depends on the complexity constraints dictated by a subclass $\mathcal{D} \subseteq \mathcal{C}$: if every problem in $\mathcal{C}$ is reducible to $B$ under the same constraints that define the subclass $\mathcal{D}$ and we can show that $B \in \mathcal{D}$, then the whole class $\mathcal{C}$ collapses onto its subclass, that is $\mathcal{C} = \mathcal{D}$.
+
+\newpage
 
 For instance, since $\mathsf{P} \subseteq \mathsf{NP}$, the completeness constraint behind \textsf{NP}-Completeness would be to maintain polynomial time reductions. In \textsf{P}-Completeness, instead, the completeness constraint would be to maintain logarithmic space reductions due to how $\mathsf{L} \subseteq \mathsf{P}$, where $\mathsf{L}$ is the class of problems decidable in logarithmic space.
 
@@ -199,7 +201,7 @@ From this definition, we derive that an \textsf{NP}-Complete problem can be solv
  The decisional problem $A$ is \textsf{NP}-Complete if and only if the functional problem $FA$ is \textsf{FNP}-Complete.
 \end{theorem}
 
-Since Cook's result, many important problems have been shown to be \textsf{NP}-Complete, such as Karp's 21 decision problems \cite{karp}. Nowadays, thousands of problems fall into this class. Since most researchers believe that $\mathsf{P} \neq \mathsf{NP}$, once a problem is proven to be \textsf{NP}-Complete they start looking to approximations of the problem, due to a general optimal solution being out of reach. Proving that $\mathsf{P} \neq \mathsf{NP}$ would imply that all such problems are actually \textit{intractable}, making approximation algorithms the best we can hope for.
+Since Cook's result, many important problems have been shown to be \textsf{NP}-Complete, such as Karp's 21 problems \cite{karp}. Nowadays, thousands of problems fall into this class. Since most researchers believe that $\mathsf{P} \neq \mathsf{NP}$, once a problem is proven to be \textsf{NP}-Complete they start looking to approximations of the problem, due to a general optimal solution being out of reach. Proving that $\mathsf{P} \neq \mathsf{NP}$ would imply that all such problems are actually \textit{intractable}, making approximation algorithms the best we can hope for.
 
 \section{The \textsf{TFNP} hierarchy}
 
@@ -282,7 +284,7 @@ Each of these subclasses is characterized by a complete total search problem tha
     \caption{Hierarchy of the main total search problem subclasses. \\ An arrow from class $A$ to class $B$ means that $A \subseteq B$.}
 \end{figure}
 
-Interestingly, lots of complex problems have been proven to be reducible to these basic problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to not only lie inside \textsf{PPAD} but also be \textsf{PPAD}-Complete \cite{nash_1, nash_2}. One should ponder what it really means for a problem to be complex.
+Interestingly, lots of complex problems have been proven to be reducible to these basic problems. For example, the $\mathrm{NASH}$ problem relative to finding a Nash equilibrium of a given game has been shown to not only lie inside \textsf{PPAD} but to also be \textsf{PPAD}-Complete \cite{nash_1, nash_2}. One should ponder what it really means for a problem to be complex.
 
 Proving any unconditional separation between these subclasses, which can be achieved by showing that one of them is not efficiently reducible to the other, would directly imply that $\mathsf{FP} \neq \mathsf{TFNP}$, answering the $\mathsf{P} \stackrel{?}{=} \mathsf{NP}$ question. By the hardness of the question itself, finding such unconditional separation seems to be completely out of reach. However, it turns out that the \textsf{TFNP} model indeed has conditional separations, in particular relative to \textit{oracles} (see \Cref{chap:bb-tfnp}).
  
