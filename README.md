@@ -2,6 +2,8 @@
 
 My Bachelor's Degree Thesis in Computer Science at Sapienza Università di Roma, entitled ___"Efficient Parity Decision Trees and Their Connections to Logical Proofs and Total Search Problems in NP"___.
 
+[Download the Thesis](https://raw.githubusercontent.com/exyss/bsc-thesis/main/src/Thesis.pdf)
+
 ## Abstract
 In computability theory, a _search problem_ is a type of computational problem based on finding a specific property, object or structure in a given instance of a particular entity. Search problems describe any input-output-based problem, even everyday problems, ranging from number factorization to complex graph theory questions. For a given instance, some problems may even take the age of the universe to be solved by a machine. Complexity theory studies computational resources to identify what can and cannot be computed in a reasonable amount of time.
 
@@ -11,7 +13,7 @@ The thesis has two main goals: to summarize the main results in the $\mathsf{TFN
 
 In the first chapter, we discuss the origins of computability theory, the basic concepts of computational complexity and the reasons behind the study of such concepts.
 
-In the second chapter, we discuss the differences between decision problems and search problems, while also defining the decision classes $\mathsf{P}, \mathsf{NP}$ and the functional classes $\mathsf{FP}, \mathsf{FNP}$ and $\mathsf{TFNP}$. Then, we explain reductions between problems, how they lead to the concept of completeness and how they apply to total search problems, giving birth to the $\mathsf{TFNP}$ hierarchy.
+In the second chapter, we discuss the differences between decision problems and search problems, while also defining the decision classes $\mathsf{P}$, $\mathsf{NP}$ and the functional classes $\mathsf{FP}, \mathsf{FNP}$ and $\mathsf{TFNP}$. Then, we explain reductions between problems, how they lead to the concept of completeness and how they apply to total search problems, giving birth to the $\mathsf{TFNP}$ hierarchy.
 
 In the third chapter, we focus on the black-box version of the $\mathsf{TFNP}$ hierarchy. We discuss how this model characterizes relativization through oracles and how this translates to the use of decision trees. Then, we explain how the connections between decision trees and proof complexity give an alternative lens under which this model can be studied.
 
