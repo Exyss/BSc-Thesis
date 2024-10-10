@@ -12,36 +12,16 @@
 % Document Class
 \documentclass[binding=0.6cm, noexaminfo, oneside]{styles/sapthesis}
 
-% Packages
-\usepackage{microtype}
+% Fundamental Packages
+\usepackage[dvipsnames]{xcolor}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{hyperref}
-\usepackage{listings}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{xspace}
-\usepackage{geometry} 
-\usepackage{caption}  
 \usepackage[edges]{forest}
-\usepackage{subcaption}
-\usepackage{float}    
-\usepackage{lipsum}  
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{geometry} 
+\usepackage{xspace}
 \usepackage{xargs}              
-\usepackage{booktabs}
-\usepackage{graphicx}
-\usepackage{makecell}
-\usepackage{enumitem}
-\usepackage{booktabs}
-\usepackage{tabularx}
-\usepackage{longtable}
-\usepackage{threeparttable}
-\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{cleveref}
-\usepackage[Algoritmh]{algorithm}      
-\usepackage{algpseudocode}
-\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
-
 \usepackage[
   backend=biber,
   style=alphabetic,
@@ -49,6 +29,25 @@
   minnames=3,
   minalphanames=3
 ]{biblatex}
+
+% Useful Packages
+\usepackage{chngcntr}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{cleveref}
+\usepackage{caption}  
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{float}    
+\usepackage[
+  colorinlistoftodos,
+  prependcaption,
+  textsize=tiny
+]{todonotes}
+
+% Other Packages
+\usepackage[Algoritmh]{algorithm}      
+\usepackage{algpseudocode}
 
 %%%% NOTE: Enable the following two lines if you want to use SapThesis' bibliography style
 
@@ -99,14 +98,14 @@
 \tableofcontents
 
 \let\cleardoublepage\clearpage
-
 \mainmatter
 
-% ================== CHAPTER TYPESETTING ==================
+% ================== TYPESETTING ==================
 
-\hypersetup{linkcolor=blue, citecolor=red} % Link colors
-% \setlength{\parindent}{0pt} % Horizontal spacing at the start of a paragraph
-\setlength{\parskip}{2pt} % Vertical spacing between paragraphs
+\hypersetup{linkcolor=blue, citecolor=red}          % Link colors
+\counterwithout{figure}{chapter}                    % Remove chapter number from figure counter
+\setlength{\parskip}{2pt}                           % Vertical spacing between paragraphs
+% \setlength{\parindent}{0pt}                       % Horizontal spacing at the start of a paragraph
 
 % ================== CHAPTERS ==================
 \input{./chapters/1}

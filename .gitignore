@@ -1,3 +1,6 @@
+## VS Code environment
+.vscode/*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

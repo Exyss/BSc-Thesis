@@ -596,7 +596,7 @@ To achieve our result, we first convert the $\mathrm{TreeRes}_\oplus$ proof into
 
 Next, we prove some basic Nullstellensatz inspired by the ones shown in \cite{groebner}, which allow us to manipulate and combine different types of proofs. We will use these properties to inductively simulate the resolution rule.
 
-Given a formula $F$, we denote with $F_{\mid_{f = \alpha}}$ the formula obtained by substituting $f$ with $\alpha$ inside $F$. This is usually called \textit{restriction of $F$ on $f = \alpha$}. In particular, we notice that if $F$ is a CNF formula then by restricting it on $f = 0$ any clause $C \lor (f = 0)$ becomes $C \lor (0 = 1)$, which is equivalent to $C$ through weakening. If we restrict $F$ on $f = 1$, any clause $C \lor (f = 0)$ becomes $C \lor (1=1)$, which directly evaluates to $1$.
+Given a formula $F$, we denote with $F_{\mid_{f = \alpha}}$ the formula obtained by substituting $f$ with $\alpha$ inside $F$. This is usually called \textbf{restriction of $F$ on $f = \alpha$}. In particular, we notice that if $F$ is a CNF formula then by restricting it on $f = 0$ any clause $C \lor (f = 0)$ becomes $C \lor (0 = 1)$, which is equivalent to $C$ through weakening. If we restrict $F$ on $f = 1$, any clause $C \lor (f = 0)$ becomes $C \lor (1=1)$, which directly evaluates to $1$.
 In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alpha}}$ the restriction of $p$ on $f = \alpha$, i.e. the polynomial obtained by setting $f$ equal to $\alpha$ in $p$.
 
 \begin{lemma}
@@ -746,6 +746,7 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
 \end{proof}
 
 \begin{theorem}
+    \label{main_thm}
     Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ then there is $\NS$ refutation of $F$ of degree $O(w + \log s)$.
 \end{theorem}
 
@@ -807,7 +808,7 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
 Finally, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\text{-}\mathsf{NS}(F))$, the last theorem proves that our new class is indeed contained inside $\mathsf{PPA}^{dt}$, meaning that any total search problem efficiently solvable by a parity decision tree can be reduced to an instance of the parity argument problem.  
    
 \begin{theorem}
-    \label{main_thm}
+    \label{final_inclusion}
     $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$
 \end{theorem}
 
@@ -818,171 +819,6 @@ Finally, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) 
  
  Moreover, since $\log s = O(\log^k n)$, we have that $s = O(n^k)$, hence $F$ has a $\F_2$-\textsf{NS} refutation of degree $O(\log n)$. By \Cref{equiv_proof}, we know that there is an efficient reduction $S_F \leq_m \mathsf{PPA}^{dt}$, concluding that $R \in \mathsf{PPA}^{pdt}$
 \end{proof}
-
-% The balancing process is obtained through a well-known result called $\frac{1}{2}, \frac{2}{3}$ lemma \cite{13_23_lemma} which is commonly used to show that protocols and Tree-like circuits (also called \textit{formulas}) can be balanced, meaning that their tree structure of size $s$ can be transformed in an equivalent one of size $s^{O(1)}$ and degree $O(\log s)$.
-
-% \begin{lemma}
-%     \label{13_23_lewis}
-%  If $T$ is a binary tree of size $s > 1$ then there is a node $v$ such that the subtree $T_v$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$.
-% \end{lemma}
-
-% \begin{proof}
-%     Let $r$ be the radix of $T$ and let $\ell$ be a leaf of $T$ with the longest possible path $r \to \ell$. Let $v_1, \ldots, v_k$ be the nodes of such path, where $r = v_1$ and $\ell = v_k$. For each index $i$ such that $1 \leq i \leq k$, let $a_i b_i$ be the two children of $v_i$.
-
-%     \begin{claim}
-%         For any index $i$, if $T_{v_i}$ has size at least $\floor{\frac{1}{3} s}$ then for some index $j$, where $i \leq j \leq k$, it holds that $T_{v_j}$ has size between $\floor{\frac{1}{3} s}$ and $\ceil{\frac{2}{3} s}$.
-%     \end{claim}
-
-%     \begin{proof}[Proof of the claim]
-%         If $T_{v_i}$ has size less than $\ceil{\frac{2}{3} s}$ then we are done. Otherwise, since $T_{v_i} = \{v_i\} \cup T_{a_i} \cup T_{b_i}$, one between the subtrees $T_{a_i}, T_{b_i}$ must have size at least $\frac{1}{2} \ceil{2}{3} s - 1$, meaning that it has size at least $\floor{\frac{1}{3} s}$. If this subtree has also a size at most $\ceil{\frac{2}{3} s}$ then we are done. Instead, if this doesn't hold for both subtrees, we can repeat the process (assuming that $v_{i+1} := a_i$ without loss of generality) since we know that $T_{v_{i+1}}$ has size greater than $\floor{\frac{1}{3} s}$.
-
-%         By way of contradiction, suppose that this process never finds a subtree with size at most $\ceil{\frac{2}{3} s}$. Then, this would mean that it also holds for $v_k = \ell$. However, since $\ell$ is a leaf, we know that $T_{v_\ell}$ must have size 1, which is definitely at most $\ceil{\frac{2}{3} s}$ for any value of $s$, giving a contradiction. Thus, there must be a node that terminates the process.
-%     \end{proof}
-        
-%     Since $T_{v_1} = \{r\} \cup T_{a_1} \cup T_{b_1}$, we know that both of these subtrees must have size at least $\floor{\frac{1}{3} s}$. Without loss of generality, by assuming that $a_1 = v_{2}$ the claim concludes the proof of the lemma.
-% \end{proof}
-
-% We'll now show a way to simulate the resolution rule through $\F_2$-Nullstellensatz by converting two \textsf{NS} refutations $P_1 \stackrel{}{\vdash} 1$ and $P_2 \stackrel{}{\vdash} 1$, where $P_1$ and $P_2$ are disjoint, into a refutation  $P_1, P_2 \stackrel{}{\vdash} 1$ with degree equal to the degree of the two initial refutations.
-
-% \begin{lemma}
-%     \label{union_ref}
-%  Given two disjoint axiom sets $P_1, P_2$, if $P_1, p \stackrel{\mathsf{NS}}{\vdash} r$ with degree $d_1$ and $P_2, 1-p \stackrel{\mathsf{NS}}{\vdash} t$ with degree $d_2$ then $P_1, P_2 \stackrel{\mathsf{NS}}{\vdash} rt$ with degree $O(d_1 + d_2)$.
-% \end{lemma}
-
-% \begin{proof}
-%  Assume that $P_1 = \{p_1, \ldots, p_m\}$ and $P_2 = \{q_1, \ldots, q_k\}$ and let $p_{m+1} = p$ and $q_{k+1} = 1-p$. By hypothesis, we know that
-%     \[\sum_{i = 1}^{m+1} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) = r\]
-%  for some $g_1, \ldots, g_{m+1}, a_1, \ldots, a_n$, implying that:
-%     \[\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) = r - g_{m+1} p_{m+1} = r-g_{m+1} p\]
-    
-% \noindent
-%  Likewise, we know that:
-%     \[\sum_{i = 1}^{k+1} h_i q_i + \sum_{j = 1}^n b_j (x_j^2-x_j) = t\]
-%  for some $h_1, \ldots, h_{k+1}, b_1, \ldots, b_n$, implying that:
-%     \[\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j) = t-h_{k+1}q_{k+1} = t-h_{k+1}(1-p)\]
-
-% \noindent
-%  We notice that:
-%     \[\begin{split}
-%  t(1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) &= t(1-p)(r-g_{m+1} p) \\
-%         &= rt-g_{m+1} tp - prt + g_{m+1} p^2t \\
-%         &= rt-rtp
-%     \end{split}\]
-%  with degree $d_1+2d_1$. In the last step, we used the fact that due to multilinearity it holds that $p^2 = p$. Similarly, we get that:
-%     \[\begin{split}
-%  rp\, \left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j)  \right ) &= rtp 
-%     \end{split}\]
-%  with degree $2d_1+d_1$. Let $f_1, \ldots, f_{mk}, s_1, \ldots, s_{m+k}$ be defined as:
-%     \[f_i = \left \{ \begin{array}{ll}
-%  p_i & \text{if } 1 \leq i \leq m \\
-%  q_i & \text{if } m+1 \leq i \leq k \\
-%     \end{array} \right .
-%  \qquad\qquad
-%  s_i = \left \{ \begin{array}{ll}
-%  g_i t(1-p) & \text{if } 1 \leq i \leq m \\
-%  h_irp & \text{if } m+1 \leq i \leq k \\
-%     \end{array} \right .\]
-%  while $c_1, \ldots, c_n$ are defined as $c_j = a_jt(1-p) + b_jrp$. Through simple algebra, we get that:
-%     \[\sum_{i = 1}^{m+k} s_i f_i + \sum_{j = 1}^n c_j (x_j^2-x_j) =\]
-%     \[t(1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) + rp \left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j) \right )= rt\]
-%  concluding that $\Pi := \{s_1, \ldots, s_{m+k}, c_1, \ldots, c_n\}$ is a proof of $P_1 \cup P_2$ with degree $O(d_1 + d_2)$.
-
-% \end{proof}
-
-% \newpage
-
-% The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz. However, if $D$ is derived through weakening from an axiom clause $C_i$ of a CNF formula $F$, it is indeed easy to simulate this rule. This result is enough for our purposes but it can also be extended to derivations from a non-axiom clause with a little blow-up in degree. 
-
-% \begin{lemma}
-%     \label{weakening_ns}
-
-%  Let $F = C_1 \land \ldots \land C_m$ be a CNF formula and let $D$ be a linear clause. If $C_i \implies D$ then $p_{C_i} \vdash p_D$ with degree $d+k$, where $d$ is the width of $D$ and $k$ is the width of $C_i$.
-% \end{lemma}
-
-% \begin{proof}
-%  Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $q(1+q)$ can be derived with degree 2 from axioms. 
-%     \[(y_1 + \ldots + y_t)(y_1 + \ldots y_t + 1) = \sum_{i = 1}^t y_i^2 + \sum_{i = 1}^t y_i + 2 \sum_{i \neq j} y_i y_j = \sum_{i = 1}^t y_i^2 + y_i\]
-%  since $2 = 0$ in $\F_2$. This implies that for each $j \in [d]$ we can derive $p(f_j+\beta_j+1)$ with degree $d+1$.
-
-%  Since $C \implies D$, this can only happen if each $x_i + \alpha_i$ is a linear combination of $(f_1 + \beta_1 + 1), \ldots, (f_d + \beta_d + 1)$, concluding that each $p_D(x_i+\alpha_i)$ is derivable in $\F_2$-Nullstellensatz with degree $d+1$.
-
-%  Finally, we notice that:
-%     \[p_D = p_C + p_D(x_1+\alpha_1+1) + p_D(x_2+\alpha_2+1)(x_1+\alpha_1)+ \ldots + p_D(x_d+\alpha_d+1)\prod_{i = 0}^{d-1} (x_i+\alpha_i)\]
-%  which is a derivation of $p_D$ from $p_{C}$ with degree $d + k$.
-    
-% \end{proof}
-
-% \begin{lemma}
-%     \label{refutation_with_negation}
-%  Given a set of axioms $P$, if $P \stackrel{\mathsf{NS}}{\vdash} q$ with degree $d$ then $P, 1-q \stackrel{\mathsf{NS}}{\vdash} 1$ with the same degree. 
-% \end{lemma}
-
-% \begin{proof}
-    
-%  Since $P \vdash^\NS_d q$, we know that $\exists g_1, \ldots, g_m, h_1, \ldots, h_n \in \F[x_1, \ldots, x_n]$ such that:
-%     \[\sum_{i = 1}^m g_i p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = q\]
-%  where $\deg(q) \leq d$. We define $g_1', \ldots, g_m', g_{m+1}'$ as:
-%     \[g_i' = \left \{ \begin{array}{ll}
-%         1 & \text{if } i = m+1 \\
-%  g_i & \text{otherwise}  \\
-%     \end{array}\right .\]
-    
-% \noindent
-%  With simple algebra, we get that:
-%     \[\sum_{i = 1}^{m+1} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = g_{m+1}'p_{m+1} + \sum_{i = 1}^{m} g_i' p_i + \sum_{j = 1}^n h_j (x_j^2-x_j) = (1-q) + q = 1\]
-%  thus $\Pi = \{g_1', \ldots, g_{m+1}', h_1, \ldots, h_n\}$ is a proof of $P$ with degree $d$.
-
-% \end{proof}
-
-% \begin{theorem}
-%     \label{main_thm}
-%  Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ then there is $\NS$ refutation of $F$ of degree $O(\log(s)+w)$.
-% \end{theorem}
-
-% \begin{proof}
-%  Let $F = C_1 \land \cdots \land C_m$ and let $T$ be a $\mathsf{TreeRes}_\oplus$-proof of $F$ with size $s$ and width $w$. Through \Cref{leaf_weakening} we know that there must also be a $\mathsf{TreeRes}_\oplus$-proof of size $O(s)$ with the weakening rule applied only to the leaves. Let $\widehat{C_1}, \ldots, \widehat{C_m}$ be the linear clauses obtained through such weakening rules.
-    
-%     \begin{claim}
-%  If $T'$ is a subtree of $T$ with root $C$, leaves $D_1, \ldots, D_k$ and without nodes derived through the weakening rule then $p_{D_1}, \ldots, p_{D_k} \vdash p_C$ with degree $O(\log (s) + w)$
-%     \end{claim}
-
-%     \begin{proof}[Proof of the claim]
-%  We proceed by strong induction on the size $u$ of $T'$. If $u = 1$ then the root $C$ is the only clause in $T'$, which means that it must be the only leaf in $T'$. We trivially get that $C \vdash C$ with degree $w$.
-        
-%  Suppose that $u > 1$. Let $\mathcal{L} = \{D_1, \ldots, D_k\}$. Since $T'$ is a binary tree, by \Cref{13_23_lewis} we know that there is a clause $Q$ (a node) inside $T'$ such that $T'_{Q}$ has size between $\floor{\frac{1}{3} u}$ and $\ceil{\frac{2}{3} u}$. Let $\overline{T_Q} = (T - T_{Q}) \cup \{Q\}$. Due to the size of $T_{Q}$, we get that $\overline{T_{Q}}$ has size between $\floor{\frac{1}{3} u}+1$ and $\ceil{\frac{2}{3} u}+1$. 
-    
-%  Since the proof is tree-like, $T_{Q}$ and $\overline{T_Q}$ work with different clauses (except $Q$), thus their leaves must partition $\mathcal{L}$ into two sets $\mathcal{L}_1, \mathcal{L}_2$, respectively used by $T_{Q}$ and $\overline{T_Q}$. By inductive hypothesis we get that $p_{\mathcal{L}_1} \vdash p_Q$ with degree at most $\log(s) + w$ and that $p_{\mathcal{L}_2}, p_Q \vdash p_C$ with degree at most $c_2(\log(s) + w)$, for two constants $c_1, c_2$.
-        
-%  Through \Cref{refutation_with_negation} we easily conclude that $p_{\mathcal{L}_1}, (1-p_{Q})\vdash 1$ with degree at most $c_1(\log(s) + w)$. Then, by \Cref{union_ref} we get that $p_{\mathcal{L}_1}, p_{\mathcal{L}_2} \vdash p_C$, thus $p_\mathcal{L} \vdash p_C$, with degree $O(\log s + w)$.
-%     \end{proof}
-
-%  Let $T'$ be the subtree of $T$ with root $\bot$ and leaves $\widehat{C_1}, \ldots, \widehat{C_m}$. Since $T'$ only uses the resolution rule, through the claim we conclude that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. Clearly, this also implies that $\mathrm{deg}(p_{\widehat{C_i}}) = O(\log(s)+w)$ for all $i$.
-    
-%  Since each $\widehat{C_i}$ is a weakening of $C_i$, by \Cref{weakening_ns} we know that $p_{C_i} \vdash p_{\widehat{C_i}}$ with degree $O(\log(s)+ w)$. Again, by \Cref{refutation_with_negation} we get that $p_{C_i}, (1-p_{\widehat{C_i}}) \vdash 1$ with degree $O(\log(s)+ w)$ which together with the fact that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$ allows us to conclude, by \Cref{union_ref}, that $p_{C_1}, p_{\widehat{C_2}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(\log(s)+w)$. After repeating this process for each weakening clause, we finally conclude that $p_{C_1}, \ldots, p_{C_m} \vdash 1$ with degree $O(\log(s)+w)$.
-
-% \end{proof}
-
-% \newpage
-
-
-% \quad
-
-% Again, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\text{-}\mathsf{NS}(F))$, the last theorem proves that our new class is indeed contained inside $\mathsf{PPA}^{dt}$, meaning that any total search problem efficiently solvable by a parity decision tree can be reduced to an instance of the parity argument problem.  
-
-% \begin{theorem}
-%     $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$
-% \end{theorem}
-
-% \begin{proof}
-%  Suppose that $R \in \mathsf{FP}^{pdt}$. By definition, there is a PDT with size $s$ and depth $d$, where $d+\log s = O(\log^k n)$ for some $k \in \N$,that solves $R$. We know that each total search problem is equivalent to the false clause search problem of some CNF formula $F$, thus $R = S_F$.
-    
-%  By \Cref{pdt_to_resp}, we know that there is a \textsf{TreeRes}$_{\oplus}$ proof of $F$ with size $O(s)$. Then, by theorem \Cref{main_thm}, we know that there must be a $\F_2$-Nullstellensatz refutation for $F$ with degree $O(\log(s) + w)$, where $w$ is the width of the proof. 
-    
-%  Since $F$ has a $\F_2$-\textsf{NS} refutation of degree $O(\log s + w)$ and since $\mathsf{PPA}^{pdt} = \Theta(\F_2$-\textsf{NS}), by \Cref{equiv_proof} we know that there is an efficient reduction $S_F \leq_m \mathsf{PPA}^{dt}$, concluding that $R \in \mathsf{PPA}^{pdt}$
-
-% \end{proof}
-
-% \newpage
-    
+   
 
 \cleardoublepage
