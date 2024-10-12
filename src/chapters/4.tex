@@ -140,7 +140,7 @@ It's easy to see that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$ since any d
             ;
     \end{tikzpicture}
 
-    \caption{The initial subtree of a parity decision tree}
+    \caption{The initial subtree of a parity decision tree.}
 \end{figure}
 
 We replace $v$ with the node $v'$ labeled with the linear form $x_i$ and introduce two new nodes $u', w'$ such that $u'$ is the child of $v'$ when $x_i = 0$ and $w'$ is the child of $v'$ when $x_i = 1$. We label $u'$ with the linear form $f$ and let a copy of $T_u$ be the children of $u'$ when $f = 0$, while a copy of $T_w$ is the children of $u'$ when $f = 1$. Symmetrically, we label $w'$ with the linear form $f$ and let a copy of $T_w$ be the children of $w'$ when $f = 0$, while a copy of $T_u$ is the children of $w'$ when $f = 1$. 
@@ -213,7 +213,7 @@ We replace $v$ with the node $v'$ labeled with the linear form $x_i$ and introdu
             ;
     \end{tikzpicture}
 
-    \caption{The subtree after the splitting process}
+    \caption{The subtree after the splitting process.}
 \end{figure}
 
 By repeating this process until all queries are defined on a single variable, we obtain a decision tree equivalent to the original PDT. This final decision tree has exponential size and polynomial depth, which \textit{may not} be the smallest possible decision tree that solves the search problem solved by the initial PDT. However, we can easily prove that parity decision trees are indeed much stronger than decision trees.
@@ -275,7 +275,7 @@ Like normal decision trees, PDTs can be used to solve the false clause search pr
             ;
     \end{tikzpicture}
 
-    \caption{A parity decision tree for $(x \lor y) \land (\lnot x \lor \lnot y) \land (\lnot x \lor y) \land (x \lor \lnot y)$}
+    \caption{A parity decision tree for $(x \lor y) \land (\lnot x \lor \lnot y) \land (\lnot x \lor y) \land (x \lor \lnot y)$.}
 \end{figure}
 
 We observe that if a node doesn't meet any of the previous conditions then it cannot be a leaf node. Moreover, we also observe that the system associated with the root of any PDT is always satisfiable due to it containing no linear forms. Since we are interested in studying PDTs for refusing unsatisfiable CNF formulas, the third case will never be true for any leaf. However, we still need a way to exclude the first case since an unsatisfiable system cannot be associated with any assignment. Luckily, each degenerate PDT can be conveniently converted into a non-degenerate one through a very simple process \cite{res_lin_2}.
@@ -381,7 +381,7 @@ concluding that $(x = 0) \lor (y = 1) \models (x = 0) \lor (x+y = 0)$. Proceedin
             ;
     \end{tikzpicture}
 
-    \caption{$\mathsf{TreeRes}_\oplus$-proof of the previous linear CNF formula}
+    \caption{$\mathsf{TreeRes}_\oplus$-proof of the previous linear CNF formula.}
     \label{treelike_proof}
 \end{figure}
 
@@ -398,7 +398,7 @@ It was shown that the weakening rule can be simulated through these simple three
 
 This result makes working with the weakening rule easier: any clause $D$ derived through $k$ applications of these three rules starting from a clause $C$ is automatically a weakening of $C$, implying that we can replace those $k$ applications with one single use of the weakening rule.
 
-\section{Characterization of $\textsf{FP}^{pdt}$ through $\mathsf{TreeRes}_\oplus$}
+\section{Characterization of $\mathsf{FP}^{pdt}$ through $\mathsf{TreeRes}_\oplus$}
 
 $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two sides of the same coin. Any tree-like $\ResP$ refutation of a linear CNF $F$ can be used to construct an (almost) equivalent PDT that solves $S_F$ and vice versa \cite{res_lin_2}.
 
@@ -410,7 +410,7 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
 \begin{proof}
  Let $T$ be the proof tree that refutes $F$. We label each edge of $T$ whose associated clauses involve a resolution rule, while all the other weakening edges remain unlabeled. In particular, if a resolution rule is applied to the clauses $(f = 0) \lor D_1$ and $(f = 1) \lor D_2$ obtaining the clause $D_1 \lor D_2$, we label the edge from the first to the third with $f = 1$, while the other edge is labeled with $f = 0$.
 
- By induction on the depth of a vertex of $T$, we show that the clause written in $v$ contradicts the system $\Phi_v^T$. The root node contains the empty clause and is labeled by an empty system, making the statement trivially true. Assume now that the statement holds for a generic node $v$. We have to show that the hypothesis also holds for its children $u$ and $w$.
+ By induction on the depth of a node of $T$, we show that the clause written in $v$ contradicts the system $\Phi_v^T$. The root node contains the empty clause and is labeled by an empty system, making the statement trivially true. Assume now that the statement holds for a generic node $v$. We have to show that the hypothesis also holds for its children $u$ and $w$.
 
  Suppose that $v$ is the result of a resolution rule application, where $D_1 \lor D_2$ is the clause inside $v$. Assume that $u$ is the node that contains $(f = 0) \lor D_1$ while $w$ contains $(f = 1) \lor D_2$. By inductive hypothesis, we know that $D_1 \lor D_2$ contradicts the system $\Phi_v^T$. This means that the set of equalities in $D_1$ contradicts $\Phi_v^T$. Moreover, we know that $\Phi_u^T = \Phi_v^T \land (f = 1)$, concluding that $(f = 0) \lor D_1$ contradicts $\Phi_u^T$. Likewise, we can show that $(f = 1) \lor D_2$ contradicts $\Phi_w^T$.
     
@@ -441,7 +441,7 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
             ;
     \end{tikzpicture}
 
-    \caption{The PDT obtained from the proof shown in \Cref{treelike_proof}}
+    \caption{The PDT obtained from the proof shown in \Cref{treelike_proof}.}
     \label{pdt_cnf}
 \end{figure}
 
@@ -488,7 +488,7 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
             ;
     \end{tikzpicture}
 
-    \caption{$\mathsf{TreeRes}_\oplus$-proof obtained from the PDT shown in \Cref{pdt_cnf}}
+    \caption{$\mathsf{TreeRes}_\oplus$-proof obtained from the PDT shown in \Cref{pdt_cnf}.}
 \end{figure}
 
 We conclude that problems efficiently solvable parity decision trees are indeed characterized by Tree-like Linear Resolution over $\F_2$.
@@ -512,7 +512,7 @@ In a seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf
 
 This separation rings a bell: looks like PDTs aren't actually that strong. We quickly shifted our perspective on our previous study on relationships with Nullstellensatz, trying to show that the simulation holds in the other direction. Indeed, we were capable of proving that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}Nullstellensatz}$ proof, providing us a \textbf{black-box inclusion} for our new class.
 
-\section{Nullstellensatz over $\F_2$}
+\section{Nullstellensatz over $\F_2$ and $\mathsf{PPA}^{dt}$}
 
 In 1893, the mathematician Hilbert proved a theorem that established the basis of algebraic geometry, a field that studies the relations between algebra and geometry. This theorem is now known as Hilbert's \textbf{Nullstellensatz} (german for \textit{zero-locus theorem}).
 
@@ -539,11 +539,11 @@ In order for the CNF $F$ to be satisfied by an assignment $x$, each clause must 
         $C \land D$ & $\longrightarrow$ & $C + D$ \\
     \end{tabular}
 
-    \caption{Mappings from boolean encoding to algebraic encoding}
+    \caption{Mappings from boolean encoding to algebraic encoding.}
 \end{figure}
 
-When a polynomial $q$ can be derived from a set of axioms $P$, we write $P \stackrel{\mathsf{NS}}{\vdash} q$. If $F$ is a CNF formula and $P \stackrel{\mathsf{NS}}{\vdash} 1$ then we get a Nullstellensatz refutation.
-
+\noindent
+When a polynomial $q$ can be derived from a set of axioms $P$, we write $P \stackrel{\mathsf{NS}}{\vdash} q$. If $F$ is a CNF formula and $P \stackrel{\mathsf{NS}}{\vdash} 1$ then we get a Nullstellensatz refutation. 
 Consider the following CNF formula:
 \[x_1 \land (\lnot x_1 \lor x_2) \land (\lnot x_2 \lor x_3) \land (\lnot x_3 \lor x_4)\land x_4\]
 The algebraic encoding is given by $p_1 = x_1$, $p_i = (1-x_{i-1})x_i$ when $2 \leq i \leq 4$ and $p_5 = 1-x_4$. To refute this CNF, we must find the polynomials $g_1, \ldots, g_5, h_1, \ldots, h_4$ through which
@@ -551,13 +551,7 @@ The algebraic encoding is given by $p_1 = x_1$, $p_i = (1-x_{i-1})x_i$ when $2 \
 
 \noindent
 To simplify things, we let $h_1, \ldots, h_4 = 0$ in order to have $\sum_{j = 1}^4 h_j(x_j^2-x_j) = 0$. Let $g_1, \ldots, g_5$ be equal to:
-\[\begin{split}
- g_1 &= x_2x_3x_4 \\
- g_2 &= x_3x_4 \\
- g_3 &= x_4 \\
- g_4 &= 1 \\
- g_5 &= 1 \\
-\end{split}\]
+\[g_1 = x_2x_3x_4 \qquad g_2 = x_3x_4 \qquad g_3 = x_4 \qquad g_4 = g_5 = 1\]
 
 \noindent
 We easily get that:
@@ -577,9 +571,54 @@ Nullstellensatz's degree measure vaguely resembles Resolution's width measure. F
  Given a CNF formula $F$ defined on $n$ variables, if $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ with degree $O(d)$ then the size of the proof is $n^{O(d)}$.
 \end{proposition}
 
-A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the size and the degree of the proof only by a constant factor, which is negligible, allowing us to work easier.
+A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most 1. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the size and the degree of the proof only by a constant factor, which is negligible, allowing us to work easier.
 
-As shown in \Cref{TFNP_dt_hierarchy}, $\F_2$-Nullstellensatz characterizes the black-box version of the class $\mathsf{PPA}$, the class of total search problems that are reducible to the \textbf{Polynomial Parity Argument (PPA)}, first defined by Papadimitriou \cite{PPA_complexity}. These problems have a solution guaranteed by the \textit{Handshaking lemma}: every undirected graph with an odd-degree node must have another odd-degree node. Papadimitriou defined the completeness of this class through the $LEAF$ problem, which asks the question \say{given a leaf of a graph, find another leaf on such graph}.
+As shown in \Cref{TFNP_dt_hierarchy}, $\F_2$-Nullstellensatz characterizes the black-box version of the class $\mathsf{PPA}$, the class of total search problems that are reducible to the \textbf{Polynomial Parity Argument (PPA)}, first defined by Papadimitriou \cite{PPA_complexity}.
+
+Suppose we are given a polynomial-size circuit $C$ with $n$ input bits and $n$ output bits. For each possible input $x \in \{0,1\}^n$, the circuit provides a pair $(p,s) \in \{0,1\}^n \times \{0,1\}^n$ where $p$ and $s$ are the predecessor and successor of $x$. This circuit generates a graph $G_C$ with $2^n$ nodes, where $(u,v) \in E(G_C)$ if and only if $u$ is the predecessor of $v$ and $v$ is the successor of $u$. By construction, each node has at most two neighbor nodes and some nodes may even be disconnected.
+
+The canonical \textsf{PPA}-Complete problem is $\mathrm{LEAF}$: given a specific node - usually assumed to be the $0 \ldots 0$ node - with an odd number of neighbors inside the graph $G_C$ generated by $C$, we are required to find another odd-degree node. The solution of this problem is guaranteed to exist thanks to the \textbf{Handshaking lemma}, which states that every undirected graph has an even number of odd-degree nodes. The hardness of the question comes from the impossibility of using common path-traversing algorithms to find the solution: the graph has exponential size with respect to the input size!
+
+\begin{figure}[H]
+    \centering
+    
+    \resizebox{0.9\hsize}{!}{
+        \begin{tikzpicture}[-,>=stealth,shorten >=1pt,auto,node distance=2cm, thick,main node/.style={scale=0.8,circle,draw,font=\sffamily\normalsize}]
+        
+            \node[circle, draw] (1)[]{$0000$};
+            \node[circle, draw] (2)[below right of = 1]{$0001$};
+            \node[circle, draw] (3)[below left of = 2]{$0010$};
+            \node[circle, draw] (4)[above right of = 2]{$1110$};
+            \node[circle, draw] (5)[below right of = 2]{$0100$};
+            \node[circle, draw] (6)[below right of = 4]{$1011$};
+            \node[circle, draw] (7)[above right of = 6]{$0110$};
+            \node[circle, draw] (8)[below right of = 6]{$1101$};
+            \node[circle, draw] (9)[below right of = 7]{$1000$};
+            \node[circle, draw] (10)[above right of = 9]{$1001$};
+            \node[circle, draw] (11)[below right of = 9]{$1010$};
+            \node[circle, draw] (12)[below right of = 10]{$0101$};
+            \node[circle, draw] (13)[above right of = 12]{$1100$};
+            \node[circle, draw] (14)[below right of = 12]{$0111$};
+            \node[circle, draw] (15)[below left of = 1]{$0011$};
+            \node[circle, draw] (16)[below right of = 13]{$1111$};
+        
+            \path[every node/.style={font=\sffamily\small}]
+                (1) edge (4)
+                (2) edge (3)
+                (4) edge (6)
+                (2) edge (5)
+                (3) edge (5)
+                (6) edge (7)
+                (9) edge (8)
+                (8) edge (7)
+                (12) edge (7)
+                (13) edge (14)
+            ;
+        \end{tikzpicture}
+    }
+    \caption{The circuit input is made of 4 bits and the generated graph has $2^4$ vertices.}
+\end{figure}
+
 
 Through \Cref{equiv_proof}, we know that an efficient proof for a formula $F$ directly implies that its search problem $S_F$ is actually efficiently reducible to the black-box version of the $\mathrm{LEAF}$ problem. In the following section, we show how to convert an efficient $\mathrm{TreeRes}_\oplus$ into an efficient $\F_2$-Nullstellensatz proof, proving that each problem efficiently solvable through a PDT is reducible to an instance of $\mathrm{LEAF}^{dt}$, which implies that $\mathsf{FP}^{pdt} \subseteq \mathsf{PPA}^{dt}$.
 
@@ -601,7 +640,7 @@ In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alp
 
 \begin{lemma}
     \label{ns_properties}
-    Given the multilinear polynomials $p_1, \ldots, p_k$ of degree at most $d$ and a linear form $f$, it holds that:
+    Given the multilinear polynomials $p_1, \ldots, p_k$ over $\F_2$ of degree at most $d$ and a linear form $f$, it holds that:
     \begin{enumerate}
         \item If $p_1, \ldots, p_k, f \vdash 1$ with degree $d$ then $p_1, \ldots, p_k \vdash 1-f$ with degree $d+1$.
         \item If $p_1, \ldots, p_k, 1-f \vdash 1$ with degree $d$ then $p_1, \ldots, p_k \vdash f$ with degree $d+1$.
@@ -618,7 +657,7 @@ In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alp
         \item Since $g_{k+1}f + \sum_{i = 1}^k g_i p_i = 1$, we easily get that:
         \[(1-f)g_{k+1}f + (1-f)\sum_{i = 1}^k g_i p_i = 1-f\]
         
-        Moreover, since $(1-f) f = 0$ due to it being an axiom, we can remove $f$ from the proof, concluding that $(1-f)\sum_{i = 1}^k g_i p_i = 1-f$ with degree incremented by one due to  $f$ being a linear form.
+        Moreover, since $(1-f) f = 0$ due to $f$ being defined on $\F_2$, we can remove $f$ from the proof, concluding that $(1-f)\sum_{i = 1}^k g_i p_i = 1-f$ with degree incremented by one due to  $f$ being a linear form.
     
         \item Similar to the first claim of this lemma: multiply the whole proof by $f$ instead of $1-f$.
         
@@ -640,7 +679,7 @@ In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alp
 
 \begin{lemma}
     \label{union_ref}
- Given two disjoint axiom sets $P_1, P_2$ of multilinear polynomials, if $P_1, p \vdash 1$ with degree $d_1$ and $P_2, 1-p \vdash 1$ with degree $d_2$ then $P_1, P_2 \vdash 1$ with degree $d_1 + d_2$.
+ Given two disjoint axiom sets $P_1, P_2$ of multilinear polynomials over $\F_2$, if $P_1, p \vdash 1$ with degree $d_1$ and $P_2, 1-p \vdash 1$ with degree $d_2$ then $P_1, P_2 \vdash 1$ with degree $d_1 + d_2$.
 \end{lemma}
 
 \begin{proof}
@@ -655,10 +694,10 @@ In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alp
  We notice that:
     \[\begin{split}
  (1-p) \left (\sum_{i = 1}^{m} g_i p_i + \sum_{j = 1}^n a_j (x_j^2-x_j) \right ) &= (1-p)(1-g_{m+1} p) \\
-        &= 1-g_{m+1}p- p+ g_{m+1}p^2 \\
+        &= 1-p - g_{m+1}p (1-p) \\
         &= 1-p
     \end{split}\]
- with degree $d_1+d_2$. In the last step, we used the fact that $p^2 = p$ due to multilinearity. Similarly, we get that:
+ with degree $d_1+d_2$. In the last step, we used the fact that $p(1-p) = 0$ holds in $\F_2$. Similarly, we get that:
     \[\begin{split}
  p\left (\sum_{i = 1}^{k} h_iq_i + \sum_{j = 1}^n b_j (x_j^2-x_j)  \right ) &= p 
     \end{split}\]
@@ -724,7 +763,7 @@ Next, we prove that a Tree-like Linear Resolution over $\F_2$ can be efficiently
 
     \end{tikzpicture}
 
-    \caption{Representation of the idea behind \Cref{treeref_no_weak}}
+    \caption{Representation of the idea behind \Cref{treeref_no_weak}.}
 \end{figure}
 
 The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz. However, if $D$ is derived through weakening from an axiom clause $C_i$ of a CNF formula $F$, we can easily simulate this rule. This result is enough for our purposes but it can also be extended to derivations from a non-axiom clause with a little blow-up in degree. 
@@ -802,7 +841,7 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
 
     \end{tikzpicture}
 
-    \caption{Representation of the idea behind \Cref{main_thm}}
+    \caption{Representation of the idea behind \Cref{main_thm}.}
 \end{figure}
 
 Finally, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\text{-}\mathsf{NS}(F))$, the last theorem proves that our new class is indeed contained inside $\mathsf{PPA}^{dt}$, meaning that any total search problem efficiently solvable by a parity decision tree can be reduced to an instance of the parity argument problem.  
@@ -817,7 +856,7 @@ Finally, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) 
     
  By \Cref{pdt_to_resp}, we know that there is a \textsf{TreeRes}$_{\oplus}$ proof of $F$ with size $O(s)$ and depth $d$. Then, by theorem \Cref{main_thm}, we know that there must be a $\F_2$-Nullstellensatz refutation for $F$ with degree $O(w + \log s)$ and size $n^{O(w + \log s)}$, where $w$ is the width of the tree-like proof.
  
- Moreover, since $\log s = O(\log^k n)$, we have that $s = O(n^k)$, hence $F$ has a $\F_2$-\textsf{NS} refutation of degree $O(\log n)$. By \Cref{equiv_proof}, we know that there is an efficient reduction $S_F \leq_m \mathsf{PPA}^{dt}$, concluding that $R \in \mathsf{PPA}^{pdt}$
+ We get that the total Nullstellensatz complexity of the proof $F$, given by the sum of the depth and the logarithm of the size, corresponds to $(w + \log s) + \log(n^{O(w + \log s)}) = O(\log^{k+1} n)$, hence $F$ has a polylogarithmic $\F_2$-\textsf{NS} refutation. By \Cref{equiv_proof}, this implies that there is an efficient reduction $S_F \leq_m \mathsf{PPA}^{dt}$, concluding that $R \in \mathsf{PPA}^{pdt}$
 \end{proof}
    
 

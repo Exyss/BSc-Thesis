@@ -188,7 +188,7 @@ Each refutation can also be graphically represented by connecting clauses with l
         ;
     \end{tikzpicture}
     
-    \caption{Dag-like refutation of the previous formula}
+    \caption{Dag-like refutation of the previous formula.}
 \end{figure}
 
 Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause - thus excluding the axioms - appears only once in a refutation, we say that it is a \textbf{tree-like} refutation due to how the clauses form a tree. This restriction implies that we cannot \curlyquotes{store} intermediate results. Any dag-like refutation can be converted into a tree-like refutation by derive multiple times each clause that we have to reuse.
@@ -233,7 +233,7 @@ Through this representation, each refutation produces a directed acyclic graph (
         ;
     \end{tikzpicture}
     
-    \caption{Tree-like refutation of the previous formula}
+    \caption{Tree-like refutation of the previous formula.}
     \label{treelike_res_proof}
 \end{figure}
 
@@ -309,7 +309,7 @@ This problem is usually referred to as the \textbf{false clause search problem}.
  ;
     \end{tikzpicture}
     
-    \caption{Decision tree for the previous unsatisfiable formula}
+    \caption{Decision tree for the previous unsatisfiable formula.}
     \end{figure}
 
  Similarly, we can show that any total query search problem $R$ can be associated with the search problem of the formula $F$ that describes the set of decision trees that verify $R$. Consider a decision tree $T$ made of the paths $p_1, \ldots, p_k$, each leading to the leaves $\ell_1, \ldots, \ell_k$. The DNF encoding of $T$, written as $D(T)$, is the disjunction over the conjunction of the literals $\alpha_1, \ldots, \alpha_h$ along each of the accepting paths in $T$. In other words, we have that $D_T = p_1 \lor \ldots \lor p_k$ where each $p_i = \alpha_1 \land \ldots \land \alpha_h \land \ell_i$ is an accepting path of $T$. By De Morgan's theorem, $\lnot{D(T)}$ is a CNF.
@@ -328,6 +328,8 @@ This problem is usually referred to as the \textbf{false clause search problem}.
 
 This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in \N}$, where $F_1, F_2, \ldots$ is a family of CNF formulas, and by extension that black-box \TFNP is exactly the study of the false clause search problem. Like in the communication \TFNP case, the upshot is that it is sufficient to restrict our interests to the study of search problems associated with unsatisfiable CNF formulas.
 
+Furthermore, we also notice that the width of each CNF encoding of a given search problem in \textsf{TFNP}$^{dt}$ corresponds to the maximum depth of the decision trees that solve or verify it.
+
 \newpage
 
 Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
@@ -341,7 +343,7 @@ To make things more readable, we will refer to $\mathrm{Search}(F)$ as $S_F$. Si
  where $F = (F_i)_{i \in \N}$ is a family of formulas. In a stronger sense, it must hold that $R^{dt}(S_F) = \Theta(P(F))$. 
 \end{definition}
 
-Most of the \TFNP subclasses discussed in previous sections have been shown to have a characterizing proof system:
+Again, this implies that the encoding CNF formulas must have a polylogarithmic width. Most of the \TFNP subclasses discussed in previous sections have been shown to have a characterizing proof system:
 \begin{itemize}
     \item $\mathrm{FP}^{dt}(S_F) = \Theta(\mathsf{TreeRes}(F))$ \cite{search_problems_dt_model}
     \item $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$  \cite{approx_counting}
@@ -408,7 +410,7 @@ Most of the \TFNP subclasses discussed in previous sections have been shown to h
  ;
     \end{tikzpicture}
     
-    \caption{Black-box \textsf{TFNP} classes and their characterizing proof systems}
+    \caption{Black-box \textsf{TFNP} classes and their characterizing proof systems.}
     \label{TFNP_dt_hierarchy}
 \end{figure}
 

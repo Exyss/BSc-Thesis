@@ -159,7 +159,7 @@ To better understand how reductions work, consider the $3\mathrm{COL}$ problem, 
             ;
     \end{tikzpicture}
     
-    \caption{Example of a 3-colorable graph}
+    \caption{Example of a 3-colorable graph.}
 \end{figure}
 
 This problem can easily be reduced to the $\mathrm{SAT}$ problem, which asks the question \say{does this propositional formula have an assignment that satisfies it?}. This problem is clearly in \textsf{NP}: if $\phi$ is a satisfiable formula, we can use an assignment $\alpha$ that satisfies $\phi$ as the certificate, which can easily be done in linear time. To reduce $3\mathrm{COL}$ to $\mathrm{SAT}$, we construct the following sub-formulas:
@@ -424,7 +424,7 @@ The complexity of protocols is measured in terms of their \textit{size} and \tex
         ;
     \end{tikzpicture}
 
-    \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The green path shows the computation given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$ for the input $(x,y)$}
+    \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The green path shows the computation given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$ for the input $(x,y)$.}
 \end{figure}
 
 A protocol encodes all possible messages that may be sent by the parties during any conceivable conversation, producing the expected output. This means that a protocol always returns an answer for all possible inputs, making any function computed by a protocol \textit{total}. This makes protocols are also a valid way to solve or verify total search problems.
