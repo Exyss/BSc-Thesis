@@ -1,15 +1,14 @@
-\chapter*{Conclusions}
-
-\addcontentsline{toc}{chapter}{Conclusions}
 
 The relations between total search problems, protocols, circuits, and proofs make \textsf{TFNP} an interesting and multifaceted theory that holds the potential to capture several key aspects of complexity theory under a single, unified framework. However, despite these promising connections, such universal characterization remains \textit{fuzzy} and incomplete: tools such as \textit{query-to-communication lifting} theorems and \textit{interpolation theorems} do not yet provide a sufficiently strong bridge to unify these approaches.
 
-In our study, we have shown that introducing parity to the black-box model leads to the definition of a new class that used a more powerful computational model, i.e. parity decision trees, providing a new lens through which we can study the complexity of total search problem. We have also showed how parity decision trees are characterized in a natural way by Tree-like Linear Resolution over $\mathbb{F}_2$. Through this connection, we have gained insights into the inherent computational limitations of parity decision trees, suggesting that their applicability may be confined to specific problem classes.
+In our study, we have shown that introducing parity to the black-box model leads to the definition of a new class that uses a more powerful computational model, i.e. parity decision trees, providing a new lens through which we can study the complexity of total search problem. We have also shown how parity decision trees are characterized in a natural way by Tree-like Linear Resolution over $\mathbb{F}_2$. Through this connection, we have gained insights into the inherent computational limitations of parity decision trees, suggesting that their applicability may be confined to specific problem classes.
+
+\hypersetup{linkcolor=blue}
 
 \begin{figure}[H]
     \centering
     
-    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=1.3cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
     
         \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (1) []{\textsf{FNP}};
 
@@ -33,29 +32,36 @@ In our study, we have shown that introducing parity to the black-box model leads
 
         \node (13) [right of = 10, xshift=30]{};
 
-        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (11) [below of = 13]{\textsf{FP}$^{dt}$};
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (11) [below of = 10]{\textsf{FP}$^{dt}$};
     
         \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm, color=blue]  (12) [right of = 9, xshift=100]{\textsf{FP}$^{pdt}$};
 
-        \path[every node/.style={font=\sffamily\small}]
-            (2) edge (1)
-            (3) edge (2)
-            (4) edge (2)
-            (5) edge (2)
-            (6) edge (3)
-            (8) edge (4)
-            (8) edge (6)
-            (9) edge (5)
-            (9) edge (6)
-            (10) edge (8)
-            (10) edge (9)
-            (11) edge (10)
+        \node (14) [above of = 12]{};
+        
+        \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm]  (15) [above of = 14]{\textsf{IND\text{-}PPA}$^{pdt}$};
 
-            (4) edge[dashed, near end, color=blue] node[yshift=10, xshift=-40]{\Cref{pls_not_inside_fp_pdt}}(12) 
-            (11) edge[color=blue] node{\Cref{fp_pdt_not_inside_fp_dt}}(12) 
-            (12) edge[bend right, swap, color=blue] node{\Cref{final_inclusion}}(5) 
-            (12) edge[dashed, bend left, color=blue] node{\Cref{fp_pdt_not_inside_fp_dt}}(11) 
-            ;
+
+        \path[every node/.style={font=\sffamily\small}]
+ (2) edge (1)
+ (3) edge (2)
+ (4) edge (2)
+ (5) edge (2)
+ (6) edge (3)
+ (8) edge (4)
+ (8) edge (6)
+ (9) edge (5)
+ (9) edge (6)
+ (10) edge (8)
+ (10) edge (9)
+ (11) edge (10)
+
+ (4) edge[swap, dashed, near end, color=blue] node[yshift=-7.5, xshift=30]{\Cref{pls_dt_not_inside_fp_pdt}}(12) 
+ (11) edge[color=blue] node{\Cref{fp_pdt_not_inside_fp_dt}}(12) 
+ (12) edge[color=blue, bend right] node{\Cref{final_inclusion}}(5) 
+ (12) edge[swap, color=blue] node{\Cref{fp_pdt_inside_ind_ppa_dt}}(15) 
+ (12) edge[dashed, bend left, color=blue] node{\Cref{fp_pdt_not_inside_fp_dt}}(11) 
+ (15) edge[out=160, in=0] (2) 
+ ;
     \end{tikzpicture}
 
     
@@ -68,7 +74,5 @@ These findings raise several questions for further exploration regarding the use
     \item \textit{Modeling the \textsf{TFNP} hierarchy with parity decision trees}. We have shown that parity decision trees are computationally stronger than classical decision trees. Can the entire black-box \textsf{TFNP} hierarchy also be effectively modeled using PDTs? Does the introduction of parity decision trees create a fundamentally stronger model? What is the precise relationship between these two hierarchies?
     \item \textit{Reductions through Parity Decision Tree}. In the current black-box model, reductions between problems are captured using decision trees. Can such reductions be generalized to parity decision tree reductions? Do the same inclusions and separations between classes also hold in the \textsf{TFNP}$^{pdt}$ hierarchy?
     \item \textit{Generalizing to finite fields beyond $\F_2$}. Our results have so far been based on the field $\F_2$. Can these techniques and characterizations be extended to a general finite field $\F_q$? Is Tree-like Linear Resolution over $\F_q$ able to define a broader class of computational models that generalize parity decision trees?
-    \item \textit{Connection to Communication Complexity}. Parity decision trees have been shown to be linked to communication complexity  \cite{pdts_comm_compl}. Is there an white-box model in \textsf{TFNP}$^{cc}$ analogous to $\textsf{FP}^{pdt}$ that could be characterized by specific types of communication protocols or circuit classes?
-
+    \item \textit{Connection to Communication Complexity}. Parity decision trees are linked to communication complexity  \cite{pdts_comm_compl}. Is there a white-box model in \textsf{TFNP}$^{cc}$ analogous to $\textsf{FP}^{pdt}$ that could be characterized by specific types of communication protocols or circuit classes?
 \end{enumerate}
-

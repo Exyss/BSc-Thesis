@@ -3,13 +3,13 @@
 
 \section{Decision vs. Search}
 
-For many years, the study of \textbf{decision problems} has been the main focus of computability theory. These problems can be described as simple questions with a \say{yes} or \say{no} answer, such as asking if some input object has some property or not. Given a language $\Sigma^*$, where $\Sigma$ is an alphabet of symbols and $\Sigma^*$ is the set of all strings on $\Sigma$, each decision problem can be described as a subset of $\Sigma^*$, where a string $\abk{o}$ that encodes an object $o$ is in the subset if and only if the answer to the problem for that object is positive. A \say{yes} answer is represented by a 1, while a \say{no} answer is represented by a 0. For example, given the language $\N$, the question \say{is $n$ a prime number?} is modeled by the decision problem $\mathrm{PRIMES} = \{n \in \N \mid n \text{ is prime}\}$. Since any symbol of an alphabet $\Sigma$ can be encoded as an unique sequence of bits, we can assume that $\{0,1\}$ is our unique alphabet of interest \cite{complexity_arora_barak,sipser_computation}.
+For many years, the study of \textbf{decision problems} has been the main focus of computability theory. These problems can be described as simple questions with a \say{yes} or \say{no} answer, such as asking if some input object has some property or not. Given a language $\Sigma^*$, where $\Sigma$ is an alphabet of symbols and $\Sigma^*$ is the set of all strings on $\Sigma$, each decision problem can be described as a subset of $\Sigma^*$, where a string $\abk{o}$ that encodes an object $o$ is in the subset if and only if the answer to the problem for that object is positive. A \say{yes} answer is represented by a 1, while a \say{no} answer is represented by a 0. For example, given the language $\N$, the question \say{is $n$ a prime number?} is modeled by the decision problem $\mathrm{PRIMES} = \{n \in \N \mid n \text{ is prime}\}$. Since any symbol of an alphabet $\Sigma$ can be encoded as a unique sequence of bits, we can assume that $\{0,1\}$ is our unique alphabet of interest \cite{complexity_arora_barak,sipser_computation}.
 
 \begin{definition}
  A decision problem for a property $P$ is a subset $L$ of a language $\{0,1\}^*$ such that $L = \{x \in \{0,1\}^* \mid P(x) = 1\}$.
 \end{definition}
 
-A decision problem is said to be \textit{decidable} if there is a Turing machine answers the question posed by the problem with 0 or 1 for any input $x \in \{0,1\}^*$. This also implies that the machine has to halt for every input. Decidability theory plays a large role in mathematics and computer science since most problems can be modeled through it. However, by their nature, decision problems are limited. Some problems require a more complex result than a simple yes-or-no answer. Instead of asking the question \say{does this object have the required property?}, we may be more interested in the question \say{what gives this object the following property?}.
+A decision problem is said to be \textit{decidable} if there is a Turing machine that answers the question posed by the problem with 0 or 1 for any input $x \in \{0,1\}^*$. This also implies that the machine has to halt for every input. Decidability theory plays a large role in mathematics and computer science since most problems can be modeled through it. However, by their nature, decision problems are limited. Some problems require a more complex result than a simple yes-or-no answer. Instead of asking the question \say{does this object have the required property?}, we may be more interested in the question \say{what gives this object the following property?}.
 
 These kinds of questions are modeled by \textbf{functional problems}, i.e. any problem where an output that is more complex than a yes-or-no answer is expected for a given input. Functional problems are by nature \curlyquotes{harder} than decision problems, describing any possible type of computation achievable through the concept of computable function, even decidability itself (any decision problem is just a functional problem with only two possible outputs).
 
@@ -44,7 +44,7 @@ In complexity theory, decision problems are grouped into numerous categories, ea
 The class of problems that are verifiable by a polynomial time verifier with certificates of polynomial length is referred to as \textsf{NP}. This class is equivalent to the class of problems efficiently solvable by a \textit{non-deterministic Turing machine}, a \TM that on each step of the computation can choose between a set of possible actions, branching the computation. Originally, the class \textsf{NP} was defined through this type of \TM \@ - hence the name of the class being an abbreviation for \textit{non-deterministic polynomial time} - but it quickly got replaced with the verifier definition due to \textsf{NTM}s being only a theoretical computational model that is physically unrealizable \cite{complexity_arora_barak}. For our purposes, we will consider the modern definition of \textsf{NP}.
 
 \begin{definition}
-    We define $\mathsf{P}$ as the set of decision problems that can be solved by a polynomial time \TM. We define $\mathsf{NP}$ as the set of decision problems that can be verified by a polynomial time verifier.
+ We define $\mathsf{P}$ as the set of decision problems that can be solved by a polynomial time \TM. We define $\mathsf{NP}$ as the set of decision problems that can be verified by a polynomial time verifier.
 \end{definition}
 
 It's easy to see that $\mathsf{P} \subseteq \mathsf{NP}$ since every efficiently solvable problem can also be efficiently verified by simply ignoring the certificate and solving the problem. However, it is currently not known whether $\mathsf{P} = \mathsf{NP}$ or not. The answer to this question is considered to be one of the most important questions in mathematics. In fact, if $\mathsf{P} = \mathsf{NP}$ were to be true, a lot of key problems in mathematics that are currently only efficiently verifiable could be solved in a reasonable amount of time by a modern computer. On the other hand, a large number of current technologies are based on the \textbf{assumption} that $\mathsf{P} \neq \mathsf{NP}$. Examples include the field of cryptography, which assumes that it's easy to check that each encrypted string is the result of the encryption scheme being applied to the original message, which works as the certificate, and very hard to find this message only through the encrypted string. If $\mathsf{P} \neq \mathsf{NP}$ were proven false, we would have to reconsider a large portion of the modern world, even digital currencies themselves.
@@ -142,21 +142,21 @@ To better understand how reductions work, consider the $3\mathrm{COL}$ problem, 
         \node[circle, draw, fill=red] (6) [above left of=5]{};
     
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge (2)
-            (2) edge (3)
-            (3) edge (4)
-            (4) edge (5)
-            (5) edge (6)
-            (6) edge (1)
+ (1) edge (2)
+ (2) edge (3)
+ (3) edge (4)
+ (4) edge (5)
+ (5) edge (6)
+ (6) edge (1)
 
-            (1) edge (3)
-            (1) edge (5)
-            (2) edge (6)
-            (2) edge (4)
-            (3) edge (5)
-            (4) edge (6)
+ (1) edge (3)
+ (1) edge (5)
+ (2) edge (6)
+ (2) edge (4)
+ (3) edge (5)
+ (4) edge (6)
 
-            ;
+ ;
     \end{tikzpicture}
     
     \caption{Example of a 3-colorable graph.}
@@ -189,10 +189,10 @@ Reductions play a critical role in computer science. In particular, they allow u
 
 \newpage
 
-For instance, since $\mathsf{P} \subseteq \mathsf{NP}$, the completeness constraint behind \textsf{NP}-Completeness would be to maintain polynomial time reductions. In \textsf{P}-Completeness, instead, the completeness constraint would be to maintain logarithmic space reductions due to how $\mathsf{L} \subseteq \mathsf{P}$, where $\mathsf{L}$ is the class of problems decidable in logarithmic space.
+For instance, since $\mathsf{P} \subseteq \mathsf{NP}$, the completeness constraint behind \textsf{NP}-Completeness would be to maintain polynomial-time reductions. In \textsf{P}-Completeness, instead, the completeness constraint would be to maintain logarithmic space reductions due to how $\mathsf{L} \subseteq \mathsf{P}$, where $\mathsf{L}$ is the class of problems decidable in logarithmic space.
 
 \begin{definition}
-    A problem $B$ is said to be \textsf{NP}-Complete if $B \in \mathcal{C}$ and $\forall A \in \mathsf{NP}$ it holds that $A \leq_p B$.
+ A problem $B$ is said to be \textsf{NP}-Complete if $B \in \mathcal{C}$ and $\forall A \in \mathsf{NP}$ it holds that $A \leq_p B$.
 \end{definition}
 
 From this definition, we derive that an \textsf{NP}-Complete problem can be solved in polynomial time if and only if $\mathsf{P} = \mathsf{NP}$. The $\mathrm{SAT}$ problem previously described is actually the first ever known \textsf{NP}-Complete problem, a seminal result proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem $\mathrm{FSAT}$, which asks the question \say{which assignment satisfies the following formula?}, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
@@ -266,19 +266,19 @@ Each of these subclasses is characterized by a complete total search problem tha
         \node[rectangle, draw, rounded corners, minimum width=15mm, minimum height=6mm] (11) [below of = 10]{\textsf{FP}};
     
         \path[every node/.style={font=\sffamily\small}]
-            (2) edge (1)
-            (3) edge (2)
-            (4) edge (2)
-            (5) edge (2)
-            (6) edge (3)
-            (8) edge (4)
-            (8) edge (6)
-            (9) edge (5)
-            (9) edge (6)
-            (10) edge (8)
-            (10) edge (9)
-            (11) edge (10)
-            ;
+ (2) edge (1)
+ (3) edge (2)
+ (4) edge (2)
+ (5) edge (2)
+ (6) edge (3)
+ (8) edge (4)
+ (8) edge (6)
+ (9) edge (5)
+ (9) edge (6)
+ (10) edge (8)
+ (10) edge (9)
+ (11) edge (10)
+ ;
     \end{tikzpicture}
     
     \caption{Hierarchy of the main total search problem subclasses. \\ An arrow from class $A$ to class $B$ means that $A \subseteq B$.}
@@ -299,7 +299,7 @@ Each \textsf{TFNP} problem can be analyzed through the lens of both white-box an
 In this context, Boolean circuits are defined as sets of logical AND and logical OR gates connected by cables. Boolean circuits have been proven to be Turing complete due to Turing machines and families of circuits being capable of simulating each other up to a logarithmic factor \cite{complexity_arora_barak}. Again, none should be dumbfounded by this result: any modern computer is just a large amount of Boolean gates wired together. We give the following definition of a Boolean circuit. \cite{comm_compl_appl}
 
 \begin{definition}
-    A Boolean circuit is a directed acyclic graph whose nodes, called gates, each associated with either an input variable, its negation or a Boolean operator. Each input gate has in-degree 0 and unlimited out-degree. Each Boolean gate has an out-degree gate equal to 1 (except for the output gate which has out-degree 0) and in-degree equal to either 1 or 2. All the 2 in-degree gates compute the logical AND or the logical OR of their given input variables or Boolean function. 
+ A Boolean circuit is a directed acyclic graph whose nodes, called gates, are each associated with either an input variable, its negation or a Boolean operator. Each input gate has in-degree 0 and unlimited out-degree. Each Boolean gate has an out-degree gate equal to 1 (except for the output gate which has out-degree 0) and in-degree equal to either 1 or 2. All the 2 in-degree gates compute the logical AND or the logical OR of their given input variables or Boolean function. 
 \end{definition}
 
 Each gate $v$ is associated with the Boolean function $f_v$ computed by it. A function $f$ is said to be computed by a circuit with output gate $u$ if for all inputs $x \in \{0,1\}^n$ it holds that $f(x) =  f_u(x)$.
@@ -338,34 +338,34 @@ The complexity of Boolean circuits is measured in terms of their \textit{size} a
         \node[main node] (18) [below of=16, yshift=8]{$\overline{x_3}$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge (2)
-            (1) edge (3)
+ (1) edge (2)
+ (1) edge (3)
 
-            (2) edge (4) 
-            (2) edge (17)
+ (2) edge (4) 
+ (2) edge (17)
 
-            (3) edge (9)
-            (3) edge (18)
+ (3) edge (9)
+ (3) edge (18)
 
-            (4) edge (5)
-            (4) edge (6)
+ (4) edge (5)
+ (4) edge (6)
 
-            (5) edge (7)
-            (5) edge (13)
+ (5) edge (7)
+ (5) edge (13)
 
-            (6) edge (8)
-            (6) edge (12)
+ (6) edge (8)
+ (6) edge (12)
 
-            (10) edge (7)
-            (10) edge (12)
+ (10) edge (7)
+ (10) edge (12)
 
-            (11) edge (8)
-            (11) edge (13)
+ (11) edge (8)
+ (11) edge (13)
 
-            (9) edge (10)
-            (9) edge (11)
+ (9) edge (10)
+ (9) edge (11)
 
-            ;
+ ;
     \end{tikzpicture}
 
     \caption{A Boolean circuit of size 15 and depth 4 computing $x_1 \oplus x_2 \oplus x_3$.}
@@ -404,24 +404,24 @@ The complexity of protocols is measured in terms of their \textit{size} and \tex
         \node[rectangle, draw] (13) [below right of=6, xshift=-10]{$o_6$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge[swap, color=Green]  node{0} (2)
-            (1) edge node{1}(3)
+ (1) edge[swap, color=Green]  node{0} (2)
+ (1) edge node{1}(3)
 
-            (2) edge[swap]  node{0} (4)
-            (2) edge[color=Green]  node{1}(5)
+ (2) edge[swap]  node{0} (4)
+ (2) edge[color=Green]  node{1}(5)
 
-            (3) edge[swap]  node{0} (6)
-            (3) edge  node{1}(7)
+ (3) edge[swap]  node{0} (6)
+ (3) edge  node{1}(7)
                         
-            (4) edge[swap]  node{0} (8)
-            (4) edge  node{1}(9)
+ (4) edge[swap]  node{0} (8)
+ (4) edge  node{1}(9)
 
-            (5) edge[swap]  node{0} (10)
-            (5) edge[color=Green]  node{1}(11)
+ (5) edge[swap]  node{0} (10)
+ (5) edge[color=Green]  node{1}(11)
 
-            (6) edge[swap]  node{0} (12)
-            (6) edge  node{1}(13)
-        ;
+ (6) edge[swap]  node{0} (12)
+ (6) edge  node{1}(13)
+ ;
     \end{tikzpicture}
 
     \caption{An example of a protocol of size 13 and depth 3 where the red nodes are owned by Alice and the blue nodes are owned by Bob. The green path shows the computation given by $f_{v_1}(x) = 0$, $f_{v_2}(y) = 1$ and $f_{v_5}(y) = 1$ for the input $(x,y)$.}
@@ -446,23 +446,23 @@ In this case, the certificate is the protocol itself: it defines a schema throug
 \newpage
 
 \begin{definition}
-    A communication search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times \{0,1\}^m \times O_m$, is said to be many-to-one reducible into a search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there are two functions $f_X, f_Y : \{0,1\}^m \to \{0,1\}^n$ and a $t$-bit protocol $g : (\{0,1\}^m \times \{0,1\}^n) \times O_n' \to O_m$ such that:
+ A communication search problem $R = (R_m)_{m \in \N}$, where $R_m \subseteq \{0,1\}^m \times \{0,1\}^m \times O_m$, is said to be many-to-one reducible into a search problem $S = (S_n)_{n \in \N}$, where $S_n \subseteq \{0,1\}^n \times \{0,1\}^n \times O_n'$, if for all $m \in \N$ there is an $n \in \N$ for which there are two functions $f_X, f_Y : \{0,1\}^m \to \{0,1\}^n$ and a $t$-bit protocol $g : (\{0,1\}^m \times \{0,1\}^n) \times O_n' \to O_m$ such that:
        \[\forall (x,y) \in \{0,1\}^m \times \{0,1\}^m \;\; (f_X(x), f_Y(y), z) \in S \implies (x, y, \pi((x,y), z)) \in R\]
-    In other words, the functions $f_X,f_Y$ map inputs of $R$ into inputs of $S$, while the protocol $g$ maps solutions of $S$ into solutions of $R$. 
+ In other words, the functions $f_X,f_Y$ map inputs of $R$ into inputs of $S$, while the protocol $g$ maps solutions of $S$ into solutions of $R$. 
 \end{definition}
 
-Circuits and protocols are related one another through the \textbf{Karchmer-Widgerson game}. The game has a simple objective: given two inputs with different outputs, Alice and Bob have to cooperate to find a bit that differs between the two inputs. When the function is monotone, that being a function for which given any pair of inputs $x,y$ such that $x \leq y$ it also holds that $f(x) \leq f(y)$, the game is also called monotone. 
+Circuits and protocols are related to one another through the \textbf{Karchmer-Widgerson game}. The game has a simple objective: given two inputs with different outputs, Alice and Bob have to cooperate to find a bit that differs between the two inputs. When the function is monotone, that being a function for which given any pair of inputs $x,y$ such that $x \leq y$ it also holds that $f(x) \leq f(y)$, the game is also called monotone. 
 
 \begin{definition}
-    Given a Boolean function $f : \{0, 1\}^n \to \{0, 1\}$, we define the Karchmer-Wigderson game of $f$, denoted with $\mathrm{KW}(f)$, as the following communication problem: given the two inputs $x$ and $y$, where $f(x) = 0$ and $f(y) = 1$, find an index $i \in [n]$ such that $x_i \neq y_i$.
+ Given a Boolean function $f : \{0, 1\}^n \to \{0, 1\}$, we define the Karchmer-Wigderson game of $f$, denoted with $\mathrm{KW}(f)$, as the following communication problem: given the two inputs $x$ and $y$, where $f(x) = 0$ and $f(y) = 1$, find an index $i \in [n]$ such that $x_i \neq y_i$.
 
-    If $f$ is a monotone Boolean function, meaning that given two inputs $x,y$ if $x \leq y$ then $f(x) \leq f(y)$, the monotone Karchmer-Widgerson game of $f$, denoted with $\mathrm{mKW}(f)$, finds an index $i \in [n]$ such that $x_i < y_i$.
+ If $f$ is a monotone Boolean function, meaning that given two inputs $x,y$ if $x \leq y$ then $f(x) \leq f(y)$, the monotone Karchmer-Widgerson game of $f$, denoted with $\mathrm{mKW}(f)$, finds an index $i \in [n]$ such that $x_i < y_i$.
 \end{definition}
 
 These games were originally introduced in 1990 by Karchmer and Widgerson \cite{kw_games} to show how the communication complexity of a game for a function $f$ is equal to the circuit complexity of a \textit{Boolean circuit} that solves the game on $f$.
 
 \begin{theorem}
-    Given a function $f : \{0, 1\}^n \to \{0, 1\}$, there is a circuit of depth $d$ that computes $f$ if and only if there is a protocol of depth $d$ that solves $\mathrm{KW}(f)$. Moreover, if $f$ is monotone, the circuit is monotone and the protocol solves $\mathrm{mKW}(f)$
+ Given a function $f : \{0, 1\}^n \to \{0, 1\}$, there is a circuit of depth $d$ that computes $f$ if and only if there is a protocol of depth $d$ that solves $\mathrm{KW}(f)$. Moreover, if $f$ is monotone, the circuit is monotone and the protocol solves $\mathrm{mKW}(f)$
 \end{theorem}
 
 A surprising result \cite{span_programs, adventures_monotone_tfnp} proved that any communication search problem is equivalent to the monotone KW game of some Boolean function. This result implies that \textsf{TFNP}$^{cc}$ exactly is the study of the monotone Karchmer-Widgerson game.

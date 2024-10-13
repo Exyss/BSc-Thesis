@@ -171,27 +171,27 @@ Each refutation can also be graphically represented by connecting clauses with l
         \node (11) [below right of=9]{$\bot$};
     
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge (7)
-            (2) edge (7)
-            (3) edge (6)
-            (4) edge (8)
-            (5) edge (6)
-            (5) edge (8)
+ (1) edge (7)
+ (2) edge (7)
+ (3) edge (6)
+ (4) edge (8)
+ (5) edge (6)
+ (5) edge (8)
 
-            (6) edge (9)
-            (7) edge (9)
-            (7) edge (10)
-            (8) edge (10)
+ (6) edge (9)
+ (7) edge (9)
+ (7) edge (10)
+ (8) edge (10)
 
-            (9) edge (11)
-            (10) edge (11)
-        ;
+ (9) edge (11)
+ (10) edge (11)
+ ;
     \end{tikzpicture}
     
     \caption{Dag-like refutation of the previous formula.}
 \end{figure}
 
-Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause - thus excluding the axioms - appears only once in a refutation, we say that it is a \textbf{tree-like} refutation due to how the clauses form a tree. This restriction implies that we cannot \curlyquotes{store} intermediate results. Any dag-like refutation can be converted into a tree-like refutation by derive multiple times each clause that we have to reuse.
+Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause - thus excluding the axioms - appears only once in a refutation, we say that it is a \textbf{tree-like} refutation due to how the clauses form a tree. This restriction implies that we cannot \curlyquotes{store} intermediate results. Any dag-like refutation can be converted into a tree-like refutation by deriving multiple times each clause that we have to reuse.
 
 \begin{figure}[H]
     \centering
@@ -214,30 +214,30 @@ Through this representation, each refutation produces a directed acyclic graph (
         \node (11) [below right of=9]{$\bot$};
     
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge (7)
-            (2) edge (7)
-            (1) edge (7x)
-            (2) edge (7x)
-            (3) edge (6)
-            (4) edge (8)
-            (5) edge (6)
-            (5) edge (8)
+ (1) edge (7)
+ (2) edge (7)
+ (1) edge (7x)
+ (2) edge (7x)
+ (3) edge (6)
+ (4) edge (8)
+ (5) edge (6)
+ (5) edge (8)
 
-            (6) edge (9)
-            (7x) edge (9)
-            (7) edge (10)
-            (8) edge (10)
+ (6) edge (9)
+ (7x) edge (9)
+ (7) edge (10)
+ (8) edge (10)
 
-            (9) edge (11)
-            (10) edge (11)
-        ;
+ (9) edge (11)
+ (10) edge (11)
+ ;
     \end{tikzpicture}
     
     \caption{Tree-like refutation of the previous formula.}
     \label{treelike_res_proof}
 \end{figure}
 
-This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself.Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
+This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself. Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
 
 Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Resolution proof is the length of the longest path from an axiom to the empty clause. The \textit{width} of a Resolution proof is the maximum number of literals appearing in a clause of the proof. For example, the proof shown in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a Tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}$ nodes.
 

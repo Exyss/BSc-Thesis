@@ -64,24 +64,24 @@ Instead of being labeled by single variables, the nodes of a parity decision tre
         \node[rectangle, draw] (13) [below right of=6, xshift=-10, yshift=-10]{$o_6$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge[swap, color=Green]  node{0} (2)
-            (1) edge node{1}(3)
+ (1) edge[swap, color=Green]  node{0} (2)
+ (1) edge node{1}(3)
 
-            (2) edge[swap]  node{0} (4)
-            (2) edge[color=Green]  node{1}(5)
+ (2) edge[swap]  node{0} (4)
+ (2) edge[color=Green]  node{1}(5)
 
-            (3) edge[swap]  node{0} (6)
-            (3) edge  node{1}(7)
+ (3) edge[swap]  node{0} (6)
+ (3) edge  node{1}(7)
                         
-            (4) edge[swap]  node{0} (8)
-            (4) edge  node{1}(9)
+ (4) edge[swap]  node{0} (8)
+ (4) edge  node{1}(9)
 
-            (5) edge[swap]  node{0} (10)
-            (5) edge[color=Green]  node{1}(11)
+ (5) edge[swap]  node{0} (10)
+ (5) edge[color=Green]  node{1}(11)
 
-            (6) edge[swap]  node{0} (12)
-            (6) edge  node{1}(13)
-            ;
+ (6) edge[swap]  node{0} (12)
+ (6) edge  node{1}(13)
+ ;
     \end{tikzpicture}
 
     \caption{An example of a parity decision tree of size 13 and depth 3.}
@@ -123,21 +123,21 @@ It's easy to see that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$ since any d
         \node[] (3c) [below of=3]{$T_w$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge[swap]  node{0} (2)
-            (1) edge node{1}(3)
-            ;
+ (1) edge[swap]  node{0} (2)
+ (1) edge node{1}(3)
+ ;
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (2) edge (2a.center)
-            (2) edge (2b.center)
-            (2a.center) edge (2b.center)
-            ;
+ (2) edge (2a.center)
+ (2) edge (2b.center)
+ (2a.center) edge (2b.center)
+ ;
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (3) edge (3a.center)
-            (3) edge (3b.center)
-            (3a.center) edge (3b.center)
-            ;
+ (3) edge (3a.center)
+ (3) edge (3b.center)
+ (3a.center) edge (3b.center)
+ ;
     \end{tikzpicture}
 
     \caption{The initial subtree of a parity decision tree.}
@@ -178,39 +178,39 @@ We replace $v$ with the node $v'$ labeled with the linear form $x_i$ and introdu
         \node[] (5c) [below of=3y]{$T_u$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge[swap]  node{0} (2)
-            (1) edge node{1}(3)
+ (1) edge[swap]  node{0} (2)
+ (1) edge node{1}(3)
 
-            (2) edge[swap]  node{0} (2x)
-            (2) edge node{1}(2y)
+ (2) edge[swap]  node{0} (2x)
+ (2) edge node{1}(2y)
 
-            (3) edge[swap]  node{0} (3x)
-            (3) edge node{1}(3y)
-            ;
-
-        \path[every node/.style={font=\sffamily\small}, -]
-            (2x) edge (2a.center)
-            (2x) edge (2b.center)
-            (2a.center) edge (2b.center)
-            ;
+ (3) edge[swap]  node{0} (3x)
+ (3) edge node{1}(3y)
+ ;
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (2y) edge (3a.center)
-            (2y) edge (3b.center)
-            (3a.center) edge (3b.center)
-            ;
+ (2x) edge (2a.center)
+ (2x) edge (2b.center)
+ (2a.center) edge (2b.center)
+ ;
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (3x) edge (4a.center)
-            (3x) edge (4b.center)
-            (4a.center) edge (4b.center)
-            ;
+ (2y) edge (3a.center)
+ (2y) edge (3b.center)
+ (3a.center) edge (3b.center)
+ ;
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (3y) edge (5a.center)
-            (3y) edge (5b.center)
-            (5a.center) edge (5b.center)
-            ;
+ (3x) edge (4a.center)
+ (3x) edge (4b.center)
+ (4a.center) edge (4b.center)
+ ;
+
+        \path[every node/.style={font=\sffamily\small}, -]
+ (3y) edge (5a.center)
+ (3y) edge (5b.center)
+ (5a.center) edge (5b.center)
+ ;
     \end{tikzpicture}
 
     \caption{The subtree after the splitting process.}
@@ -224,18 +224,18 @@ By repeating this process until all queries are defined on a single variable, we
 \end{theorem}
 
 \begin{proof}
-    Any decision tree is also a parity decision tree, thus we trivially get that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$. Let $\mathrm{PARITY}$ be the \textit{$n$-bit parity search problem}, i.e. the problem of determining the parity of $n$ variables for a given assignment $\alpha$. This problem can be solved by a PDT of size and depth $O(1)$ by making a single query $x_1 + \ldots + x_n$, concluding that $\mathrm{PARITY} \in \mathsf{FP}^{dt}$.
+ Any decision tree is also a parity decision tree, thus we trivially get that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$. Let $\mathrm{PARITY}$ be the \textit{$n$-bit parity search problem}, i.e. the problem of determining the parity of $n$ variables for a given assignment $\alpha$. This problem can be solved by a PDT of size and depth $O(1)$ by making a single query $x_1 + \ldots + x_n$, concluding that $\mathrm{PARITY} \in \mathsf{FP}^{dt}$.
     
     \begin{claim}
-        Any decision tree solving $\mathrm{PARITY}$ on $n$ variables has depth $\Omega(n)$.
+ Any decision tree solving $\mathrm{PARITY}$ on $n$ variables has depth $\Omega(n)$.
     \end{claim}
 
     \begin{proof}[Proof of the claim.]
-        Suppose that $\mathrm{PARITY}$ on $n$ variables can be solved by a decision tree $T$ with depth less than $n$. We use an adversarial argument: we think of an execution
-        of $T$, where some adversary answers each query of $T$ on the value of every input bit. The adversary can respond with $x_i = 0$ on all the first $n-1$ bits. Until the last bit $x_n$ is revealed, the tree has no way of determining the final output since it can either be 0 or 1 until the value of $x_n$ is revealed, concluding that it requires at least another query.
+ Suppose that $\mathrm{PARITY}$ on $n$ variables can be solved by a decision tree $T$ with depth less than $n$. We use an adversarial argument: we think of an execution
+ of $T$, where some adversary answers each query of $T$ on the value of every input bit. The adversary can respond with $x_i = 0$ on all the first $n-1$ bits. Until the last bit $x_n$ is revealed, the tree has no way of determining the final output since it can either be 0 or 1 until the value of $x_n$ is revealed, concluding that it requires at least another query.
     \end{proof}
     
-    By definition, $\mathsf{FP}^{dt}$ contains all the problems with a decision tree of polylogarithmic depth. Since $\mathrm{PARITY}$ requires a decision tree with depth $\Theta(n)$, we get that $\mathrm{PARITY} \notin \mathsf{FP}^{dt}$.
+ By definition, $\mathsf{FP}^{dt}$ contains all the problems with a decision tree of polylogarithmic depth. Since $\mathrm{PARITY}$ requires a decision tree with depth $\Theta(n)$, we get that $\mathrm{PARITY} \notin \mathsf{FP}^{dt}$.
 \end{proof}
 
 Since a system of linear forms can have multiple solutions, many assignments could be mapped to the same output. However, some systems could also be unsatisfiable, meaning that the node is unreachable by any assignment. When this happens we say that the node is \textbf{degenerate}.
@@ -263,16 +263,16 @@ Like normal decision trees, PDTs can be used to solve the false clause search pr
         \node[rectangle, draw] (7) [below right of=3, xshift=-10, yshift=-10]{$\lnot x \lor y$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge[swap]  node{0} (2)
-            (1) edge node{1}(3)
+ (1) edge[swap]  node{0} (2)
+ (1) edge node{1}(3)
 
-            (2) edge[swap]  node{0} (4)
-            (2) edge[]  node{1}(5)
+ (2) edge[swap]  node{0} (4)
+ (2) edge[]  node{1}(5)
 
-            (3) edge[swap]  node{0} (6)
-            (3) edge  node{1}(7)
+ (3) edge[swap]  node{0} (6)
+ (3) edge  node{1}(7)
                         
-            ;
+ ;
     \end{tikzpicture}
 
     \caption{A parity decision tree for $(x \lor y) \land (\lnot x \lor \lnot y) \land (\lnot x \lor y) \land (x \lor \lnot y)$.}
@@ -313,23 +313,23 @@ which implies that the negation of the system is equivalent to a set of disjunct
 \[\lnot \bigwedge_{i = 0}^k (f_1 = \alpha_1) \iff \bigvee_{i = 0}^k (f_1 = 1 + \alpha_1)\]
 
 \noindent
-We define such a set of disjunctions as a \textbf{linear clause}. More generally, a \textit{linear CNF formula} over $\F_n$ is a conjunction of linear clauses defined on $\F_n$.
+We define such a set of disjunctions as a \textbf{linear clause}. More generally, a \textit{linear CNF formula} over $\F_q$ is a conjunction of linear clauses defined on $\F_q$.
 
 \begin{definition}
- A linear CNF formula is a conjunction of $m$ disjunctions of linear equations over $\F_n$.
+ A linear CNF formula is a conjunction of $m$ disjunctions of linear equations over $\F_q$.
     \[\bigwedge_{i = 1}^m \bigvee_{j = 1}^{k_i} (f_j = \alpha_j)\]
 \end{definition}
 
 Linear CNF formulas can assume a complex structure such as the following:
 \[((x_1+x_2 = 0) \lor (x_1 = 1)) \land ((x_2 + x_3 + x_4 = 3) \lor (x_2 + x_4 = 0))\]
 
-We define \textbf{Linear Resolution over $\F_n$} (or $\mathsf{ResLin(\F_n)}$), an extension of standard Resolution (see \Cref{chap:bb-tfnp}) based on the following two rules:
+We define \textbf{Linear Resolution over $\F_q$} (or $\mathsf{ResLin(\F_q)}$), an extension of standard Resolution (see \Cref{chap:bb-tfnp}) based on the following two rules:
 \begin{enumerate}
-    \item \textit{Resolution rule}: given two linear clauses $(f = 0) \lor C$ and $(f = 1) \lor D$ defined on $\F_n$, we can derive the linear clause $C \lor D$
+    \item \textit{Resolution rule}: given two linear clauses $(f = 0) \lor C$ and $(f = 1) \lor D$ defined on $\F_q$, we can derive the linear clause $C \lor D$
     \item \textit{Weakening rule}: given a linear clause $C$, we can derive any linear clause $D$ such that $C \implies D$.
 \end{enumerate}
 
-Like in normal Resolution, in $\mathsf{ResLin(\F_n)}$ any derivation of a linear clause $C$ from a linear CNF $F$ is a sequence of linear clauses that ends with $C$, where every clause is either an axiom of $F$ or it can be derived from previous clauses through one of the two derivation rules. A linear CNF is unsatisfiable if and only if the empty linear clause can be derived from it. 
+Like in normal Resolution, in $\mathsf{ResLin(\F_q)}$ any derivation of a linear clause $C$ from a linear CNF $F$ is a sequence of linear clauses that ends with $C$, where every clause is either an axiom of $F$ or it can be derived from previous clauses through one of the two derivation rules. A linear CNF is unsatisfiable if and only if the empty linear clause can be derived from it. 
 
 Any standard CNF formula can be described as a linear CNF formula over $\F_2$ simply by treating each clause as a disjunction of linear forms made of a single term. For example, the CNF $(x_1 \lor \lnot{x_2}) \land (\lnot{x_3} + x_1)$ can be written as the following linear CNF formula:
 \[((x_1 = 1) \lor (x_2 = 0)) \land ((x_3 = 0) \lor (x_1 = 1))\]
@@ -370,15 +370,15 @@ concluding that $(x = 0) \lor (y = 1) \models (x = 0) \lor (x+y = 0)$. Proceedin
         \node (15) [left of=14]{$(x=1)$};
     
         \path[every node/.style={font=\sffamily\small}]
-            (14) edge (3)
-            (15) edge (1)
+ (14) edge (3)
+ (15) edge (1)
                
-            (8) edge (6)
+ (8) edge (6)
                
-            (6) edge (3)
+ (6) edge (3)
                
-            (3) edge (1)
-            ;
+ (3) edge (1)
+ ;
     \end{tikzpicture}
 
     \caption{$\mathsf{TreeRes}_\oplus$-proof of the previous linear CNF formula.}
@@ -412,7 +412,7 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
 
  By induction on the depth of a node of $T$, we show that the clause written in $v$ contradicts the system $\Phi_v^T$. The root node contains the empty clause and is labeled by an empty system, making the statement trivially true. Assume now that the statement holds for a generic node $v$. We have to show that the hypothesis also holds for its children $u$ and $w$.
 
- Suppose that $v$ is the result of a resolution rule application, where $D_1 \lor D_2$ is the clause inside $v$. Assume that $u$ is the node that contains $(f = 0) \lor D_1$ while $w$ contains $(f = 1) \lor D_2$. By inductive hypothesis, we know that $D_1 \lor D_2$ contradicts the system $\Phi_v^T$. This means that the set of equalities in $D_1$ contradicts $\Phi_v^T$. Moreover, we know that $\Phi_u^T = \Phi_v^T \land (f = 1)$, concluding that $(f = 0) \lor D_1$ contradicts $\Phi_u^T$. Likewise, we can show that $(f = 1) \lor D_2$ contradicts $\Phi_w^T$.
+ Suppose that $v$ is the result of a resolution rule application, where $D_1 \lor D_2$ is the clause inside $v$. Assume that $u$ is the node that contains $(f = 0) \lor D_1$ while $w$ contains $(f = 1) \lor D_2$. By the inductive hypothesis, we know that $D_1 \lor D_2$ contradicts the system $\Phi_v^T$. This means that the set of equalities in $D_1$ contradicts $\Phi_v^T$. Moreover, we know that $\Phi_u^T = \Phi_v^T \land (f = 1)$, concluding that $(f = 0) \lor D_1$ contradicts $\Phi_u^T$. Likewise, we can show that $(f = 1) \lor D_2$ contradicts $\Phi_w^T$.
     
  Suppose now that $v$ is the result of a weakening rule, where $u$ is the only child. Since $(v,u)$ is unlabeled, we get that $\Phi_v^T = \Phi_u^T$. Furthermore, since $v$ is the result of a weakening applied to $u$, we know that the clause in $u$ semantically implies the clause in $v$, but by inductive hypothesis we know that the clause in $v$ contradicts the system $\Phi_v^T$, meaning that $u$ must also contradict the system $\Phi_v^T = \Phi_u^T$. Finally, if $v$ is a leaf then the statement is trivially true since it refutes a clause of $F$.
 
@@ -433,12 +433,12 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
         \node[rectangle, draw] (5) [below right of=3, xshift=20, yshift=-10]{$(x = 0) \lor (y = 1)$};
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge[swap]  node{0} (2)
-            (1) edge node{1}(3)
+ (1) edge[swap]  node{0} (2)
+ (1) edge node{1}(3)
 
-            (3) edge[swap]  node{0} (4)
-            (3) edge[]  node{1}(5)            
-            ;
+ (3) edge[swap]  node{0} (4)
+ (3) edge[]  node{1}(5)            
+ ;
     \end{tikzpicture}
 
     \caption{The PDT obtained from the proof shown in \Cref{treelike_proof}.}
@@ -476,16 +476,16 @@ $\mathsf{TreeRes}_\oplus$ proofs and parity decision trees can be viewed as two 
         \node (15) [left of=14, xshift = -50]{$(x=1)$};
     
         \path[every node/.style={font=\sffamily\small}]
-            (14) edge (4)
-            (15) edge (1)
+ (14) edge (4)
+ (15) edge (1)
                
-            (8) edge (6)
+ (8) edge (6)
                
-            (4) edge (3)
-            (6) edge (3)
+ (4) edge (3)
+ (6) edge (3)
                
-            (3) edge (1)
-            ;
+ (3) edge (1)
+ ;
     \end{tikzpicture}
 
     \caption{$\mathsf{TreeRes}_\oplus$-proof obtained from the PDT shown in \Cref{pdt_cnf}.}
@@ -497,20 +497,27 @@ We conclude that problems efficiently solvable parity decision trees are indeed 
     $\mathsf{FP}^{pdt}(S_F) = \Theta(\mathsf{TreeRes}_\oplus(F))$
 \end{theorem}
 
-After defining the class $\mathsf{FP}^{pdt}$ and proving that $\mathsf{TreeRes}_\oplus$ characterizes it, we're interested in studying where this class lies in the \textsf{TFNP}$^{dt}$ hierarchy. It's a well-known fact that $\mathsf{TreeRes}_\oplus$ can efficiently simulate $\mathsf{TreeRes}$ but the reverse doesn't hold due to the hardness of simulating weakening rules. This result also follows more naturally from our results since $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$. Parity makes PDTs stronger than decision trees, but how much stronger?
+\section{Known relations with other proof systems}
 
-We know that Tree-like Linear Resolution over $\F_2$ is based on linear forms defined on $\F_2$. Since Nullstellensatz over $\F_2$ also works with polynomials over $\F_2$, our intuition was to show that these two proof systems are somehow related to one another. Initially, our first hypothesis was that $\mathsf{TreeRes}_\oplus$ is a very powerful tool even capable of efficiently simulating $\mathrm{\F_2\text{-}NS}$. We tried to prove this result by showing that $\mathsf{PPA}^{dt} \subseteq \mathsf{FP}^{pdt}$, which appeared to be out of reach.
+After defining the class $\mathsf{FP}^{pdt}$ and proving that $\mathsf{TreeRes}_\oplus$ characterizes it, we're interested in studying where this class lies in the \textsf{TFNP}$^{dt}$ hierarchy. It's a well-known fact that any $\mathsf{TreeRes}$ proof is also a $\mathsf{TreeRes}_\oplus$ due to the latter being an extension of the former. However, the reverse simulation easily doesn't hold due to $\mathsf{TreeRes}$ being a weaker proof system: the \textit{pebbling formulas on the XOR function} are hard for $\mathsf{TreeRes}$ but easy for $\mathsf{TreeRes}_\oplus$. This separation between the two proof systems also follows more naturally from our results since $\mathsf{FP}^{dt} \subsetneq \mathsf{FP}^{pdt}$ as shown in \Cref{fp_pdt_not_inside_fp_dt}, also raising the following question: parity clearly makes PDTs stronger than decision trees, but how much stronger?
 
-In a seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate regular Resolution (or $\mathsf{RegRes}$), a restricted proof system derived from Resolution. Due to any regular Resolution proof also being a Resolution proof, this result also implies that $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate $\mathsf{Res}$. Thanks to \Cref{equiv_proof} and the fact that $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$, we conclude the following black-box separation.
+We know that Tree-like Linear Resolution over $\F_2$ is strictly related to polynomials over the $\F_2$. In fact, it is already known \cite{treeres2_in_pc} that $\mathsf{TreeRes}_\oplus$ can be converted into a small proof in \textbf{Polynomial Calculus} over $\F_2$, an algebraic proof system. This proof system, as shown in \cite{tfnp_characterization}, characterizes the \curlyquotes{non-canonical} class $\mathsf{IND\text{-}PPA}^{dt}$, whose complete problem is $\mathrm{IND\text{-}LEAF}$, i.e. the inductive version of the $\mathrm{LEAF}$ problem. Thanks to \Cref{equiv_proof}, the previous result immediately concludes the following inclusion.
 
 \begin{proposition}
-    \label{pls_not_inside_fp_pdt}
-    $\mathsf{PLS}^{dt} \not\subseteq \mathsf{FP}^{pdt}$
+    \label{fp_pdt_inside_ind_ppa_dt}
+    $\mathsf{FP}^{pdt} \not\subseteq \mathsf{IND\text{-}PPA}^{dt}$
 \end{proposition}
 
-\newpage
+This inclusion rings a bell: looks like PDTs aren't actually that strong. Another proof system strictly related to polynomials over $\F_2$ is \textbf{Nullstellensatz}, another algebraic proof system. In general, it is known that Nullstellensatz is \textit{weaker} than Polynomial Calculus, even over the field $\F_2$.
 
-This separation rings a bell: looks like PDTs aren't actually that strong. We quickly shifted our perspective on our previous study on relationships with Nullstellensatz, trying to show that the simulation holds in the other direction. Indeed, we were capable of proving that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}Nullstellensatz}$ proof, providing us a \textbf{black-box inclusion} for our new class.
+Our first hypothesis was that $\mathsf{TreeRes}_\oplus$ could act as an intermediate step between the two algebraic systems. We tried to prove this result by showing that $\mathsf{LEAF}^{dt} \in \mathsf{FP}^{pdt}$, which appeared to be out of reach. We quickly shifted our perspective on trying to show that the simulation holds in the other direction. Indeed, we were capable of proving in our main theorem, i.e. \Cref{main_thm}, that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}NS}$ proof, providing a \textbf{black-box inclusion} for our new class. This also strengthens the previous relations showed in \cite{treeres2_in_pc}.
+
+Moreover, in the seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate regular Resolution (or $\mathsf{RegRes}$) - a restricted proof system derived from Resolution - due to the presence of harder types of pebbling formulas that separate them. Due to any regular Resolution proof also being a Resolution proof, this result also implies that $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate $\mathsf{Res}$. Again, thanks to \Cref{equiv_proof} and to the fact that $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$, we conclude the following black-box separation.
+
+\begin{proposition}
+    \label{pls_dt_not_inside_fp_pdt}
+    $\mathsf{PLS}^{dt} \not\subseteq \mathsf{FP}^{pdt}$
+\end{proposition}
 
 \section{Nullstellensatz over $\F_2$ and the class $\mathsf{PPA}^{dt}$}
 
@@ -543,10 +550,7 @@ In order for the CNF $F$ to be satisfied by an assignment $x$, each clause must 
 \end{figure}
 
 \noindent
-When a polynomial $q$ can be derived from a set of axioms $P$, we write $P \stackrel{\mathsf{NS}}{\vdash} q$. If $F$ is a CNF formula and $P \stackrel{\mathsf{NS}}{\vdash} 1$ then we get a Nullstellensatz refutation. 
-Consider the following CNF formula:
-\[x_1 \land (\lnot x_1 \lor x_2) \land (\lnot x_2 \lor x_3) \land (\lnot x_3 \lor x_4)\land x_4\]
-The algebraic encoding is given by $p_1 = x_1$, $p_i = (1-x_{i-1})x_i$ when $2 \leq i \leq 4$ and $p_5 = 1-x_4$. To refute this CNF, we must find the polynomials $g_1, \ldots, g_5, h_1, \ldots, h_4$ through which
+When a polynomial $q$ can be derived from a set of axioms $P$, we write $P \stackrel{\mathsf{NS}}{\vdash} q$. If $F$ is a CNF formula and $P \stackrel{\mathsf{NS}}{\vdash} 1$ then we get a Nullstellensatz refutation. Consider the CNF formula $x_1 \land (\lnot x_1 \lor x_2) \land (\lnot x_2 \lor x_3) \land (\lnot x_3 \lor x_4)\land x_4$. The algebraic encoding is given by $p_1 = x_1$, $p_i = (1-x_{i-1})x_i$ when $2 \leq i \leq 4$ and $p_5 = 1-x_4$. To refute this CNF, we must find the polynomials $g_1, \ldots, g_5, h_1, \ldots, h_4$ through which
 \[\sum_{i = 1}^5 g_ip_{i} + \sum_{j = 1}^4 h_j(x_j^2-x_j) = 1\]
 
 \noindent
@@ -571,13 +575,13 @@ Nullstellensatz's degree measure vaguely resembles Resolution's width measure. F
  Given a CNF formula $F$ defined on $n$ variables, if $P_F \stackrel{\mathsf{NS}}{\vdash} 1$ with degree $O(d)$ then the size of the proof is $n^{O(d)}$.
 \end{proposition}
 
-A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most 1. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the size and the degree of the proof only by a constant factor, which is negligible, allowing us to work easier.
+A common result shows that in Nullstellensatz proofs we can assume that polynomials are \textit{multilinear} (short for \textit{multivariate and linear}), meaning that each variable of each term has algebraic multiplicity equal to at most 1. For example, the polynomial $xy+yz$ is multilinear, while $x^2y$ isn't. This assumption affects the degree of the proof only by a constant factor, allowing us to work more easily.
 
 As shown in \Cref{TFNP_dt_hierarchy}, $\F_2$-Nullstellensatz characterizes the black-box version of the class $\mathsf{PPA}$, the class of total search problems that are reducible to the \textbf{Polynomial Parity Argument (PPA)}, first defined by Papadimitriou \cite{PPA_complexity}.
 
 Suppose we are given a polynomial-size circuit $C$ with $n$ input bits and $n$ output bits. For each possible input $x \in \{0,1\}^n$, the circuit provides a pair $(p,s) \in \{0,1\}^n \times \{0,1\}^n$ where $p$ and $s$ are the predecessor and successor of $x$. This circuit generates a graph $G_C$ with $2^n$ nodes, where $(u,v) \in E(G_C)$ if and only if $u$ is the predecessor of $v$ and $v$ is the successor of $u$. By construction, each node has at most two neighbor nodes and some nodes may even be disconnected.
 
-The canonical \textsf{PPA}-Complete problem is $\mathrm{LEAF}$: given a specific node - usually assumed to be the $0 \ldots 0$ node - with an odd number of neighbors inside the graph $G_C$ generated by $C$, we are required to find another odd-degree node. The solution of this problem is guaranteed to exist thanks to the \textbf{Handshaking lemma}, which states that every undirected graph has an even number of odd-degree nodes. The hardness of the question comes from the impossibility of using common path-traversing algorithms to find the solution: the graph has exponential size with respect to the input size!
+The canonical \textsf{PPA}-Complete problem is $\mathrm{LEAF}$: given a specific node - usually assumed to be the $0 \ldots 0$ node - with an odd number of neighbors inside the graph $G_C$ generated by $C$, we are required to find another odd-degree node. The solution to this problem is guaranteed to exist thanks to the \textbf{Handshaking lemma}, which states that every undirected graph has an even number of odd-degree nodes. The hardness of the question comes from the impossibility of using common path-traversing algorithms to find the solution: the graph has exponential size with respect to the input size!
 
 \begin{figure}[H]
     \centering
@@ -603,19 +607,19 @@ The canonical \textsf{PPA}-Complete problem is $\mathrm{LEAF}$: given a specific
             \node[circle, draw] (16)[below right of = 13]{$1111$};
         
             \path[every node/.style={font=\sffamily\small}]
-                (1) edge (4)
-                (2) edge (3)
-                (4) edge (6)
-                (2) edge (5)
-                (3) edge (5)
-                (6) edge (7)
-                (9) edge (8)
-                (8) edge (7)
-                (12) edge (7)
-                (13) edge (14)
-            ;
+ (1) edge (4)
+ (2) edge (3)
+ (4) edge (6)
+ (2) edge (5)
+ (3) edge (5)
+ (6) edge (7)
+ (9) edge (8)
+ (8) edge (7)
+ (12) edge (7)
+ (13) edge (14)
+ ;
         \end{tikzpicture}
-    }
+ }
     \caption{The circuit input is made of 4 bits and the generated graph has $2^4$ vertices.}
 \end{figure}
 
@@ -640,7 +644,7 @@ In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alp
 
 \begin{lemma}
     \label{ns_properties}
-    Given the multilinear polynomials $p_1, \ldots, p_k$ over $\F_2$ of degree at most $d$ and a linear form $f$, it holds that:
+ Given the multilinear polynomials $p_1, \ldots, p_k$ over $\F_2$ of degree at most $d$ and a linear form $f$, it holds that:
     \begin{enumerate}
         \item If $p_1, \ldots, p_k, f \vdash 1$ with degree $d$ then $p_1, \ldots, p_k \vdash 1-f$ with degree $d+1$.
         \item If $p_1, \ldots, p_k, 1-f \vdash 1$ with degree $d$ then $p_1, \ldots, p_k \vdash f$ with degree $d+1$.
@@ -652,28 +656,22 @@ In a similar fashion, given the polynomial $p$ we denote with $p_{\mid_{f = \alp
 \end{lemma}
 
 \begin{proof}
-    We proceed claim by claim:
+ We proceed claim by claim:
     \begin{enumerate}
         \item Since $g_{k+1}f + \sum_{i = 1}^k g_i p_i = 1$, we easily get that:
         \[(1-f)g_{k+1}f + (1-f)\sum_{i = 1}^k g_i p_i = 1-f\]
         
-        Moreover, since $(1-f) f = 0$ due to $f$ being defined on $\F_2$, we can remove $f$ from the proof, concluding that $(1-f)\sum_{i = 1}^k g_i p_i = 1-f$ with degree incremented by one due to  $f$ being a linear form.
+ Moreover, since $(1-f) f = 0$ due to $f$ being defined on $\F_2$, we can remove $f$ from the proof, concluding that $(1-f)\sum_{i = 1}^k g_i p_i = 1-f$ with degree incremented by one due to  $f$ being a linear form.
     
-        \item Similar to the first claim of this lemma: multiply the whole proof by $f$ instead of $1-f$.
+        \item Similar to claim 1 of this lemma: multiply the whole proof by $f$.
         
-        \item Let $p = f p_1 + p_0$, where $p_1$ and $p_0$ are independent of $f$. By restricting $p$ on $f = 0$ we get that:
-        \[p_{\mid_{f=0}} = 0 \cdot p_1 + p_0 = p_0 = p - f p_1\]
-        Since $p$ has degree at most $d$ and $f$ has degree 1, $p_1$ must have degree at most $d-1$, thus $p - f p_1 = p_{\mid_{f=0}}$ is a proof of degree at most $d$.
+        \item Let $p = f p_1 + p_0$, where $p_1$ and $p_0$ are independent of $f$. By restricting $p$ on $f = 0$ we get that $p_{\mid_{f=0}} = 0 \cdot p_1 + p_0 = p_0 = p - f p_1$. Since $p$ has degree at most $d$ and $f$ has degree 1, $p_1$ must have degree at most $d-1$, thus $p - f p_1 = p_{\mid_{f=0}}$ is a proof of degree at most $d$.
         
-        \item Similar to the third claim of this lemma: by restricting $p$ on $f=1$ we obtain that:
-        \[p_{\mid_{f=1}} = p_1 + p_0 = p_1 + p_0 + fp_1 - fp_1 = p+(1-f)p_1\]
-        thus $p + (1-f)p_1 = p_{\mid_{f=1}}$ is a proof of degree at most $d$.
+        \item Similar to claim 3 of this lemma: by restricting $p$ on $f=1$ we obtain that $p_{\mid_{f=1}} = p_1 + p_0 = p_1 + p_0 + fp_1 - fp_1 = p+(1-f)p_1$, thus $p + (1-f)p_1 = p_{\mid_{f=1}}$ is a proof of degree at most $d$.
 
-        \item Through the previous claims of this lemma $p_1, \ldots, p_k, f \vdash p_{1\mid_{f=0}}, \ldots, p_{k\mid_{f=0}} \vdash 1$ with degree $d$. Then, by the first claim of this lemma, we know that $p_1, \ldots, p_k, f \vdash  1$ with degree $d$ implies that $p_1, \ldots, p_k \vdash 1-f$ with degree $d+1$. Likewise, we have that $p_1, \ldots, p_k, 1-f \vdash p_{1\mid_{f=1}}, \ldots, p_{k\mid_{f=1}} \vdash 1$ with degree $d+1$.
-        
-        Finally, since $p_1, \ldots, p_k \vdash 1-f$ and $p_1, \ldots, p_k, 1-f \vdash 1$ both with degree $d+1$, by concatenating the two proofs we get that $p_1, \ldots, p_k \vdash 1$ with degree $d+1$.
+        \item Through the previous claims of this lemma $p_1, \ldots, p_k, f \vdash p_{1\mid_{f=0}}, \ldots, p_{k\mid_{f=0}} \vdash 1$ with degree $d$. Then, by the first claim of this lemma, we know that $p_1, \ldots, p_k, f \vdash  1$ with degree $d$ implies that $p_1, \ldots, p_k \vdash 1-f$ with degree $d+1$. Likewise, we have that $p_1, \ldots, p_k, 1-f \vdash p_{1\mid_{f=1}}, \ldots, p_{k\mid_{f=1}} \vdash 1$ with degree $d+1$. Finally, since $p_1, \ldots, p_k \vdash 1-f$ and $p_1, \ldots, p_k, 1-f \vdash 1$ both with degree $d+1$, by concatenating the two proofs we get that $p_1, \ldots, p_k \vdash 1$ with degree $d+1$.
 
-        \item Similar to the third claim of this lemma: invert the roles of the two initial proofs and use the second claim of this lemma.
+        \item Similar to claim 5 of this lemma: invert the roles of the two initial proofs and use the second claim of this lemma.
     \end{enumerate}
 \end{proof}
 
@@ -710,19 +708,19 @@ Next, we prove that a Tree-like Linear Resolution over $\F_2$ can be efficiently
 
 \begin{lemma}
     \label{treeref_no_weak}
-    Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ that uses only the resolution rule then there is $\F_2\text{-}\NS$ refutation of $F$ of degree $w+\log_2 s$.
+ Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ that uses only the resolution rule then there is $\F_2\text{-}\NS$ refutation of $F$ of degree $w+\log_2 s$.
 \end{lemma}
 
 \begin{proof}
-    Let $F = C_1 \land \ldots \land C_k$. We proceed by strong induction on the size $s$ of $T$. When $S = 1$, one of the axioms of $F$ must be the empty clause, hence $p_{C_i} \vdash 1$ for some $i$ and by extension that $p_{C_i}, \ldots, p_{C_k} \vdash 1$.
+ Let $F = C_1 \land \ldots \land C_k$. We proceed by strong induction on the size $s$ of $T$. When $S = 1$, one of the axioms of $F$ must be the empty clause, hence $p_{C_i} \vdash 1$ for some $i$ and by extension that $p_{C_i}, \ldots, p_{C_k} \vdash 1$.
 
-    Suppose now that $s > 1$. Let $f = 0$ and $f = 1$ be the two clauses that derive the empty clause $\bot$ in $T$. These two clauses are derived through two subtrees $T_0, T_1$ of sizes $s_0, s_1$, where $s = s_0+s_1+1$. 
+ Suppose now that $s > 1$. Let $f = 0$ and $f = 1$ be the two clauses that derive the empty clause $\bot$ in $T$. These two clauses are derived through two subtrees $T_0, T_1$ of sizes $s_0, s_1$, where $s = s_0+s_1+1$. 
     
-    By restricting $T_0$ on $f = 1$, the tree $T_{0 \mid_{f = 1}}$ is a $\mathsf{TreeRes}_\oplus$ proof of the formula $C_{1 \mid_{f = 1}} \land \ldots \land C_{k \mid_{f = 1}}$ of size $s_1$. Since $T$ uses only the resolution rule, $T_0$ also does. Then, my induction, we have that $p_{C_{1 \mid_{f = 1}}}, \ldots, p_{C_{k \mid_{f = 1}}} \vdash 1$ with degree $w + \log_2 s_1$. Using a similar argument, the tree $T_{1 \mid_{f = 0}}$ produces a proof $p_{C_{1 \mid_{f = 0}}}, \ldots, p_{C_{k \mid_{f = 0}}} \vdash 1$ with degree $w + \log s_2$.
+ By restricting $T_0$ on $f = 1$, the tree $T_{0 \mid_{f = 1}}$ is a $\mathsf{TreeRes}_\oplus$ proof of the formula $C_{1 \mid_{f = 1}} \land \ldots \land C_{k \mid_{f = 1}}$ of size $s_1$. Since $T$ uses only the resolution rule, $T_0$ also does. Then, my induction, we have that $p_{C_{1 \mid_{f = 1}}}, \ldots, p_{C_{k \mid_{f = 1}}} \vdash 1$ with degree $w + \log_2 s_1$. Using a similar argument, the tree $T_{1 \mid_{f = 0}}$ produces a proof $p_{C_{1 \mid_{f = 0}}}, \ldots, p_{C_{k \mid_{f = 0}}} \vdash 1$ with degree $w + \log s_2$.
 
-    If $s_1 < \frac{s}{2}$, then $w + \log_2 s_1 \leq w + \log_2 s - 1$. Thus, the proof $p_{C_{1 \mid_{f = 1}}}, \ldots, p_{C_{k \mid_{f = 1}}} \vdash 1$ is also a proof of degree $w + \log_2 s - 1$, while the proof $p_{C_{1 \mid_{f = 0}}}, \ldots, p_{C_{k \mid_{f = 0}}} \vdash 1$ is also a proof of degree $w + \log_2 s$. By the fifth claim of \Cref{ns_properties}, we conclude that $p_{C_i}, \ldots, p_{C_k} \vdash 1$ with degree $w + \log_2 s$.
+ If $s_1 < \frac{s}{2}$, then $w + \log_2 s_1 \leq w + \log_2 s - 1$. Thus, the proof $p_{C_{1 \mid_{f = 1}}}, \ldots, p_{C_{k \mid_{f = 1}}} \vdash 1$ is also a proof of degree $w + \log_2 s - 1$, while the proof $p_{C_{1 \mid_{f = 0}}}, \ldots, p_{C_{k \mid_{f = 0}}} \vdash 1$ is also a proof of degree $w + \log_2 s$. By the fifth claim of \Cref{ns_properties}, we conclude that $p_{C_i}, \ldots, p_{C_k} \vdash 1$ with degree $w + \log_2 s$.
 
-    If $s_2 < \frac{s}{2}$, instead, we get a symmetric proof, where the role of the two proofs is swapped. By the sixth claim of \Cref{ns_properties}, we again conclude that $p_{C_i}, \ldots, p_{C_k} \vdash 1$ with degree $w + \log_2 s$.
+ If $s_2 < \frac{s}{2}$, instead, we get a symmetric proof, where the role of the two proofs is swapped. By the sixth claim of \Cref{ns_properties}, we again conclude that $p_{C_i}, \ldots, p_{C_k} \vdash 1$ with degree $w + \log_2 s$.
 \end{proof}
 
 \begin{figure}[H]
@@ -745,21 +743,21 @@ Next, we prove that a Tree-like Linear Resolution over $\F_2$ can be efficiently
         \node[] (3e) [above of=3a, yshift=-10]{$T_1$};
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (2d.center) edge (2b.center)
-            (2d.center) edge (2c.center)
-            (2b.center) edge (2c.center)
-        ;
+ (2d.center) edge (2b.center)
+ (2d.center) edge (2c.center)
+ (2b.center) edge (2c.center)
+ ;
         
         \path[every node/.style={font=\sffamily\small}, -]
-            (3d.center) edge (3b.center)
-            (3d.center) edge (3c.center)
-            (3b.center) edge (3c.center)
-        ;
+ (3d.center) edge (3b.center)
+ (3d.center) edge (3c.center)
+ (3b.center) edge (3c.center)
+ ;
 
         \path[every node/.style={font=\sffamily\small}]
-            (1) edge (2a)
-            (1) edge (3a)
-        ;
+ (1) edge (2a)
+ (1) edge (3a)
+ ;
 
     \end{tikzpicture}
 
@@ -771,30 +769,30 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
 \begin{lemma}
     \label{weakening_ns}
 
-    Let $F = C_1 \land \ldots \land C_m$ be a CNF formula and let $D$ be a linear clause. If $C_i \implies D$ then $p_{C_i} \vdash p_D$ with degree $d+k$, where $d$ is the width of $D$ and $k$ is the width of $C_i$.
+ Let $F = C_1 \land \ldots \land C_m$ be a CNF formula and let $D$ be a linear clause. If $C_i \implies D$ then $p_{C_i} \vdash p_D$ with degree $d+k$, where $d$ is the width of $D$ and $k$ is the width of $C_i$.
 \end{lemma}
 
 \begin{proof}
-    Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $q(1+q)$ can be derived with degree 2 from axioms. 
+ Let $C := C_i$. Assume $C = \bigvee_{i = 1}^k (x_i = \alpha_1)$ and $D = \bigvee_{j = 1}^d (f_j = \beta_j)$. We notice that any polynomial $q(1+q)$ can be derived with degree 2 from axioms. 
         \[(y_1 + \ldots + y_t)(y_1 + \ldots y_t + 1) = \sum_{i = 1}^t y_i^2 + \sum_{i = 1}^t y_i + 2 \sum_{i \neq j} y_i y_j = \sum_{i = 1}^t y_i^2 + y_i\]
-    since $2 = 0$ in $\F_2$. This implies that for each $j \in [d]$ we can derive $f_j+\beta_j+1$ with degree $d+1$.
+ since $2 = 0$ in $\F_2$. This implies that for each $j \in [d]$ we can derive $f_j+\beta_j+1$ with degree $d+1$.
 
-    Since $C \implies D$, this can only happen if each $x_i + \alpha_i$ is a linear combination of $(f_1 + \beta_1 + 1), \ldots, (f_d + \beta_d + 1)$, concluding that each $p_D(x_i+\alpha_i)$ is derivable in $\F_2$-Nullstellensatz with degree $d+1$. Finally, we notice that:
+ Since $C \implies D$, this can only happen if each $x_i + \alpha_i$ is a linear combination of $(f_1 + \beta_1 + 1), \ldots, (f_d + \beta_d + 1)$, concluding that each $p_D(x_i+\alpha_i)$ is derivable in $\F_2$-Nullstellensatz with degree $d+1$. Finally, we notice that:
         \[p_D = p_C + p_D(x_1+\alpha_1+1) + p_D(x_2+\alpha_2+1)(x_1+\alpha_1)+ \ldots + p_D(x_d+\alpha_d+1)+\prod_{i = 0}^{d-1} (x_i+\alpha_i)\]
-    which is a derivation of $p_D$ from $p_{C}$ with degree $d + k$.
+ which is a derivation of $p_D$ from $p_{C}$ with degree $d + k$.
 \end{proof}
 
 \begin{theorem}
     \label{main_thm}
-    Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ then there is $\NS$ refutation of $F$ of degree $O(w + \log s)$.
+ Let $F$ be an unsatisfiable CNF. If $T$ is $\mathsf{TreeRes}_\oplus$ refutation of $F$ of size $s$ and width $w$ then there is $\NS$ refutation of $F$ of degree $O(w + \log s)$.
 \end{theorem}
 
 \begin{proof}
-    Let $F = C_1 \land \cdots \land C_m$ and let $T$ be a $\mathsf{TreeRes}_\oplus$-proof of $F$ with size $s$ and width $w$. Through \Cref{leaf_weakening} we know that there must also be a $\mathsf{TreeRes}_\oplus$-proof of size $O(s)$ with the weakening rule applied only to the leaves. Let $\widehat{C_1}, \ldots, \widehat{C_m}$ be the linear clauses obtained through such weakening rules and let $T'$ be the subtree.
+ Let $F = C_1 \land \cdots \land C_m$ and let $T$ be a $\mathsf{TreeRes}_\oplus$-proof of $F$ with size $s$ and width $w$. Through \Cref{leaf_weakening} we know that there must also be a $\mathsf{TreeRes}_\oplus$-proof of size $O(s)$ with the weakening rule applied only to the leaves. Let $\widehat{C_1}, \ldots, \widehat{C_m}$ be the linear clauses obtained through such weakening rules and let $T'$ be the subtree.
 
-    Let $T'$ be the subtree of $T$ with root $\bot$ and leaves $\widehat{C_1}, \ldots, \widehat{C_m}$. Since $T'$ only uses the resolution rule, by \Cref{treeref_no_weak} we conclude that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(w + \log s)$. Clearly, this also implies that $\mathrm{deg}(p_{\widehat{C_i}}) = O(w + \log s)$ for all $i$.
+ Let $T'$ be the subtree of $T$ with root $\bot$ and leaves $\widehat{C_1}, \ldots, \widehat{C_m}$. Since $T'$ only uses the resolution rule, by \Cref{treeref_no_weak} we conclude that $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(w + \log s)$. Clearly, this also implies that $\mathrm{deg}(p_{\widehat{C_i}}) = O(w + \log s)$ for all $i$.
         
-    Since each $\widehat{C_i}$ is a weakening of $C_i$, by \Cref{weakening_ns} we know that $p_{C_i} \vdash p_{\widehat{C_i}}$ with degree $O(w + \log s)$. We trivially get that $p_{C_i}, (1-p_{\widehat{C_i}}) \vdash 1$ with degree $O(w + \log s)$. Moreover, since $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(w + \log s)$, by \Cref{union_ref} we get that $p_{C_1}, p_{\widehat{C_2}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(w + \log s)$. After repeating this process for each weakening clause, we finally conclude that $p_{C_1}, \ldots, p_{C_m} \vdash 1$ with degree $O(w + \log s)$. 
+ Since each $\widehat{C_i}$ is a weakening of $C_i$, by \Cref{weakening_ns} we know that $p_{C_i} \vdash p_{\widehat{C_i}}$ with degree $O(w + \log s)$. We trivially get that $p_{C_i}, (1-p_{\widehat{C_i}}) \vdash 1$ with degree $O(w + \log s)$. Moreover, since $p_{\widehat{C_1}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(w + \log s)$, by \Cref{union_ref} we get that $p_{C_1}, p_{\widehat{C_2}}, \ldots, p_{\widehat{C_m}} \vdash 1$ with degree $O(w + \log s)$. After repeating this process for each weakening clause, we finally conclude that $p_{C_1}, \ldots, p_{C_m} \vdash 1$ with degree $O(w + \log s)$. 
 \end{proof}
 
 \begin{figure}[H]
@@ -827,17 +825,17 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
         \node[] (17) [above of = 2b, xshift=-60]{$\cdots$};
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (4) edge (11)
-            (5) edge (12)
-            (8) edge (15)
-            (9) edge (16)
-            ;
+ (4) edge (11)
+ (5) edge (12)
+ (8) edge (15)
+ (9) edge (16)
+ ;
 
         \path[every node/.style={font=\sffamily\small}, -]
-            (2.center) edge (2a.center)
-            (2.center) edge (2b.center)
-            (2a.center) edge (2b.center)
-            ;
+ (2.center) edge (2a.center)
+ (2.center) edge (2b.center)
+ (2a.center) edge (2b.center)
+ ;
 
     \end{tikzpicture}
 
