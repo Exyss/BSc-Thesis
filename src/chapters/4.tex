@@ -16,6 +16,7 @@ Intuitively, each sum in a linear form is nothing more than an application of th
  x_1 + x_3 = 1
 \end{array} \right .\]
 
+\noindent
 By simplifying the linear system we get that:
 \[\left \{ \begin{array}{l}
  x_1 + x_2 + x_3 = 1 \\
@@ -33,6 +34,7 @@ By simplifying the linear system we get that:
  x_1 = 1+x_3
 \end{array} \right .\]
 
+\noindent
 which tells us that $x_2 = 1$ and $x_1 = x_4 \neq x_3$ must hold.
 
 \newpage
@@ -87,13 +89,13 @@ Instead of being labeled by single variables, the nodes of a parity decision tre
     \caption{An example of a parity decision tree of size 13 and depth 3.}
 \end{figure}
 
+\noindent
 In the above example, the green path defines the following system of linear forms:
 \[\left \{ \begin{array}{l}
  x_1 + x_2 + x_3 = 0 \\
  x_1 + x_2 = 1 \\
  x_2 = 1
 \end{array}\right .\]
-
 which once simplified corresponds to the assignment $x_0 = 0, x_2 = 1, x_3 = 1$. We define the class $\mathsf{FP}^{pdt}$ as the set of $\mathsf{TFNP}^{dt}$ problems that are efficiently solvable by a PDT, where the complexity measures are defined as in normal decision trees.
 
 \begin{definition}
@@ -143,6 +145,7 @@ It's easy to see that $\mathsf{FP}^{dt} \subseteq \mathsf{FP}^{pdt}$ since any d
     \caption{The initial subtree of a parity decision tree.}
 \end{figure}
 
+\noindent
 We replace $v$ with the node $v'$ labeled with the linear form $x_i$ and introduce two new nodes $u', w'$ such that $u'$ is the child of $v'$ when $x_i = 0$ and $w'$ is the child of $v'$ when $x_i = 1$. We label $u'$ with the linear form $f$ and let a copy of $T_u$ be the children of $u'$ when $f = 0$, while a copy of $T_w$ is the children of $u'$ when $f = 1$. Symmetrically, we label $w'$ with the linear form $f$ and let a copy of $T_w$ be the children of $w'$ when $f = 0$, while a copy of $T_u$ is the children of $w'$ when $f = 1$. 
 
 \begin{figure}[H]
@@ -216,6 +219,7 @@ We replace $v$ with the node $v'$ labeled with the linear form $x_i$ and introdu
     \caption{The subtree after the splitting process.}
 \end{figure}
 
+\noindent
 By repeating this process until all queries are defined on a single variable, we obtain a decision tree equivalent to the original PDT. This final decision tree has exponential size and polynomial depth, which \textit{may not} be the smallest possible decision tree that solves the search problem solved by the initial PDT. However, we can easily prove that parity decision trees are indeed much stronger than decision trees.
 
 \begin{theorem}
@@ -278,6 +282,7 @@ Like normal decision trees, PDTs can be used to solve the false clause search pr
     \caption{A parity decision tree for $(x \lor y) \land (\lnot x \lor \lnot y) \land (\lnot x \lor y) \land (x \lor \lnot y)$.}
 \end{figure}
 
+\noindent
 We observe that if a node doesn't meet any of the previous conditions then it cannot be a leaf node. Moreover, we also observe that the system associated with the root of any PDT is always satisfiable due to it containing no linear forms. Since we are interested in studying PDTs for refusing unsatisfiable CNF formulas, the third case will never be true for any leaf. However, we still need a way to exclude the first case since an unsatisfiable system cannot be associated with any assignment. Luckily, each degenerate PDT can be conveniently converted into a non-degenerate one through a very simple process \cite{res_lin_2}.
 
 \begin{proposition}
@@ -331,12 +336,10 @@ We define \textbf{Linear Resolution over $\F_q$} (or $\mathsf{ResLin(\F_q)}$), a
 
 Like in normal Resolution, in $\mathsf{ResLin(\F_q)}$ any derivation of a linear clause $C$ from a linear CNF $F$ is a sequence of linear clauses that ends with $C$, where every clause is either an axiom of $F$ or it can be derived from previous clauses through one of the two derivation rules. A linear CNF is unsatisfiable if and only if the empty linear clause can be derived from it. 
 
-Any standard CNF formula can be described as a linear CNF formula over $\F_2$ simply by treating each clause as a disjunction of linear forms made of a single term. For example, the CNF $(x_1 \lor \lnot{x_2}) \land (\lnot{x_3} + x_1)$ can be written as the following linear CNF formula:
+Any standard CNF formula can be described as a linear CNF formula over $\F_2$ simply by treating each clause as a disjunction of linear forms made of a single term. The CNF $(x_1 \lor \lnot{x_2}) \land (\lnot{x_3} + x_1)$ can be written as the following linear CNF formula:
 \[((x_1 = 1) \lor (x_2 = 0)) \land ((x_3 = 0) \lor (x_1 = 1))\]
 
-We call this the \textit{linear encoding} of a CNF. From now on, we will restrict our interests to Linear Resolution over $\F_2$, also called \textit{parity Resolution} (or $\mathsf{Res}_\oplus$).
-
-The weakening rule makes this proof system powerful thanks to how semantical implications can be used as \curlyquotes{shortcuts}. For example, consider the following linear CNF:
+We call this the \textit{linear encoding} of a CNF. From now on, we will restrict our interests to Linear Resolution over $\F_2$, also called \textit{parity Resolution} (or $\mathsf{Res}_\oplus$). The weakening rule makes this proof system powerful thanks to how semantical implications can be used as \curlyquotes{shortcuts}. For example, consider the following linear formula:
 \[(x = 1) \land (x+y = 1) \land ((x = 0) \lor (y = 1))\]
 
 \noindent
@@ -381,10 +384,11 @@ concluding that $(x = 0) \lor (y = 1) \models (x = 0) \lor (x+y = 0)$. Proceedin
  ;
     \end{tikzpicture}
 
-    \caption{$\mathsf{TreeRes}_\oplus$-proof of the previous linear CNF formula.}
+    \caption{$\mathsf{TreeRes}_\oplus$-proof of the previous linear formula.}
     \label{treelike_proof}
 \end{figure}
 
+\noindent
 It was shown that the weakening rule can be simulated through these simple three rules \cite{res_lin_2}:
 \begin{enumerate}
     \item \textit{Simplification rule}: given a linear clause $C \lor (0 = 1)$, we can derive the linear clause $C$
@@ -505,12 +509,12 @@ We know that Tree-like Linear Resolution over $\F_2$ is strictly related to poly
 
 \begin{proposition}
     \label{fp_pdt_inside_ind_ppa_dt}
-    $\mathsf{FP}^{pdt} \not\subseteq \mathsf{IND\text{-}PPA}^{dt}$
+    $\mathsf{FP}^{pdt} \subseteq \mathsf{IND\text{-}PPA}^{dt}$
 \end{proposition}
 
-This inclusion rings a bell: looks like PDTs aren't actually that strong. Another proof system strictly related to polynomials over $\F_2$ is \textbf{Nullstellensatz}, another algebraic proof system. In general, it is known that Nullstellensatz is \textit{weaker} than Polynomial Calculus, even over the field $\F_2$.
+This inclusion rings a bell: looks like PDTs aren't actually that strong. Another proof system strictly related to polynomials over $\F_2$ is \textbf{Nullstellensatz}, another algebraic proof system. Nullstellensatz can be \textit{efficiently simulated} by Polynomial Calculus, even over the field $\F_2$. This implies that $\mathsf{PPA}^{dt} \subseteq \mathsf{IND\text{-}PPA}^{dt}$.
 
-Our first hypothesis was that $\mathsf{TreeRes}_\oplus$ could act as an intermediate step between the two algebraic systems. We tried to prove this result by showing that $\mathsf{LEAF}^{dt} \in \mathsf{FP}^{pdt}$, which appeared to be out of reach. We quickly shifted our perspective on trying to show that the simulation holds in the other direction. Indeed, we were capable of proving in our main theorem, i.e. \Cref{main_thm}, that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}NS}$ proof, providing a \textbf{black-box inclusion} for our new class. This also strengthens the previous relations showed in \cite{treeres2_in_pc}.
+Our first hypothesis was that $\mathsf{TreeRes}_\oplus$ could act as an intermediate step between the two algebraic systems. We tried to prove this result by showing that $\mathsf{LEAF}^{dt} \in \mathsf{FP}^{pdt}$, which appeared to be out of reach. We quickly shifted our perspective on trying to show that the simulation holds in the other direction. Indeed, we were capable of proving in our main theorem, i.e. \Cref{main_thm}, that any $\mathsf{TreeRes}_\oplus$ can be converted into a small $\mathrm{\F_2\text{-}NS}$ proof, providing a stronger \textbf{black-box inclusion} for our new class and a stronger simulation between these two proof systems.
 
 Moreover, in the seminal paper \cite{res_lin_2}, Itsykson and Sokolov discussed how $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate regular Resolution (or $\mathsf{RegRes}$) - a restricted proof system derived from Resolution - due to the presence of harder types of pebbling formulas that separate them. Due to any regular Resolution proof also being a Resolution proof, this result also implies that $\mathsf{TreeRes}_\oplus$ cannot efficiently simulate $\mathsf{Res}$. Again, thanks to \Cref{equiv_proof} and to the fact that $\mathrm{PLS}^{dt}(S_F) = \Theta(\mathsf{Res}(F))$, we conclude the following black-box separation.
 
@@ -764,6 +768,7 @@ Next, we prove that a Tree-like Linear Resolution over $\F_2$ can be efficiently
     \caption{Representation of the idea behind \Cref{treeref_no_weak}.}
 \end{figure}
 
+\noindent
 The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz. However, if $D$ is derived through weakening from an axiom clause $C_i$ of a CNF formula $F$, we can easily simulate this rule. This result is enough for our purposes but it can also be extended to derivations from a non-axiom clause with a little blow-up in degree. 
 
 \begin{lemma}
@@ -842,6 +847,7 @@ The weakening rule is generally hard to simulate through $\F_2$-Nullstellensatz.
     \caption{Representation of the idea behind \Cref{main_thm}.}
 \end{figure}
 
+\noindent
 Finally, thanks to \Cref{equiv_proof} and the fact that $\mathrm{PPA}^{dt}(S_F) = \Theta(\F_2\text{-}\mathsf{NS}(F))$, the last theorem proves that our new class is indeed contained inside $\mathsf{PPA}^{dt}$, meaning that any total search problem efficiently solvable by a parity decision tree can be reduced to an instance of the parity argument problem.  
    
 \begin{theorem}

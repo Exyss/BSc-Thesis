@@ -192,7 +192,7 @@ Reductions play a critical role in computer science. In particular, they allow u
 For instance, since $\mathsf{P} \subseteq \mathsf{NP}$, the completeness constraint behind \textsf{NP}-Completeness would be to maintain polynomial-time reductions. In \textsf{P}-Completeness, instead, the completeness constraint would be to maintain logarithmic space reductions due to how $\mathsf{L} \subseteq \mathsf{P}$, where $\mathsf{L}$ is the class of problems decidable in logarithmic space.
 
 \begin{definition}
- A problem $B$ is said to be \textsf{NP}-Complete if $B \in \mathcal{C}$ and $\forall A \in \mathsf{NP}$ it holds that $A \leq_p B$.
+ A problem $B$ is said to be \textsf{NP}-Complete if $B \in \mathsf{NP}$ and $\forall A \in \mathsf{NP}$ it holds that $A \leq_p B$.
 \end{definition}
 
 From this definition, we derive that an \textsf{NP}-Complete problem can be solved in polynomial time if and only if $\mathsf{P} = \mathsf{NP}$. The $\mathrm{SAT}$ problem previously described is actually the first ever known \textsf{NP}-Complete problem, a seminal result proven by Cook in 1971 \cite{cook_sat} and later by Levin in 1973 \cite{levin_fsat}. In particular, Levin proved this result through the functional version of this complete problem $\mathrm{FSAT}$, which asks the question \say{which assignment satisfies the following formula?}, modeling what he called \textit{universal sequential search problem}. In fact, the functional versions can be used to prove that the decisional versions are complete and vice versa \cite{rel_comp_np_search}.
