@@ -420,7 +420,7 @@ Again, this implies that the encoding CNF formulas must have a polylogarithmic w
     \label{TFNP_dt_hierarchy}
 \end{figure}
 
-\quad
+\newpage
 
 \section{Reductions through CNF formulas}
 
@@ -447,8 +447,6 @@ A $P_F$-proof of $H$ consists of the decision trees that make such reduction pos
 This definition directly implies that given $S_F \in \TFNPdt$, the \textbf{characterizing proof system} of $S_F^{dt}$ is equivalent to the canonical proof system $P_F$. Canonical proof systems are \textit{sound}, since by construction any valid substitution of an unsatisfiable CNF formula is also unsatisfiable, and also \textit{efficiently verifiable}, since it suffices to check that each of the clauses of $F_H$ is either tautological or a weakening of a clause in $H$, which can both be done in polynomial time compared to the size of the proof.
 
 The following theorem plays a crucial role in $\TFNPdt$ characterization through proof complexity, stating that the proof system $P_F$ has a short proof of $H$ if and only if $S_H$ efficiently reduces to $S_F$. In other words, an efficient proof of a formula in a characterizing proof system automatically gives an efficient reduction to the corresponding complete search problem.
-
-\newpage
 
 \begin{theorem}
     \label{equiv_proof}
