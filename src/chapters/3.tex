@@ -133,105 +133,117 @@ A \textit{conjunctive normal form} (CNF) formula $F$ is a conjunction of $m$ \te
 Any formula can be expressed as an equivalent CNF formula, making Resolution a \textit{complete} and \textit{sound} proof system. Resolution proofs are based on repeated applications of the following simple rule called the \textit{resolution rule}:
 \[\dfrac{C \lor x \qquad D \lor \lnot x}{C \lor D}\]
 
-Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}. Given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \lnot{z}) \land (x \lor \lnot{y} \lor z) \land (\lnot{x} \lor z) \land \lnot{z}$, a Resolution proof is given by:
-\[\begin{array}{lcl}
- D_1 :& \lnot y \lor z & \text{Axiom} \\
- D_2 :& y \lor z & \text{Axiom} \\
- D_3 :& y & \text{Res. on $D_1, D_2$} \\
- D_4 :& x \lor \lnot y \lor z & \text{Axiom} \\
- D_5 :& \lnot z & \text{Axiom} \\
- D_6 :& x \lor \lnot y & \text{Res. on $D_4, D_5$} \\
- D_7 :& \lnot x \lor \lnot y \lor z & \text{Axiom} \\
- D_8 :& \lnot x \lor \lnot y & \text{Res on $D_7, D_5$} \\
- D_9 :& x & \text{Res on $D_3, D_6$} \\
- D_{10} :& \lnot x & \text{Res on $D_3, D_8$} \\
- D_{11} :& \bot & \text{Res on $D_9, D_{10}$} \\
-\end{array}\]
+Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}.
 
+For example, given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \overline{z}) \land (x \lor \overline{y} \lor z) \land (\overline{x} \lor \overline{y} \lor z) \land \overline{z}$, a Resolution proof is given by:
+\[\begin{array}{lcl}
+    D_1 :& \overline{z} & \text{Axiom} \\
+    D_2 :& \overline{x} \lor \overline{y} \lor z & \text{Axiom} \\
+    D_3 :& x \lor \overline{y} \lor z & \text{Axiom} \\
+    D_4 :& \overline{x} \lor \overline{y} & \text{Res. on $D_1, D_2$} \\
+    D_5 :& x \lor \overline{y} & \text{Res. on $D_1, D_3$} \\
+    D_6 :& y \lor z & \text{Axiom} \\
+    D_7 :& y \lor \overline{z} & \text{Axiom} \\
+    D_8 :& y & \text{Res. on $D_6,D_7$} \\
+    D_9 :& \overline{x} & \text{Res. on $D_4, D_8$} \\
+    D_{10} :& x & \text{Res. on $D_5, D_8$} \\
+    D_{11} :& \bot & \text{Res. on $D_9, D_10$} \\
+\end{array}\]
 \noindent
-Each refutation can also be graphically represented by connecting clauses with lines:
+
+The \textit{length} of a resolution refutation is the number of clauses in the refutation, while the \textit{width} is the maximum number of literals that can be found in any of its clauses. For instance, the previous refutation has length 11 and width 3.
+
+To make things easier to read, each refutation can also be graphically represented by connecting clauses with lines. Resolution refutations expressed in this form are also called DAG-like refutations.
 
 \begin{figure}[H]
     \centering
     
-    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-        \node (1) []{$\lnot{y} \lor z$};
-        \node (2) [right of=1]{$y \lor \lnot{x}$};
-        \node (3) [right of=2]{$x \lor \lnot{y} \lor z$};
-        \node (4) [right of=3]{$\lnot{x} \lor \lnot y\lor z$};
-        \node (5) [right of=4]{$\lnot{z}$};
+        \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+            \node [rectangle, draw, minimum height=20](1) []{$\overline{x_1} \lor \overline{x_2} \lor x_3$};
+            \node [rectangle, draw, minimum height=20](2) [right of=1]{$x_2 \lor x_3$};
+            \node [rectangle, draw, minimum height=20](3) [right of=2]{$x_3$};
+            \node [rectangle, draw, minimum height=20](4) [right of=3]{$x_2 \lor \overline{x_3}$};
+            \node [rectangle, draw, minimum height=20](5) [right of=4]{$x_1 \lor \overline{x_2} \lor x_3$};
 
-        \node (6) [below of=3]{$x \lor \lnot y$};
-        \node (7) [left of=6]{$y$};
-        \node (8) [right of=6]{$\lnot x \lor \lnot y$};
+            \node (6) [below of=1]{$\overline{x_1} \lor \overline{x_2}$};
+            \node (x) [below of=2]{};
+            \node (7) [below of=3]{$x_2$};
+            \node (y) [below of=4]{};
+            \node (8) [below of=5]{$x_1 \lor \overline{x_2}$};
 
-        \node (9) [below left of=6]{$x$};
-        \node (10) [below right of=6]{$\lnot x$};
+            \node (9) [below of=x]{$\overline{x_1}$};
+            \node (10) [below of=y]{$x_1$};
+            \node (z) [below of=7]{};
+            
+            \node (11) [below of=z]{$\bot$};
         
-        \node (11) [below right of=9]{$\bot$};
-    
-        \path[every node/.style={font=\sffamily\small}]
- (1) edge (7)
- (2) edge (7)
- (3) edge (6)
- (4) edge (8)
- (5) edge (6)
- (5) edge (8)
+            \path[every node/.style={font=\sffamily\small}]
+                (1) edge (6)
+                (2) edge (7)
+                (3) edge (6)
+                (3) edge (8)
+                (4) edge (7)
+                (5) edge (8)
 
- (6) edge (9)
- (7) edge (9)
- (7) edge (10)
- (8) edge (10)
+                (6) edge (9)
+                (7) edge (9)
+                (7) edge (10)
+                (8) edge (10)
 
- (9) edge (11)
- (10) edge (11)
- ;
-    \end{tikzpicture}
+                (9) edge (11)
+                (10) edge (11)
+                ;
+        \end{tikzpicture}
     
     \caption{Dag-like refutation of the previous formula.}
 \end{figure}
 
-Through this representation, each refutation produces a directed acyclic graph (DAG), also known as dag-like refutation. When each clause - thus excluding the axioms - appears only once in a refutation, we say that it is a \textbf{tree-like} refutation due to how the clauses form a tree. This restriction implies that we cannot \curlyquotes{store} intermediate results. Any dag-like refutation can be converted into a tree-like refutation by deriving multiple times each clause that we have to reuse.
+By definition, each clause $D_i$ can be used as premise for more than one rule application, both through weakening and resolution. When each $D_i$ of the proof is used \textbf{only once}, we say that it is a \textbf{tree-like refutation} due to how the underlying DAG becomes a tree. This restriction implies that if we want to use a clause multiple times then it must be derived again (or simply copied if it's an axiom). Clearly, this duplication process allows us to transform any dag-like refutation into a tree-like refutation, but this usually blows up the length of the proof exponentially.
 
 \begin{figure}[H]
     \centering
     
-    \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.25cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
-        \node (1) []{$\lnot{y} \lor z$};
-        \node (2) [right of=1]{$y \lor \lnot{x}$};
-        \node (3) [right of=2]{$x \lor \lnot{y} \lor z$};
-        \node (4) [right of=3]{$\lnot{x} \lor \lnot y\lor z$};
-        \node (5) [right of=4]{$\lnot{z}$};
+    \resizebox{1\hsize}{!}{
+        \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
+            \node [rectangle, draw, minimum height=20](1) []{$\overline{x_1} \lor \overline{x_2} \lor x_3$};
+            \node [rectangle, draw, minimum height=20](2) [right of=1, xshift=-13]{$x_3$};
+            \node [rectangle, draw, minimum height=20](3) [right of=2, xshift=-23]{$x_2 \lor x_3$};
+            \node [rectangle, draw, minimum height=20](4) [right of=3, xshift=-13]{$x_2 \lor x_3$};
+            \node [rectangle, draw, minimum height=20](5) [right of=4, xshift=-13]{$x_2 \lor \overline{x_3}$};
+            \node [rectangle, draw, minimum height=20](6) [right of=5, xshift=-13]{$x_2 \lor \overline{x_3}$};
+            \node [rectangle, draw, minimum height=20](7) [right of=6, xshift=-23]{$x_3$};
+            \node [rectangle, draw, minimum height=20](8) [right of=7, xshift=-13]{$x_1 \lor \overline{x_2} \lor x_3$}; 
 
-        \node (6) [below of=3]{$x \lor \lnot y$};
-        \node (7) [left of=6]{$y$};
-        \node (8) [right of=6]{$\lnot x \lor \lnot y$};
-        \node (7x) [left of=7]{$y$};
+            \node (9)[below of=1, xshift=40]{$\overline{x_1} \lor \overline{x_2}$};
+            \node (10)[below of=3, xshift=28.5]{$\overline{x_1} \lor \overline{x_2}$};
+            \node (11)[below of=6, xshift=-28.5]{$x_1 \lor \overline{x_2}$};
+            \node (12)[below of=8, xshift=-40]{$x_1 \lor \overline{x_2}$};
 
-        \node (9) [below left of=6]{$x$};
-        \node (10) [below right of=6]{$\lnot x$};
+            \node (13)[below of=10, xshift=-45]{$\overline{x_1}$};
+            \node (14)[below of=11, xshift=45]{$x_1$};
+
+            \node (15)[below of=13, xshift=100]{$\bot$};
         
-        \node (11) [below right of=9]{$\bot$};
-    
-        \path[every node/.style={font=\sffamily\small}]
- (1) edge (7)
- (2) edge (7)
- (1) edge (7x)
- (2) edge (7x)
- (3) edge (6)
- (4) edge (8)
- (5) edge (6)
- (5) edge (8)
+            \path[every node/.style={font=\sffamily\small}]
+                (1) edge (9)
+                (2) edge (9)
+                (3) edge (10)
+                (4) edge (10)
+                (5) edge (11)
+                (6) edge (11)
+                (7) edge (12)
+                (8) edge (12)
 
- (6) edge (9)
- (7x) edge (9)
- (7) edge (10)
- (8) edge (10)
+                (9) edge (13)
+                (10) edge (13)
+                (11) edge (14)
+                (12) edge (14)
 
- (9) edge (11)
- (10) edge (11)
- ;
-    \end{tikzpicture}
+                (13) edge (15)
+                (14) edge (15)
+                ;
+        \end{tikzpicture}
+    }
     
     \caption{Tree-like refutation of the previous formula.}
     \label{treelike_res_proof}
@@ -239,25 +251,25 @@ Through this representation, each refutation produces a directed acyclic graph (
 
 This subset of proofs defines a more specific proof system called \textit{Tree-like Resolution} (or \textsf{TreeRes}). Generally, this type of refutation produces a proof of exponential length compared to the number of variables defined on the formula itself. Resolution and Tree-like Resolution are separated, meaning that some proofs are easy for the former and hard for the latter, making Resolution a stronger proof system.
 
-Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Resolution proof is the length of the longest path from an axiom to the empty clause. The \textit{width} of a Resolution proof is the maximum number of literals appearing in a clause of the proof. For example, the proof shown in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a Tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}$ nodes.
+Resolution has three main complexity measures: size, depth and width. The \textit{size} of a Resolution proof is the total number of nodes appearing in the proof. The \textit{depth} of a Tree-like Resolution proof is the length of the longest path from an axiom to the empty clause. For example, the proof shown in \Cref{treelike_res_proof} has size 9, depth 3 and width 3. These three complexity measures are highly related. For example, if a Tree-like Resolution proof has depth $d$ the size of such proof is $O(2^{d+1})$ since a $d$-depth tree can have at most $2^{d+1}-1$ nodes.
 
 But why are we interested in proving or refusing propositional formulas? We discussed how the $\mathrm{SAT}$ problem is \textsf{NP}-Complete. This clearly implies that the problem $\overline{SAT}$ is \textsf{coNP}-Complete. This fact can be used to show that $\overline{SAT} \leq_m \mathrm{UNSAT} \leq_m \mathrm{TAUT}$, implying that both $\mathrm{UNSAT}$ and $\mathrm{TAUT}$ are also \textsf{coNP}-Complete. Showing that any of these problems is also in $\mathsf{NP}$ would answer the $\mathsf{NP} \stackrel{?}{=} \mathsf{coNP}$ question.
 
 Proof systems are essential to work on this question: given the encoding $\Pi$ of a proof of $F$ in a proof system, a verifier can follow the rules defined by the proof system to prove that $F$ is indeed a tautology. In this case, $\Pi$ serves as a certificate for $F$ while the pps defines the verifier. We give the following equivalent definition of a propositional proof system.
 
-\newpage
-
 \begin{definition}
- A propositional proof system (or pps) is a polynomial verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $\Pi \in \Sigma^*$ such that $V(F,\Pi) = 1$.
+ A propositional proof system (or pps) is a verifier $V$ such that $F \in \mathrm{TAUT}$ if and only if there is a string $\Pi \in \Sigma^*$ such that $V(F,\Pi) = 1$ and that runs in polynomial time with respect to $\abs{F} + \abs{\Pi}$. 
 \end{definition}
 
 At first glance, one could think that this definition implies that any complete and sound pps proves that $\mathrm{TAUT} \in \mathsf{NP}$. However, we must also consider the length of such proofs: to be an efficient verifier, the length of the certificates must be polynomially bounded by the length of $F$. In other words, it must hold that $\abs{\Pi} = O(\abs{F}^k)$ for some $k \in \N$. This means that in order to prove that $\mathsf{NP} \neq \mathsf{coNP}$, or equivalently that $\mathrm{TAUT} \in \mathsf{NP}$, we must find a \textbf{polynomially bounded proof system}, a pps that uses only polynomially bounded proofs for all tautologies.
 
 \begin{proposition}
- There is a polynomially bounded proof system if and only if $\mathsf{NP} \neq \mathsf{coNP}$.
+ There is a polynomially bounded proof system if and only if $\mathsf{NP} = \mathsf{coNP}$.
 \end{proposition}
 
 We already discussed how researchers believe that $\mathsf{NP} \neq \mathsf{coNP}$ is the expected answer to the conjecture. Proving this statement is no easy task: we would have to prove that there is a particular formula $F$ that strictly requires an exponential length encoding for every discovered and undiscovered proof system.
+
+\newpage
 
 \section{The Black-box model and Proof complexity}
 
@@ -268,8 +280,6 @@ Proof complexity is highly related to other branches of complexity theory, inclu
 \end{definition}
 
 This problem is usually referred to as the \textbf{false clause search problem}. When $F$ is an unsatisfiable CNF formula, $\mathrm{Search}(F)$ is a total search problem since for any input assignment there will always be an unsatisfied clause. Moreover, the search problem of any unsatisfiable formula can easily be solved (or verified) by a decision tree for any formula $F$: if the assignment $\alpha(x_1 = b_1, \ldots, x_n = b_2)$ falsifies the clause $C_i$, define a path $x_1 = b_1, \ldots, x_n = b_n$ on the decision tree and let $C_i$ be the output of such path. In other words, for all $\lnot F \in \mathrm{TAUT}$ it holds that $\mathrm{Search}(F) \in \mathsf{TFNP}^{dt}$. 
-
-\newpage
 
 \begin{figure}[H]
     \centering
@@ -330,8 +340,6 @@ This result clearly implies that $(R)_{n \in \N} = (\mathrm{Search}(F_n))_{n \in
 
 Furthermore, we also notice that the width of each CNF encoding of a given search problem in \textsf{TFNP}$^{dt}$ corresponds to the maximum depth of the decision trees that solve or verify it.
 
-\newpage
-
 Through this connection, Göös et al. \cite{adventures_monotone_tfnp} showed that many important proof systems are characterized by an associated $\mathsf{TFNP}^{dt}$ search problem and vice versa. Given a proof system $P$ and an unsatisfiable CNF formula $F$, the \textbf{complexity} required by $P$ to prove $F$ is given by:
 \[P(F) := \min\{\log \mathrm{size}(\Pi) + \mathrm{deg}(\Pi) : \Pi \text{ is a $P$-proof of } F\}\]
 where $\mathrm{size}(\Pi)$ is the the total number of symbols in $\Pi$ and $\mathrm{deg}(\Pi)$ is the \textit{degree} of $\Pi$ associated to $P$, which varies from proof system to proof system. For example, in Tree-like Resolution the degree is the \textit{depth} of the proof, while in Resolution the degree is the \textit{width} of the proof. This degree measure will be specified for the proof systems analyzed in the following sections.
@@ -353,8 +361,6 @@ Again, this implies that the encoding CNF formulas must have a polylogarithmic w
     \item $\mathrm{SOPL}^{dt}(S_F) = \Theta(\mathsf{RevRes}(F))$ \cite{separations_proof_complexity}
     \item $\mathrm{CLS}^{dt}(S_F) = \Theta(\mathsf{RevResT}(F))$ \cite{separations_proof_complexity}
 \end{itemize}
-
-\newpage
 
 \begin{figure}[H]
     \centering
@@ -422,8 +428,6 @@ Intuitively, the characterization given in the previous section shows that any $
 
 Suppose that $C$ is a clause over $n$ variables and that $T = (T_i)_{i \in [n]}$ is a sequence of depth-$d$ decision trees, where $T_i : \{0,1\}^{m} \to \{0,1\}$. We refer to $C(T)$ as the CNF formula obtained by substituting each variable $x_i$ in $C$ with $D(T_i)$ and rewriting the result as a CNF, or more conveniently:
 \[C(T) := \bigwedge_{i \in [n]} \, \bigwedge_{\substack{r \,:\, \text{rejecting} \\ \text{path of $T_i$}}} \lnot{r}\]
-
-\newpage
 
 \begin{definition}
  Let $F = C_1 \land \ldots \land C_{m_F}$ be an unsatisfiable CNF over $n_F$ variables. We say that a CNF formula $H$ made of $m_H$ clauses over $n_H$ variables reduces to $F$ via depth-$d$ decision trees if there exist two sequences of depth-$d$ decision trees $T = (T_i)_{i \in [n_F]}$ and $T^o = (T_j^o)_{j \in [m_F]}$, where $T_i : \{0,1\}^{n_H} \to \{0,1\}$ and $T_j^o : \{0,1\}^{n_H} \to [m_H]$, such that given the following formula:
