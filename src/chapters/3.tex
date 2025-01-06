@@ -135,20 +135,22 @@ Any formula can be expressed as an equivalent CNF formula, making Resolution a \
 
 Given a CNF formula $F = C_1 \land \ldots \land C_m$ and a clause $C$, we have that $F \stackrel{\mathsf{Res}}{\vdash} C$ if there is a sequence of clauses $D_1, \ldots, D_k$ such that $D_k = C$ and each $D_i$ in the sequence is either an \textit{axiom} of $F$ (meaning that $D_i = C_j$ for some $j$) or is obtained by applying the resolution rule on $D_p$ and $D_q$ for some $p,q < i$. Resolution is able to prove that a CNF formula $\lnot F$ is unsatisfiable by deriving the empty clause $\bot$ starting from the axioms of the formula itself. A Resolution proof is often referred to as a \textit{refutation}.
 
-For example, given the following unsatisfiable CNF formula $(y \lor z) \land (y \lor \overline{z}) \land (x \lor \overline{y} \lor z) \land (\overline{x} \lor \overline{y} \lor z) \land \overline{z}$, a Resolution proof is given by:
+For example, given the following unsatisfiable CNF formula $(x_2 \lor x_3) \land (x_2 \lor \overline{x_3}) \land (x_1 \lor \overline{x_2} \lor x_3) \land (\overline{x_1} \lor \overline{x_2} \lor x_3) \land \overline{x_3}$, a Resolution refutation is given by:
 \[\begin{array}{lcl}
-    D_1 :& \overline{z} & \text{Axiom} \\
-    D_2 :& \overline{x} \lor \overline{y} \lor z & \text{Axiom} \\
-    D_3 :& x \lor \overline{y} \lor z & \text{Axiom} \\
-    D_4 :& \overline{x} \lor \overline{y} & \text{Res. on $D_1, D_2$} \\
-    D_5 :& x \lor \overline{y} & \text{Res. on $D_1, D_3$} \\
-    D_6 :& y \lor z & \text{Axiom} \\
-    D_7 :& y \lor \overline{z} & \text{Axiom} \\
-    D_8 :& y & \text{Res. on $D_6,D_7$} \\
-    D_9 :& \overline{x} & \text{Res. on $D_4, D_8$} \\
-    D_{10} :& x & \text{Res. on $D_5, D_8$} \\
+    D_1 :& \overline{x_3} & \text{Axiom} \\
+    D_2 :& \overline{x_1} \lor \overline{x_2} \lor x_3 & \text{Axiom} \\
+    D_3 :& x_1 \lor \overline{x_2} \lor x_3 & \text{Axiom} \\
+    D_4 :& \overline{x_1} \lor \overline{x_2} & \text{Res. on $D_1, D_2$} \\
+    D_5 :& x_1 \lor \overline{x_2} & \text{Res. on $D_1, D_3$} \\
+    D_6 :& x_2 \lor x_3 & \text{Axiom} \\
+    D_7 :& x_2 \lor \overline{x_3} & \text{Axiom} \\
+    D_8 :& x_2 & \text{Res. on $D_6,D_7$} \\
+    D_9 :& \overline{x_1} & \text{Res. on $D_4, D_8$} \\
+    D_{10} :& x_1 & \text{Res. on $D_5, D_8$} \\
     D_{11} :& \bot & \text{Res. on $D_9, D_10$} \\
 \end{array}\]
+
+
 \noindent
 
 The \textit{length} of a resolution refutation is the number of clauses in the refutation, while the \textit{width} is the maximum number of literals that can be found in any of its clauses. For instance, the previous refutation has length 11 and width 3.
@@ -207,16 +209,16 @@ By definition, each clause $D_i$ can be used as premise for more than one rule a
         \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
             \node [rectangle, draw, minimum height=20](1) []{$\overline{x_1} \lor \overline{x_2} \lor x_3$};
             \node [rectangle, draw, minimum height=20](2) [right of=1, xshift=-13]{$x_3$};
-            \node [rectangle, draw, minimum height=20](3) [right of=2, xshift=-23]{$x_2 \lor x_3$};
+            \node [rectangle, draw, minimum height=20](3) [right of=2, xshift=-23]{$x_2 \lor \overline{x_3}$};
             \node [rectangle, draw, minimum height=20](4) [right of=3, xshift=-13]{$x_2 \lor x_3$};
-            \node [rectangle, draw, minimum height=20](5) [right of=4, xshift=-13]{$x_2 \lor \overline{x_3}$};
+            \node [rectangle, draw, minimum height=20](5) [right of=4, xshift=-13]{$x_2 \lor x_3$};
             \node [rectangle, draw, minimum height=20](6) [right of=5, xshift=-13]{$x_2 \lor \overline{x_3}$};
             \node [rectangle, draw, minimum height=20](7) [right of=6, xshift=-23]{$x_3$};
             \node [rectangle, draw, minimum height=20](8) [right of=7, xshift=-13]{$x_1 \lor \overline{x_2} \lor x_3$}; 
 
             \node (9)[below of=1, xshift=40]{$\overline{x_1} \lor \overline{x_2}$};
-            \node (10)[below of=3, xshift=28.5]{$\overline{x_1} \lor \overline{x_2}$};
-            \node (11)[below of=6, xshift=-28.5]{$x_1 \lor \overline{x_2}$};
+            \node (10)[below of=3, xshift=28.5]{$x_2$};
+            \node (11)[below of=6, xshift=-28.5]{$x_2$};
             \node (12)[below of=8, xshift=-40]{$x_1 \lor \overline{x_2}$};
 
             \node (13)[below of=10, xshift=-45]{$\overline{x_1}$};
