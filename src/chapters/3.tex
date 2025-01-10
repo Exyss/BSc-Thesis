@@ -163,7 +163,7 @@ To make things easier to read, each refutation can also be graphically represent
         \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
             \node [rectangle, draw, minimum height=20](1) []{$\overline{x_1} \lor \overline{x_2} \lor x_3$};
             \node [rectangle, draw, minimum height=20](2) [right of=1]{$x_2 \lor x_3$};
-            \node [rectangle, draw, minimum height=20](3) [right of=2]{$x_3$};
+            \node [rectangle, draw, minimum height=20](3) [right of=2]{$\overline{x_3}$};
             \node [rectangle, draw, minimum height=20](4) [right of=3]{$x_2 \lor \overline{x_3}$};
             \node [rectangle, draw, minimum height=20](5) [right of=4]{$x_1 \lor \overline{x_2} \lor x_3$};
 
@@ -208,12 +208,12 @@ By definition, each clause $D_i$ can be used as premise for more than one rule a
     \resizebox{1\hsize}{!}{
         \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm, thick,main node/.style={scale=0.9,circle,draw,font=\sffamily\normalsize}]
             \node [rectangle, draw, minimum height=20](1) []{$\overline{x_1} \lor \overline{x_2} \lor x_3$};
-            \node [rectangle, draw, minimum height=20](2) [right of=1, xshift=-13]{$x_3$};
+            \node [rectangle, draw, minimum height=20](2) [right of=1, xshift=-13]{$\overline{x_3}$};
             \node [rectangle, draw, minimum height=20](3) [right of=2, xshift=-23]{$x_2 \lor \overline{x_3}$};
             \node [rectangle, draw, minimum height=20](4) [right of=3, xshift=-13]{$x_2 \lor x_3$};
             \node [rectangle, draw, minimum height=20](5) [right of=4, xshift=-13]{$x_2 \lor x_3$};
             \node [rectangle, draw, minimum height=20](6) [right of=5, xshift=-13]{$x_2 \lor \overline{x_3}$};
-            \node [rectangle, draw, minimum height=20](7) [right of=6, xshift=-23]{$x_3$};
+            \node [rectangle, draw, minimum height=20](7) [right of=6, xshift=-23]{$\overline{x_3}$};
             \node [rectangle, draw, minimum height=20](8) [right of=7, xshift=-13]{$x_1 \lor \overline{x_2} \lor x_3$}; 
 
             \node (9)[below of=1, xshift=40]{$\overline{x_1} \lor \overline{x_2}$};
